@@ -11,6 +11,11 @@ import { toast } from 'sonner';
 // Lien du groupe WhatsApp que tu as mis sur ton offre Beacons (coaching)
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
 
+// Liens Beacons (hardcodés pour l'instant - on les mettra en variables d'env plus tard)
+const BEACONS_EBOOK_LINK = "https://shop.beacons.ai/yas_digital/44ca0203-408c-489d-b6d3-0a5c0af4fee2";
+const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734-4b80-8243-479d6c1f0213";
+const BEACONS_PREMIUM_MONTHLY_LINK = "https://shop.beacons.ai/yas_digital/REMPLACE_PAR_TON_LIEN_MENSUEL"; // TODO: remplace par le vrai lien mensuel 9.99€ quand tu l'auras
+
 // Agents disponibles
 const agents = [
   { id: 'globale', name: 'La Sage Globale', emoji: '🌿', desc: 'Toutes les approches combinées' },
