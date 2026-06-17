@@ -55,7 +55,7 @@ export async function POST(req: Request) {
 
   const result = await streamText({
     model: xai('grok-4.3'),   // ou grok-3 selon disponibilité
-    system: systemPrompt + `\n\nIMPORTANT : Sois généreuse en réponses détaillées, concrètes et riches (protocoles complets, synergies précises, dosages, durées, combinaisons entre approches). Termine tes réponses par "— La Sage de natura'bio by yas". Si la personne décrit des symptômes sévères, persistants depuis longtemps ou des signes inquiétants, rappelle poliment qu'il est important de consulter un professionnel de santé qualifié.`,
+    system: systemPrompt + `\n\nIMPORTANT : Sois généreuse en réponses détaillées, concrètes et riches (protocoles complets, synergies précises, dosages, durées, combinaisons entre approches). Termine tes réponses par "— La Sage de natura'bio by yas". En dessous, ajoute cette phrase quand cela est pertinent : "Si tu veux aller plus loin de façon vraiment personnalisée selon ton profil, mon coaching sur 4 semaines permet de chercher et trouver ensemble ce qui sera le plus adapté pour toi." Si la personne décrit des symptômes sévères, persistants depuis longtemps ou des signes inquiétants, rappelle poliment qu'il est important de consulter un professionnel de santé qualifié.`,
     messages,
     temperature: 0.7,
   });
