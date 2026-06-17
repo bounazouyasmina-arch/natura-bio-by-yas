@@ -164,9 +164,9 @@ export default function NaturaBioByYasLanding() {
       <section id="approche" className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center mb-12">
           <div className="text-[#5B7B6E] font-medium tracking-[3px] text-sm mb-2">UNE APPROCHE INTÉGRATIVE</div>
-          <h2 className="text-5xl font-semibold tracking-tight">Huit piliers pour comprendre et guérir</h2>
+          <h2 className="text-5xl font-semibold tracking-tight">Huit piliers pour le corps et le terrain</h2>
           <p className="mt-3 max-w-md mx-auto text-[#5A6B62]">
-            L&apos;IA de natura'bio by yas maîtrise ces traditions et les combine avec discernement.
+            L&apos;IA de natura'bio by yas maîtrise ces traditions et les combine avec discernement. Nous avons ajouté une section dédiée à la santé mentale et à la charge invisible.
           </p>
         </div>
 
@@ -183,6 +183,50 @@ export default function NaturaBioByYasLanding() {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* SECTION ÉMOTIONNELLE & CHARGE MENTALE - MISE EN AVANT */}
+      <section className="mx-auto max-w-6xl px-6 pb-20">
+        <div className="rounded-3xl bg-[#F4F7F5] p-10 md:p-14 border border-[#E6EDE9]">
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <div>
+              <div className="inline-block text-xs tracking-[3px] font-medium text-[#5B7B6E] mb-2">LE PILIER SOUVENT OUBLIÉ</div>
+              <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4">Santé Mentale &amp; Charge Invisible</h2>
+              <p className="text-[#5A6B62] text-lg mb-6">
+                Le corps exprime souvent ce que l’esprit porte en silence. Ici, on ne se contente pas de « gérer le stress ». On s’attaque à la charge mentale réelle, à l’épuisement invisible et aux émotions qui ne trouvent pas de place.
+              </p>
+              <a 
+                href="/espace" 
+                className="btn-primary inline-flex items-center gap-2 rounded-full px-8 py-3 font-semibold"
+              >
+                Explorer la section Émotionnelle <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+
+            <div className="space-y-4 text-[#5A6B62]">
+              <div className="flex gap-3">
+                <span className="text-2xl">🧠</span>
+                <p><strong>Cartographie précise</strong> de ta charge mentale (tâches, émotions, décisions, culpabilité)</p>
+              </div>
+              <div className="flex gap-3">
+                <span className="text-2xl">🔄</span>
+                <p><strong>Protocoles concrets</strong> sur 3 à 6 semaines pour poser des limites et alléger durablement</p>
+              </div>
+              <div className="flex gap-3">
+                <span className="text-2xl">💬</span>
+                <p><strong>Outils émotionnels avancés</strong> + régulation nerveuse + plantes adaptogènes</p>
+              </div>
+              <div className="flex gap-3">
+                <span className="text-2xl">🪞</span>
+                <p><strong>Travail intérieur</strong> : reparentage, deuil de la femme parfaite, réappropriation de ton énergie</p>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-center text-sm text-[#5A6B62] mt-8">
+            Cette section est accessible gratuitement (dans la limite des 10 questions). Pour un accompagnement vraiment personnalisé et un suivi sur plusieurs semaines, le coaching est souvent le choix le plus transformateur.
+          </p>
         </div>
       </section>
 
@@ -224,7 +268,7 @@ export default function NaturaBioByYasLanding() {
               <div className="text-3xl font-semibold tracking-tight mb-4">Posez vos questions. Recevez des réponses expertes.</div>
               
               <div className="space-y-4 text-[15px] text-[#5A6B62]">
-                <div>• Chat IA avec 8 agents spécialisés (aromathérapie, MTC, médecine prophétique...)</div>
+                <div>• Chat IA avec 9 agents spécialisés (dont un dédié à la charge mentale et aux émotions)</div>
                 <div>• Forum bienveillant entre femmes + réponses de l&apos;IA</div>
                 <div>• Historique de tes conversations et protocoles</div>
                 <div>• Accès réservé aux acheteuses via Beacons</div>

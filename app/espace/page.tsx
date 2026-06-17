@@ -26,6 +26,7 @@ const agents = [
   { id: 'mtc', name: 'Médecine Chinoise', emoji: '☯️', desc: 'Qi, méridiens, diététique' },
   { id: 'prophetique', name: 'Médecine Prophétique', emoji: '📖', desc: 'Remèdes du Prophète ﷺ' },
   { id: 'alimentation', name: 'Nutrition Thérapeutique', emoji: '🍎', desc: 'Alimentation & micronutrition' },
+  { id: 'emotion', name: 'Santé Mentale & Charge Invisible', emoji: '🧠', desc: 'Émotions, burnout, charge mentale' },
 ];
 
 // Forum mock (on branchera Supabase plus tard)
@@ -233,20 +234,30 @@ function EspaceContent() {
           <div className="max-w-4xl">
             <h1 className="text-4xl font-semibold tracking-tight mb-3">Bienvenue dans l&apos;Espace Membres</h1>
             <p className="text-xl text-[#5A6B62] mb-8">
-              Accès gratuit au Chat IA + Forum communautaire. Explore les 8 piliers de la santé au naturel et pose tes questions.
+              Accès gratuit au Chat IA + Forum communautaire. Explore les 8 piliers physiques + la section dédiée à la charge mentale et aux émotions.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
               <div className="card rounded-3xl p-7 cursor-pointer" onClick={() => setActiveTab('chat')}>
                 <MessageCircle className="h-7 w-7 text-[#5B7B6E] mb-4" />
                 <div className="font-semibold text-xl">Parler avec les agents IA</div>
-                <p className="mt-2 text-[#5A6B62]">8 expertes spécialisées (aromathérapie, nerf vague, hormones, médecine prophétique, MTC...). Gratuit.</p>
+                <p className="mt-2 text-[#5A6B62]">9 expertes spécialisées dont une dédiée à la charge mentale et aux émotions. Gratuit (10 questions).</p>
               </div>
 
               <div className="card rounded-3xl p-7 cursor-pointer" onClick={() => setActiveTab('forum')}>
                 <Users className="h-7 w-7 text-[#5B7B6E] mb-4" />
                 <div className="font-semibold text-xl">Rejoindre la communauté</div>
                 <p className="mt-2 text-[#5A6B62]">Pose tes questions et partage tes expériences avec d&apos;autres femmes. Gratuit.</p>
+              </div>
+
+              <div className="card rounded-3xl p-7 cursor-pointer border-2 border-[#C5A46E]/50" onClick={() => {
+                setActiveTab('chat');
+                setSelectedAgent('emotion');
+              }}>
+                <div className="text-3xl mb-4">🧠</div>
+                <div className="font-semibold text-xl">Santé Mentale &amp; Charge Invisible</div>
+                <p className="mt-2 text-[#5A6B62]">Inventaires concrets, protocoles pour poser des limites, travail émotionnel et régulation nerveuse. Section dédiée.</p>
+                <div className="mt-3 text-sm text-[#C5A46E] font-medium">Accéder à l&apos;agent dédié →</div>
               </div>
 
               {hasEbook && (
@@ -324,7 +335,7 @@ function EspaceContent() {
             <div className="mb-6 flex justify-between items-start">
               <div>
                 <h2 className="text-3xl font-semibold tracking-tight">Chat avec les sages</h2>
-                <p className="text-[#5A6B62]">Choisis l&apos;experte qui te parle aujourd&apos;hui. Toutes les réponses sont guidées par les 8 piliers.</p>
+                <p className="text-[#5A6B62]">Choisis l&apos;experte qui te parle aujourd&apos;hui. 9 agents dont un dédié à la charge mentale et aux émotions.</p>
               </div>
               <div className="text-right text-sm font-medium text-[#5B7B6E]">
                 {isPremium 
