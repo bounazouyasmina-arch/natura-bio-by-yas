@@ -18,14 +18,70 @@ const BEACONS_PREMIUM_MONTHLY_LINK = "https://shop.beacons.ai/yas_digital/REMPLA
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
 
 const pillars = [
-  { icon: Leaf, title: "Aromathérapie", desc: "Calmer l'anxiété, retrouver un sommeil profond et apaiser les tensions avec des synergies d'huiles essentielles sûres." },
-  { icon: Heart, title: "Naturopathie", desc: "Renforcer ton terrain, drainer en douceur et retrouver une vitalité durable avec des remèdes naturels." },
-  { icon: Wind, title: "Respiration & Nerf Vague", desc: "Réguler ton système nerveux, réduire l'inflammation et sortir du mode « toujours en alerte »." },
-  { icon: Apple, title: "Alimentation Thérapeutique", desc: "Nutrition anti-inflammatoire, cycle syncing et micronutrition ciblée pour plus d'énergie et d'équilibre." },
-  { icon: BookOpen, title: "Médecine Prophétique", desc: "Miel, nigelle, henné, jeûne et remèdes ancestraux du Prophète ﷺ pour le corps et l'esprit." },
-  { icon: Flame, title: "Médecine Traditionnelle Chinoise", desc: "Équilibrer le Qi, les méridiens et adapter ton alimentation aux saisons pour un mieux-être global." },
-  { icon: Brain, title: "Régulation Hormonale", desc: "Soutenir ton cycle, ta thyroïde, le cortisol et la ménopause avec des approches naturelles douces mais puissantes." },
-  { icon: Shield, title: "Approche Intégrative", desc: "Combiner avec discernement toutes les sagesses pour des protocoles cohérents, sûrs et vraiment efficaces." },
+  { 
+    icon: Leaf, 
+    emoji: '🌸', 
+    title: "Aromathérapie", 
+    desc: "Calmer l'anxiété, retrouver un sommeil profond et apaiser les tensions avec des synergies d'huiles essentielles sûres.",
+    color: '#7C6B9C',
+    iconBg: '#F0E9F8'
+  },
+  { 
+    icon: Heart, 
+    emoji: '🌱', 
+    title: "Naturopathie", 
+    desc: "Renforcer ton terrain, drainer en douceur et retrouver une vitalité durable avec des remèdes naturels.",
+    color: '#4A6B55',
+    iconBg: '#E8F0E9'
+  },
+  { 
+    icon: Wind, 
+    emoji: '💨', 
+    title: "Respiration & Nerf Vague", 
+    desc: "Réguler ton système nerveux, réduire l'inflammation et sortir du mode « toujours en alerte ».",
+    color: '#5A7E7E',
+    iconBg: '#E6F0F0'
+  },
+  { 
+    icon: Apple, 
+    emoji: '🍎', 
+    title: "Alimentation Thérapeutique", 
+    desc: "Nutrition anti-inflammatoire, cycle syncing et micronutrition ciblée pour plus d'énergie et d'équilibre.",
+    color: '#C68E6B',
+    iconBg: '#F9ECE4'
+  },
+  { 
+    icon: BookOpen, 
+    emoji: '📖', 
+    title: "Médecine Prophétique", 
+    desc: "Miel, nigelle, henné, jeûne et remèdes ancestraux du Prophète ﷺ pour le corps et l'esprit.",
+    color: '#B38B5E',
+    iconBg: '#F7F0E6'
+  },
+  { 
+    icon: Flame, 
+    emoji: '☯️', 
+    title: "Médecine Traditionnelle Chinoise", 
+    desc: "Équilibrer le Qi, les méridiens et adapter ton alimentation aux saisons pour un mieux-être global.",
+    color: '#B36B5E',
+    iconBg: '#F8EDE9'
+  },
+  { 
+    icon: Brain, 
+    emoji: '🌙', 
+    title: "Régulation Hormonale", 
+    desc: "Soutenir ton cycle, ta thyroïde, le cortisol et la ménopause avec des approches naturelles douces mais puissantes.",
+    color: '#B37E8F',
+    iconBg: '#F8ECF1'
+  },
+  { 
+    icon: Shield, 
+    emoji: '🌿', 
+    title: "Approche Intégrative", 
+    desc: "Combiner avec discernement toutes les sagesses pour des protocoles cohérents, sûrs et vraiment efficaces.",
+    color: '#4F6B5F',
+    iconBg: '#E8F0EC'
+  },
 ];
 
 const testimonials = [
@@ -170,11 +226,21 @@ export default function NaturaBioByYasLanding() {
           {pillars.map((pillar, index) => {
             const Icon = pillar.icon;
             return (
-              <div key={index} className="pillar card rounded-3xl p-7 flex flex-col">
-                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E6EDE9]">
-                  <Icon className="h-6 w-6 text-[#5B7B6E]" />
+              <div 
+                key={index} 
+                className="pillar card rounded-3xl p-7 flex flex-col"
+                style={{ borderLeft: `5px solid ${pillar.color}` }}
+              >
+                <div 
+                  className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl"
+                  style={{ backgroundColor: pillar.iconBg }}
+                >
+                  <Icon className="h-7 w-7" style={{ color: pillar.color }} />
                 </div>
-                <h3 className="font-semibold text-xl tracking-tight mb-3">{pillar.title}</h3>
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className="text-xl">{pillar.emoji}</span>
+                  <h3 className="font-semibold text-xl tracking-tight">{pillar.title}</h3>
+                </div>
                 <p className="text-[#5A6B62] text-[15px] leading-relaxed">{pillar.desc}</p>
               </div>
             );
@@ -205,19 +271,33 @@ export default function NaturaBioByYasLanding() {
         <p className="text-center text-xs mt-4 text-[#5A6B62]">L’IA te répond avec des protocoles précis. Tu peux aller plus loin avec l’ebook ou le coaching.</p>
       </section>
 
-      {/* SECTION ÉMOTIONNELLE & CHARGE MENTALE - MISE EN AVANT */}
+      {/* SECTION ÉMOTIONNELLE & CHARGE MENTALE - MISE EN AVANT (9e section visuelle) */}
       <section className="mx-auto max-w-6xl px-6 pb-20">
-        <div className="rounded-3xl bg-[#F4F7F5] p-10 md:p-14 border border-[#E6EDE9]">
+        <div 
+          className="rounded-3xl p-10 md:p-14 border"
+          style={{ 
+            backgroundColor: '#F1EFF8', 
+            borderColor: '#D9D4EC' 
+          }}
+        >
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div>
-              <div className="inline-block text-xs tracking-[3px] font-medium text-[#5B7B6E] mb-2">LE PILIER SOUVENT OUBLIÉ</div>
-              <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4">Santé Mentale &amp; Charge Invisible</h2>
+              <div 
+                className="inline-block text-xs tracking-[3px] font-medium mb-2 px-3 py-0.5 rounded-full"
+                style={{ backgroundColor: '#E6E1F5', color: '#6C6B9A' }}
+              >
+                LE PILIER SOUVENT OUBLIÉ
+              </div>
+              <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4" style={{ color: '#4A455F' }}>
+                Santé Mentale &amp; Charge Invisible
+              </h2>
               <p className="text-[#5A6B62] text-lg mb-6">
                 Le corps parle quand l’esprit se tait. Ici on ne « gère » pas seulement le stress : on cartographie la vraie charge mentale, l’épuisement invisible et on pose des outils concrets pour reprendre de l’espace.
               </p>
               <a 
                 href="/espace" 
-                className="btn-primary inline-flex items-center gap-2 rounded-full px-8 py-3 font-semibold"
+                className="inline-flex items-center gap-2 rounded-full px-8 py-3 font-semibold text-white"
+                style={{ backgroundColor: '#6C6B9A' }}
               >
                 Explorer la section Émotionnelle <ArrowRight className="h-4 w-4" />
               </a>

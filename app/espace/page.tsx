@@ -16,17 +16,17 @@ const BEACONS_EBOOK_LINK = "https://shop.beacons.ai/yas_digital/44ca0203-408c-48
 const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734-4b80-8243-479d6c1f0213";
 const BEACONS_PREMIUM_MONTHLY_LINK = "https://shop.beacons.ai/yas_digital/REMPLACE_PAR_TON_LIEN_MENSUEL"; // TODO: remplace par le vrai lien mensuel 9.99€ quand tu l'auras
 
-// Agents disponibles
+// Agents disponibles - avec couleurs précises et visuels parlants (alignés landing)
 const agents = [
-  { id: 'globale', name: 'La Sage Globale', emoji: '🌿', desc: 'Toutes les approches combinées' },
-  { id: 'aromatherapie', name: 'Aromathérapeute', emoji: '🌸', desc: 'Huiles essentielles & synergies' },
-  { id: 'naturopathie', name: 'Naturopathe', emoji: '🌱', desc: 'Terrain & vitalité' },
-  { id: 'respiration', name: 'Respiration & Nerf Vague', emoji: '💨', desc: 'Régulation nerveuse' },
-  { id: 'hormones', name: 'Hormones & Ménopause', emoji: '🌙', desc: 'Cycle et équilibre hormonal' },
-  { id: 'mtc', name: 'Médecine Chinoise', emoji: '☯️', desc: 'Qi, méridiens, diététique' },
-  { id: 'prophetique', name: 'Médecine Prophétique', emoji: '📖', desc: 'Remèdes du Prophète ﷺ' },
-  { id: 'alimentation', name: 'Nutrition Thérapeutique', emoji: '🍎', desc: 'Alimentation & micronutrition' },
-  { id: 'emotion', name: 'Santé Mentale & Charge Invisible', emoji: '🧠', desc: 'Émotions, burnout, charge mentale' },
+  { id: 'globale', name: 'La Sage Globale', emoji: '🌿', desc: 'Toutes les approches combinées', color: '#4F6B5F', iconBg: '#E8F0EC' },
+  { id: 'aromatherapie', name: 'Aromathérapeute', emoji: '🌸', desc: 'Huiles essentielles & synergies', color: '#7C6B9C', iconBg: '#F0E9F8' },
+  { id: 'naturopathie', name: 'Naturopathe', emoji: '🌱', desc: 'Terrain & vitalité', color: '#4A6B55', iconBg: '#E8F0E9' },
+  { id: 'respiration', name: 'Respiration & Nerf Vague', emoji: '💨', desc: 'Régulation nerveuse', color: '#5A7E7E', iconBg: '#E6F0F0' },
+  { id: 'hormones', name: 'Hormones & Ménopause', emoji: '🌙', desc: 'Cycle et équilibre hormonal', color: '#B37E8F', iconBg: '#F8ECF1' },
+  { id: 'mtc', name: 'Médecine Chinoise', emoji: '☯️', desc: 'Qi, méridiens, diététique', color: '#B36B5E', iconBg: '#F8EDE9' },
+  { id: 'prophetique', name: 'Médecine Prophétique', emoji: '📖', desc: 'Remèdes du Prophète ﷺ', color: '#B38B5E', iconBg: '#F7F0E6' },
+  { id: 'alimentation', name: 'Nutrition Thérapeutique', emoji: '🍎', desc: 'Alimentation & micronutrition', color: '#C68E6B', iconBg: '#F9ECE4' },
+  { id: 'emotion', name: 'Santé Mentale & Charge Invisible', emoji: '🧠', desc: 'Émotions, burnout, charge mentale', color: '#6C6B9A', iconBg: '#F1EFF8' },
 ];
 
 // Forum mock (on branchera Supabase plus tard)
@@ -250,14 +250,23 @@ function EspaceContent() {
                 <p className="mt-2 text-[#5A6B62]">Pose tes questions et partage tes expériences avec d&apos;autres femmes. Gratuit.</p>
               </div>
 
-              <div className="card rounded-3xl p-7 cursor-pointer border-2 border-[#C5A46E]/50" onClick={() => {
-                setActiveTab('chat');
-                setSelectedAgent('emotion');
-              }}>
-                <div className="text-3xl mb-4">🧠</div>
+              <div 
+                className="card rounded-3xl p-7 cursor-pointer" 
+                style={{ borderColor: '#D9D4EC' }}
+                onClick={() => {
+                  setActiveTab('chat');
+                  setSelectedAgent('emotion');
+                }}
+              >
+                <div 
+                  className="inline-flex h-12 w-12 items-center justify-center rounded-2xl text-3xl mb-4"
+                  style={{ backgroundColor: '#F1EFF8' }}
+                >
+                  🧠
+                </div>
                 <div className="font-semibold text-xl">Santé Mentale &amp; Charge Invisible</div>
                 <p className="mt-2 text-[#5A6B62]">Inventaires concrets, protocoles pour poser des limites, travail émotionnel et régulation nerveuse. Section dédiée.</p>
-                <div className="mt-3 text-sm text-[#C5A46E] font-medium">Accéder à l&apos;agent dédié →</div>
+                <div className="mt-3 text-sm font-medium" style={{ color: '#6C6B9A' }}>Accéder à l&apos;agent dédié →</div>
               </div>
 
               {hasEbook && (
@@ -344,20 +353,24 @@ function EspaceContent() {
               </div>
             </div>
 
-            {/* Sélecteur d'agents */}
+            {/* Sélecteur d'agents - couleurs précises + visuels parlants */}
             <div className="flex flex-wrap gap-2 mb-6">
-              {agents.map(agent => (
-                <button
-                  key={agent.id}
-                  onClick={() => handleAgentChange(agent.id)}
-                  className={`flex items-center gap-2 rounded-2xl border px-4 py-2 text-sm transition ${selectedAgent === agent.id 
-                    ? 'bg-[#5B7B6E] text-white border-[#5B7B6E]' 
-                    : 'bg-white hover:bg-[#F8F5F0] border-[#E6EDE9]'}`}
-                >
-                  <span>{agent.emoji}</span>
-                  <span className="font-medium">{agent.name}</span>
-                </button>
-              ))}
+              {agents.map(agent => {
+                const isActive = selectedAgent === agent.id;
+                return (
+                  <button
+                    key={agent.id}
+                    onClick={() => handleAgentChange(agent.id)}
+                    className={`flex items-center gap-2 rounded-2xl border px-4 py-2 text-sm transition ${isActive 
+                      ? 'text-white border-transparent shadow-sm' 
+                      : 'bg-white hover:bg-[#F8F5F0] border-[#E6EDE9]'}`}
+                    style={isActive ? { backgroundColor: agent.color } : {}}
+                  >
+                    <span className="text-base">{agent.emoji}</span>
+                    <span className="font-medium">{agent.name}</span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Zone de chat */}
@@ -365,9 +378,21 @@ function EspaceContent() {
               <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#F8F5F0]">
                 {messages.length === 0 && (
                   <div className="text-center py-12 text-[#5A6B62]">
-                    <div className="text-5xl mb-4">{agents.find(a => a.id === selectedAgent)?.emoji}</div>
-                    <p className="font-medium">Pose ta première question à {agents.find(a => a.id === selectedAgent)?.name}.</p>
-                    <p className="text-sm mt-2 max-w-xs mx-auto">Exemple : « Quelles huiles pour les bouffées de chaleur en période de ménopause ? »</p>
+                    {(() => {
+                      const current = agents.find(a => a.id === selectedAgent);
+                      return (
+                        <>
+                          <div 
+                            className="mx-auto mb-4 inline-flex h-20 w-20 items-center justify-center rounded-3xl text-4xl"
+                            style={{ backgroundColor: current?.iconBg }}
+                          >
+                            {current?.emoji}
+                          </div>
+                          <p className="font-medium">Pose ta première question à {current?.name}.</p>
+                          <p className="text-sm mt-2 max-w-xs mx-auto">Exemple : « Quelles huiles pour les bouffées de chaleur en période de ménopause ? »</p>
+                        </>
+                      );
+                    })()}
                   </div>
                 )}
 
