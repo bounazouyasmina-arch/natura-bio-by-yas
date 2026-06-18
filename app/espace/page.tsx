@@ -170,11 +170,14 @@ function EspaceContent() {
               <ArrowLeft className="h-4 w-4" /> Retour au site
             </a>
             <div className="h-5 w-px bg-[#E6EDE9]" />
-            <div className="flex items-center gap-2 font-semibold">
-              <div className="h-6 w-6 rounded bg-[#5B7B6E] flex items-center justify-center">
-                <Leaf className="h-3.5 w-3.5 text-white" />
-              </div>
-              natura'bio by yas — Espace Membres
+            <div className="flex items-center gap-3 font-semibold">
+              <img 
+                src="/natura-bio-logo.jpg" 
+                alt="natura'bio" 
+                className="h-8 w-auto" 
+              />
+              <span className="hidden sm:inline">natura'bio by yas — Espace Membres</span>
+              <span className="sm:hidden">Espace Membres</span>
             </div>
           </div>
           

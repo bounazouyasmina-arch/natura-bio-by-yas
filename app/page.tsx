@@ -109,12 +109,14 @@ export default function NaturaBioByYasLanding() {
       <nav className="sticky top-0 z-50 border-b border-[#E6EDE9] bg-[#F8F5F0]/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#5B7B6E]">
-              <Leaf className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <div className="font-semibold tracking-tight text-xl">natura'bio by yas</div>
-              <div className="text-[10px] text-[#5A6B62] -mt-1">Santé &amp; bien-être au naturel</div>
+            <img 
+              src="/natura-bio-logo.jpg" 
+              alt="natura'bio" 
+              className="h-10 w-auto" 
+            />
+            <div className="hidden sm:block">
+              <div className="font-semibold tracking-tight text-lg leading-none">by yas</div>
+              <div className="text-[10px] text-[#5A6B62] -mt-0.5">Santé &amp; bien-être au naturel</div>
             </div>
           </div>
 
