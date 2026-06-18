@@ -18,14 +18,14 @@ const BEACONS_PREMIUM_MONTHLY_LINK = "https://shop.beacons.ai/yas_digital/REMPLA
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
 
 const pillars = [
-  { icon: Leaf, title: "Aromathérapie", desc: "Huiles essentielles et synergies sécuritaires pour le bien-être émotionnel et physique." },
-  { icon: Heart, title: "Naturopathie", desc: "Approche holistique : terrain, vitalité, soutien des émonctoires et remèdes naturels." },
-  { icon: Wind, title: "Respiration & Nerf Vague", desc: "Techniques de régulation du système nerveux autonome pour calmer l'anxiété et l'inflammation." },
-  { icon: Apple, title: "Alimentation Thérapeutique", desc: "Nutrition anti-inflammatoire, cycle syncing, adaptogènes et micronutrition ciblée." },
-  { icon: BookOpen, title: "Médecine Prophétique", desc: "Sagesse ancestrale : miel, nigelle, henné, jeûne intermittent et remèdes du Prophète ﷺ." },
-  { icon: Flame, title: "Médecine Traditionnelle Chinoise", desc: "Équilibre du Qi, méridiens, points d'acupression, plantes et alimentation selon les saisons." },
-  { icon: Brain, title: "Régulation Hormonale", desc: "Soutien du cycle, ménopause, thyroïde et cortisol avec approches naturelles validées." },
-  { icon: Shield, title: "Approche Intégrative", desc: "Combinaison intelligente des différentes traditions pour des protocoles cohérents et sûrs." },
+  { icon: Leaf, title: "Aromathérapie", desc: "Calmer l'anxiété, retrouver un sommeil profond et apaiser les tensions avec des synergies d'huiles essentielles sûres." },
+  { icon: Heart, title: "Naturopathie", desc: "Renforcer ton terrain, drainer en douceur et retrouver une vitalité durable avec des remèdes naturels." },
+  { icon: Wind, title: "Respiration & Nerf Vague", desc: "Réguler ton système nerveux, réduire l'inflammation et sortir du mode « toujours en alerte »." },
+  { icon: Apple, title: "Alimentation Thérapeutique", desc: "Nutrition anti-inflammatoire, cycle syncing et micronutrition ciblée pour plus d'énergie et d'équilibre." },
+  { icon: BookOpen, title: "Médecine Prophétique", desc: "Miel, nigelle, henné, jeûne et remèdes ancestraux du Prophète ﷺ pour le corps et l'esprit." },
+  { icon: Flame, title: "Médecine Traditionnelle Chinoise", desc: "Équilibrer le Qi, les méridiens et adapter ton alimentation aux saisons pour un mieux-être global." },
+  { icon: Brain, title: "Régulation Hormonale", desc: "Soutenir ton cycle, ta thyroïde, le cortisol et la ménopause avec des approches naturelles douces mais puissantes." },
+  { icon: Shield, title: "Approche Intégrative", desc: "Combiner avec discernement toutes les sagesses pour des protocoles cohérents, sûrs et vraiment efficaces." },
 ];
 
 const testimonials = [
@@ -88,85 +88,81 @@ export default function NaturaBioByYasLanding() {
       </nav>
 
       {/* HERO */}
-      <section className="mx-auto max-w-5xl px-6 pt-16 pb-20 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full bg-[#E6EDE9] px-4 py-1 text-xs font-medium tracking-widest text-[#5B7B6E] mb-6">
+      <section className="mx-auto max-w-5xl px-6 pt-20 pb-16 text-center">
+        <div className="inline-block rounded-full bg-[#E6EDE9] px-4 py-1 text-xs font-medium tracking-[2px] text-[#5B7B6E] mb-6">
           APPROCHES ANCESTRALES • SCIENCE MODERNE • FOI &amp; RESPECT
         </div>
 
-        <h1 className="text-6xl md:text-7xl font-semibold tracking-tighter leading-[1.05] mb-6">
-          Retrouvez votre équilibre.<br />Naturellement.
+        <h1 className="text-6xl md:text-[72px] font-semibold tracking-[-2.5px] leading-[1.05] mb-6">
+          Une question.<br />Huit sagesses.<br />Une réponse qui te parle.
         </h1>
-        
-        <p className="mx-auto max-w-2xl text-2xl text-[#5A6B62] tracking-tight mb-6">
-          Accède gratuitement au Chat IA + Forum (10 questions).
+
+        <p className="mx-auto max-w-2xl text-2xl text-[#5A6B62] tracking-[-0.3px] mb-4">
+          Tes questions façonnent ta santé de demain.
         </p>
-        <p className="mx-auto max-w-2xl text-xl text-[#5A6B62] tracking-tight mb-10">
-          Puis passe en illimité à 9,99 €/mois (ebook ménopause &amp; hormones offert) ou coaching 299,99 €.
+        <p className="mx-auto max-w-2xl text-lg text-[#5A6B62] mb-10">
+          9 sagesses IA (aromathérapie, naturopathie, nerf vague, hormones, médecine prophétique, chinoise...) te répondent avec précision, respect et profondeur. Commence gratuitement.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button 
-            onClick={() => document.getElementById('tarifs')?.scrollIntoView({ behavior: 'smooth' })}
+          <a 
+            href="/espace" 
             className="btn-primary flex items-center justify-center gap-3 rounded-full px-10 py-4 text-lg font-semibold shadow-sm"
           >
-            Commencer par l&apos;ebook à 9,99 € <ArrowRight className="h-5 w-5" />
-          </button>
+            Accéder gratuitement au Chat IA
+          </a>
           <button 
             onClick={() => document.getElementById('tarifs')?.scrollIntoView({ behavior: 'smooth' })}
             className="btn-secondary flex items-center justify-center gap-3 rounded-full px-8 py-4 text-lg font-semibold"
           >
-            Découvrir le coaching 4 semaines
+            Voir les offres
           </button>
         </div>
 
-        <div className="mt-6 flex flex-col items-center gap-3">
-          <a 
-            href="/espace" 
-            className="btn-secondary rounded-full px-8 py-3 font-semibold"
-          >
-            Accéder gratuitement (10 questions Chat IA + Forum)
-          </a>
-          <a 
-            href="/espace" 
-            className="text-sm underline text-[#5A6B62] hover:text-[#2A3A32]"
-          >
-            J&apos;ai déjà acheté via Beacons → Accéder à mon espace membres
-          </a>
-        </div>
-
-        <div className="mt-3">
-          <a 
-            href={WHATSAPP_GROUP_LINK} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-[#5B7B6E] hover:underline"
-          >
-            💬 Groupe WhatsApp inclus avec l&apos;offre coaching (sur Beacons)
-          </a>
-        </div>
-
-        <p className="mt-4 text-sm text-[#5A6B62]">
-          Ebook livré via Beacons • Accès immédiat à l&apos;app IA + forum après achat
+        <p className="mt-6 text-sm text-[#5A6B62]">
+          Pas de carte. Pas d’engagement. Teste les réponses naturelles dès maintenant.
         </p>
       </section>
 
-      {/* CONFIANCE */}
+      {/* CONFIANCE - style lucis.life */}
       <div className="border-y border-[#E6EDE9] bg-white py-4">
         <div className="mx-auto max-w-5xl px-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-sm text-[#5A6B62]">
           <div className="flex items-center gap-2"><Check className="h-4 w-4 text-[#5B7B6E]" /> +1 200 femmes accompagnées</div>
+          <div className="flex items-center gap-2"><Check className="h-4 w-4 text-[#5B7B6E]" /> 9 sagesses IA précises</div>
           <div className="flex items-center gap-2"><Check className="h-4 w-4 text-[#5B7B6E]" /> Approches respectueuses de la foi</div>
-          <div className="flex items-center gap-2"><Check className="h-4 w-4 text-[#5B7B6E]" /> Réponses précises et documentées</div>
-          <div className="flex items-center gap-2"><Check className="h-4 w-4 text-[#5B7B6E]" /> Suivi humain pour les coachings</div>
+          <div className="flex items-center gap-2"><Check className="h-4 w-4 text-[#5B7B6E]" /> Chat gratuit + forum dès maintenant</div>
         </div>
       </div>
 
-      {/* LES 8 PILIERS */}
+      {/* BIENVENUE - Compagnon au naturel */}
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <div className="max-w-3xl">
+          <h2 className="text-3xl font-semibold tracking-tight mb-4">natura’bio by yas est ton compagnon santé au naturel.</h2>
+          <p className="text-lg text-[#5A6B62] mb-6">
+            Tu poses une question sur ton cycle, ta ménopause, ton énergie ou ta charge mentale…<br />
+            9 sagesses IA te répondent avec des conseils précis, concrets et respectueux de ta foi et de ton corps.
+          </p>
+
+          <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4 text-[#5A6B62]">
+            <div>💡 <strong>Chaque question sous plusieurs angles</strong> — 9 visions pour une réponse riche.</div>
+            <div>🎯 <strong>Des protocoles concrets</strong> — dosages, synergies, étapes claires et applicables.</div>
+            <div>🧠 <strong>Charge mentale &amp; émotions</strong> — une section dédiée pour poser ce qui pèse vraiment.</div>
+            <div>🌿 <strong>Approche intégrative</strong> — aromathérapie, MTC, prophétique, nerf vague, hormones, naturopathie…</div>
+          </div>
+
+          <p className="mt-6 text-[#5A6B62]">
+            Ici tu n’es plus seule. Commence par le chat gratuit et vois par toi-même.
+          </p>
+        </div>
+      </section>
+
+      {/* LES 8 + 1 SAGesses */}
       <section id="approche" className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center mb-12">
           <div className="text-[#5B7B6E] font-medium tracking-[3px] text-sm mb-2">UNE APPROCHE INTÉGRATIVE</div>
-          <h2 className="text-5xl font-semibold tracking-tight">Huit piliers pour le corps et le terrain</h2>
+          <h2 className="text-5xl font-semibold tracking-tight">Huit sagesses pour comprendre et agir</h2>
           <p className="mt-3 max-w-md mx-auto text-[#5A6B62]">
-            L&apos;IA de natura'bio by yas maîtrise ces traditions et les combine avec discernement. Nous avons ajouté une section dédiée à la santé mentale et à la charge invisible.
+            Chaque tradition apporte des réponses uniques. L&apos;IA les maîtrise et les combine avec respect et précision. Plus une section complète sur la charge mentale et les émotions.
           </p>
         </div>
 
@@ -186,6 +182,29 @@ export default function NaturaBioByYasLanding() {
         </div>
       </section>
 
+      {/* EXEMPLES CONCRETS (inspiré de lucis) */}
+      <section className="mx-auto max-w-5xl px-6 pb-16">
+        <div className="text-center mb-8">
+          <div className="text-[#5B7B6E] text-sm tracking-[2px] font-medium mb-1">DES RÉPONSES QUI PARLENT VRAI</div>
+          <h3 className="text-2xl font-semibold tracking-tight">Exemples de questions que les femmes posent</h3>
+        </div>
+        <div className="grid md:grid-cols-3 gap-4 text-sm">
+          {[
+            "Pourquoi je craque à 15h tous les jours ?",
+            "Comment calmer mes bouffées de chaleur sans hormones ?",
+            "J’ai tout le temps la charge mentale, comment poser des limites ?",
+            "Insomnies malgré la fatigue : que faire avec les huiles et la respiration ?",
+            "Mon cycle est irrégulier, par où commencer naturellement ?",
+            "Je me sens vidée émotionnellement, quels outils en MTC et naturopathie ?"
+          ].map((q, i) => (
+            <div key={i} className="card rounded-2xl px-5 py-4 text-[#5A6B62] border border-[#E6EDE9]">
+              « {q} »
+            </div>
+          ))}
+        </div>
+        <p className="text-center text-xs mt-4 text-[#5A6B62]">L’IA te répond avec des protocoles précis. Tu peux aller plus loin avec l’ebook ou le coaching.</p>
+      </section>
+
       {/* SECTION ÉMOTIONNELLE & CHARGE MENTALE - MISE EN AVANT */}
       <section className="mx-auto max-w-6xl px-6 pb-20">
         <div className="rounded-3xl bg-[#F4F7F5] p-10 md:p-14 border border-[#E6EDE9]">
@@ -194,7 +213,7 @@ export default function NaturaBioByYasLanding() {
               <div className="inline-block text-xs tracking-[3px] font-medium text-[#5B7B6E] mb-2">LE PILIER SOUVENT OUBLIÉ</div>
               <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4">Santé Mentale &amp; Charge Invisible</h2>
               <p className="text-[#5A6B62] text-lg mb-6">
-                Le corps exprime souvent ce que l’esprit porte en silence. Ici, on ne se contente pas de « gérer le stress ». On s’attaque à la charge mentale réelle, à l’épuisement invisible et aux émotions qui ne trouvent pas de place.
+                Le corps parle quand l’esprit se tait. Ici on ne « gère » pas seulement le stress : on cartographie la vraie charge mentale, l’épuisement invisible et on pose des outils concrets pour reprendre de l’espace.
               </p>
               <a 
                 href="/espace" 
@@ -235,7 +254,8 @@ export default function NaturaBioByYasLanding() {
         <div className="mx-auto max-w-5xl px-6">
           <div className="text-center mb-12">
             <div className="text-[#5B7B6E] font-medium tracking-[3px] text-sm mb-2">COMMENT ÇA MARCHE</div>
-            <h2 className="text-5xl font-semibold tracking-tight">Commence gratuitement (Chat IA + Forum), passe aux offres premium ensuite</h2>
+            <h2 className="text-5xl font-semibold tracking-tight">Commence gratuitement. Avance à ton rythme.</h2>
+            <p className="mt-2 text-[#5A6B62]">Chat IA + forum ouvert. Ebook ou coaching quand tu veux aller plus loin.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
