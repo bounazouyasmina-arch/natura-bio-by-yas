@@ -176,7 +176,7 @@ function EspaceContent() {
                 alt="natura'bio" 
                 className="h-16 md:h-20 w-auto" 
               />
-              <div className="text-base font-semibold tracking-tight text-[#5B7B6E] mt-0.5">by yas</div>
+              <div className="text-xs font-medium tracking-tight text-[#5B7B6E] mt-0.5">by yas</div>
             </div>
             <div className="hidden sm:block text-sm text-[#5A6B62] ml-1">Espace Membres</div>
           </div>
@@ -552,7 +552,7 @@ function EspaceContent() {
               alt="natura'bio" 
               className="h-14 w-auto mb-1" 
             />
-            <div className="text-[10px] font-medium text-[#5B7B6E]">by yas</div>
+            <div className="text-[10px] font-medium tracking-tight text-[#5B7B6E]">by yas</div>
           </div>
         </div>
       </footer>

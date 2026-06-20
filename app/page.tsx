@@ -114,8 +114,8 @@ export default function NaturaBioByYasLanding() {
               alt="natura'bio" 
               className="h-20 md:h-24 w-auto" 
             />
-            <div className="text-base font-semibold tracking-tight text-[#5B7B6E] mt-1">by yas</div>
-            <div className="text-xs text-[#5A6B62] -mt-0.5">Santé &amp; bien-être au naturel</div>
+            <div className="text-[11px] font-medium tracking-tight text-[#5B7B6E] mt-1">by yas</div>
+            <div className="text-[10px] text-[#5A6B62] -mt-0.5">Santé &amp; bien-être au naturel</div>
           </div>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
@@ -333,7 +333,7 @@ export default function NaturaBioByYasLanding() {
       <section id="comment" className="bg-white border-y border-[#E6EDE9] py-20">
         <div className="mx-auto max-w-5xl px-6">
           <div className="text-center mb-12">
-            <div className="text-[#5B7B6E] font-medium tracking-[3px] text-sm mb-2">COMMENT ÇA MARCHE</div>
+            <div className="uppercase tracking-[3px] text-xs font-medium text-[#5B7B6E] mb-2">COMMENT ÇA MARCHE</div>
             <h2 className="text-5xl font-semibold tracking-tight">Commence gratuitement. Avance à ton rythme.</h2>
             <p className="mt-2 text-[#5A6B62]">Chat IA + forum ouvert. Ebook ou coaching quand tu veux aller plus loin.</p>
           </div>
@@ -341,11 +341,11 @@ export default function NaturaBioByYasLanding() {
           <div className="grid md:grid-cols-3 gap-6">
             {/* Étape 1 */}
             <div className="card rounded-3xl p-8 border-2 border-[#5B7B6E]">
-              <div className="text-[#5B7B6E] text-sm font-semibold mb-1">ÉTAPE 1 — POINT D&apos;ENTRÉE</div>
-              <div className="text-3xl font-semibold tracking-tight mb-4">L&apos;ebook « Ménopause au Naturel »</div>
+              <div className="uppercase tracking-[2px] text-xs font-medium text-[#5B7B6E] mb-1">ÉTAPE 1 — POINT D&apos;ENTRÉE</div>
+              <div className="text-[22px] font-semibold tracking-tight mb-4">L&apos;ebook « Ménopause au Naturel »</div>
               <div className="text-4xl font-semibold tabular-nums mb-6">9,99 €</div>
               
-              <ul className="space-y-3 text-[15px] mb-8 text-[#5A6B62]">
+              <ul className="space-y-3 text-[15px] leading-relaxed mb-8 text-[#5A6B62]">
                 <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> 80+ pages de protocoles concrets</li>
                 <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> Accès à l&apos;application IA + forum</li>
                 <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> Mises à jour à vie</li>
@@ -363,11 +363,11 @@ export default function NaturaBioByYasLanding() {
             </div>
 
             {/* Étape 2 */}
-            <div className="card rounded-3xl p-8">
-              <div className="text-[#5B7B6E] text-sm font-semibold mb-1">ÉTAPE 2 — L&apos;APP &amp; LA COMMUNAUTÉ</div>
-              <div className="text-3xl font-semibold tracking-tight mb-4">Posez vos questions. Recevez des réponses expertes.</div>
+            <div className="card rounded-3xl p-8 border border-[#E6EDE9]">
+              <div className="uppercase tracking-[2px] text-xs font-medium text-[#5B7B6E] mb-1">ÉTAPE 2 — L&apos;APP &amp; LA COMMUNAUTÉ</div>
+              <div className="text-[22px] font-semibold tracking-tight mb-4">Posez vos questions. Recevez des réponses expertes.</div>
               
-              <div className="space-y-4 text-[15px] text-[#5A6B62]">
+              <div className="space-y-4 text-[15px] leading-relaxed text-[#5A6B62]">
                 <div>• Chat IA avec 9 agents spécialisés (dont un dédié à la charge mentale et aux émotions)</div>
                 <div>• Forum bienveillant entre femmes + réponses de l&apos;IA</div>
                 <div>• Historique de tes conversations et protocoles</div>
@@ -521,7 +521,7 @@ export default function NaturaBioByYasLanding() {
               alt="natura'bio" 
               className="h-14 w-auto mb-1" 
             />
-            <div className="text-[10px] font-medium text-[#5B7B6E]">by yas</div>
+            <div className="text-[10px] font-medium tracking-tight text-[#5B7B6E]">by yas</div>
           </div>
 
           <div className="text-center md:text-left">© {new Date().getFullYear()} natura'bio by yas — Tous droits réservés</div>
