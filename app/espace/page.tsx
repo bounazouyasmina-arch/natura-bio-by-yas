@@ -60,6 +60,118 @@ function EspaceContent() {
     setFreeQuestionsUsed(parseInt(saved, 10));
   }, []);
 
+  // === NOUVEAUTÉS : Bilan initial, Tips, Articles, Suivi symptômes ===
+  const [bilanInitial, setBilanInitial] = useState<any>(null);
+  const [symptomLogs, setSymptomLogs] = useState<any[]>([]);
+  const [bilanForm, setBilanForm] = useState<{
+    ageRange: string;
+    mainConcerns: string[];
+    goals: string;
+    duration: string;
+  }>({
+    ageRange: '',
+    mainConcerns: [],
+    goals: '',
+    duration: ''
+  });
+  const [symptomForm, setSymptomForm] = useState<{
+    selectedSymptoms: string[];
+    intensity: number;
+    note: string;
+  }>({
+    selectedSymptoms: [],
+    intensity: 3,
+    note: ''
+  });
+  const [showBilanSuccess, setShowBilanSuccess] = useState(false);
+
+  const symptomsOptions = [
+    "Bouffées de chaleur", "Insomnies / Troubles du sommeil", "Fatigue chronique",
+    "Anxiété / Stress / Charge mentale", "Irritabilité / Sautes d'humeur",
+    "Brouillard mental", "Douleurs articulaires", "Prise de poids",
+    "Baisse d'énergie ou de libido", "Troubles digestifs", "Cycle irrégulier ou SPM"
+  ];
+
+  const dailyTips = [
+    "Aujourd'hui : 3 gouttes de sauge sclarée dans un inhalateur pour équilibrer les hormones.",
+    "Astuce : Bois une infusion de sauge + menthe poivrée l'après-midi pour réduire les bouffées.",
+    "Pour le nerf vague : 5 min de respiration 4-6 (4 sec inspire, 6 sec expire) avant de dormir.",
+    "Nutrition : Ajoute des graines de lin moulues à tes yaourts pour les oméga-3 et phyto-œstrogènes.",
+    "Émotionnel : Note 3 choses positives de ta journée avant de te coucher – ça réduit la charge mentale.",
+    "Huile essentielle : Mélange lavande + ylang-ylang dans un roll-on pour les nuits agitées.",
+    "Mouvement doux : 10 min de marche consciente après manger aide la régulation glycémique.",
+    "Plante : Le maca en poudre (1/2 c à c) dans un smoothie pour soutenir l'énergie et les hormones."
+  ];
+
+  const miniArticles = [
+    { id: 1, title: "Les 5 huiles essentielles pour la ménopause", cat: "Aromathérapie", text: "La lavande apaise, la sauge sclarée équilibre, le géranium régule. Découvre les synergies sûres." },
+    { id: 2, title: "Pourquoi le nerf vague est ton meilleur ami", cat: "Régulation nerveuse", text: "80% des signaux corps-cerveau passent par lui. Une respiration lente = moins d'inflammation et meilleur sommeil." },
+    { id: 3, title: "Alimentation cycle & ménopause : les bases", cat: "Alimentation", text: "Protéines à chaque repas, oméga-3, fibres et magnésium. Évite les pics de sucre qui aggravent les symptômes." },
+    { id: 4, title: "Comment poser des limites sans culpabilité", cat: "Charge mentale", text: "La charge invisible commence par des micro-décisions. Commence par une phrase simple : « Je ne peux pas ce jour-là »." }
+  ];
+
+  useEffect(() => {
+    const savedBilan = localStorage.getItem('natura_bilan_initial');
+    if (savedBilan) setBilanInitial(JSON.parse(savedBilan));
+
+    const savedLogs = localStorage.getItem('natura_symptom_logs');
+    if (savedLogs) setSymptomLogs(JSON.parse(savedLogs));
+  }, []);
+
+  const getDailyTip = () => {
+    const day = new Date().getDate();
+    return dailyTips[day % dailyTips.length];
+  };
+
+  const toggleConcern = (symptom: string) => {
+    setBilanForm(prev => ({
+      ...prev,
+      mainConcerns: prev.mainConcerns.includes(symptom)
+        ? prev.mainConcerns.filter(s => s !== symptom)
+        : [...prev.mainConcerns, symptom]
+    }));
+  };
+
+  const handleBilanSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!bilanForm.ageRange || bilanForm.mainConcerns.length === 0) {
+      alert("Merci de choisir une tranche d'âge et au moins un symptôme.");
+      return;
+    }
+    localStorage.setItem('natura_bilan_initial', JSON.stringify(bilanForm));
+    setBilanInitial(bilanForm);
+    setShowBilanSuccess(true);
+    setTimeout(() => setShowBilanSuccess(false), 2500);
+  };
+
+  const toggleSymptom = (symptom: string) => {
+    setSymptomForm(prev => ({
+      ...prev,
+      selectedSymptoms: prev.selectedSymptoms.includes(symptom)
+        ? prev.selectedSymptoms.filter(s => s !== symptom)
+        : [...prev.selectedSymptoms, symptom]
+    }));
+  };
+
+  const handleLogSymptom = () => {
+    if (symptomForm.selectedSymptoms.length === 0) {
+      alert("Sélectionne au moins un symptôme.");
+      return;
+    }
+    const today = new Date().toISOString().split('T')[0];
+    const newLog = {
+      date: today,
+      symptoms: [...symptomForm.selectedSymptoms],
+      intensity: symptomForm.intensity,
+      note: symptomForm.note.trim()
+    };
+    const updatedLogs = [newLog, ...symptomLogs.filter(l => l.date !== today)].slice(0, 14);
+    localStorage.setItem('natura_symptom_logs', JSON.stringify(updatedLogs));
+    setSymptomLogs(updatedLogs);
+    // Reset form
+    setSymptomForm({ selectedSymptoms: [], intensity: 3, note: '' });
+  };
+
   // === Chat IA manuel (fonctionne sans hook externe) ===
   const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>([]);
   const [input, setInput] = useState('');
@@ -240,6 +352,116 @@ function EspaceContent() {
               Accès gratuit au Chat IA + Forum communautaire. Explore les 8 piliers physiques + la section dédiée à la charge mentale et aux émotions.
             </p>
 
+            {/* BILAN INITIAL - premier accès */}
+            {!bilanInitial ? (
+              <div className="card rounded-3xl p-8 mb-8 border-2 border-[#5B7B6E]">
+                <div className="text-[#5B7B6E] text-sm font-medium tracking-[2px] mb-1">PREMIER PAS</div>
+                <h2 className="text-2xl font-semibold tracking-tight mb-2">Questionnaire de bilan initial</h2>
+                <p className="text-[#5A6B62] mb-6">Pour t&apos;accompagner au mieux, dis-nous où tu en es. Ça prend 1 minute.</p>
+
+                <form onSubmit={handleBilanSubmit} className="space-y-5">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Tranche d&apos;âge</label>
+                    <select 
+                      value={bilanForm.ageRange} 
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setBilanForm({...bilanForm, ageRange: e.target.value})}
+                      className="w-full border border-[#E6EDE9] rounded-xl p-3 text-sm"
+                      required
+                    >
+                      <option value="">Choisir...</option>
+                      <option value="35-44">35-44 ans</option>
+                      <option value="45-54">45-54 ans</option>
+                      <option value="55+">55 ans et +</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Tes principaux symptômes / préoccupations (plusieurs choix possibles)</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {symptomsOptions.map(sym => (
+                        <label key={sym} className="flex items-center gap-2 text-sm cursor-pointer">
+                          <input 
+                            type="checkbox" 
+                            checked={bilanForm.mainConcerns.includes(sym)}
+                            onChange={() => toggleConcern(sym)}
+                            className="accent-[#5B7B6E]"
+                          />
+                          {sym}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Depuis combien de temps ressens-tu cela ?</label>
+                    <select 
+                      value={bilanForm.duration} 
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setBilanForm({...bilanForm, duration: e.target.value})}
+                      className="w-full border border-[#E6EDE9] rounded-xl p-3 text-sm"
+                    >
+                      <option value="">Choisir...</option>
+                      <option value="< 6 mois">Moins de 6 mois</option>
+                      <option value="6-18 mois">6 à 18 mois</option>
+                      <option value="> 18 mois">Plus de 18 mois</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Ton objectif principal en ce moment</label>
+                    <input 
+                      type="text" 
+                      value={bilanForm.goals}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBilanForm({...bilanForm, goals: e.target.value})}
+                      placeholder="Ex: mieux dormir, retrouver de l'énergie, comprendre mes bouffées..."
+                      className="w-full border border-[#E6EDE9] rounded-xl p-3 text-sm"
+                    />
+                  </div>
+
+                  <button type="submit" className="btn-primary w-full py-3 rounded-2xl font-semibold mt-2">
+                    Enregistrer mon bilan
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <div className="card rounded-3xl p-6 mb-6 bg-[#F4F7F5]">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[#5B7B6E]">✓</span> 
+                  <span className="font-medium">Bilan initial enregistré</span>
+                </div>
+                <p className="text-sm text-[#5A6B62]">
+                  Merci ! Tu peux maintenant explorer le chat en commençant par les agents qui correspondent à tes préoccupations.
+                </p>
+                {showBilanSuccess && <p className="text-[#5B7B6E] text-sm mt-2">Merci, ton bilan est sauvegardé localement.</p>}
+              </div>
+            )}
+
+            {/* TIP DU JOUR */}
+            <div className="card rounded-3xl p-6 mb-8 border border-[#E6EDE9]">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xl">💡</span>
+                <span className="uppercase tracking-[2px] text-xs font-medium text-[#5B7B6E]">TIP DU JOUR</span>
+              </div>
+              <p className="text-[#2A3A32] font-medium leading-relaxed">{getDailyTip()}</p>
+            </div>
+
+            {/* MINI ARTICLES */}
+            <div className="mb-10">
+              <div className="flex items-baseline justify-between mb-4">
+                <h3 className="font-semibold text-xl tracking-tight">Mini-articles &amp; ressources</h3>
+                <span className="text-xs text-[#5A6B62]">Pour aller plus loin</span>
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {miniArticles.map(article => (
+                  <div key={article.id} className="card rounded-2xl p-5 border border-[#E6EDE9]">
+                    <div className="text-[10px] uppercase tracking-widest text-[#5B7B6E] mb-1">{article.cat}</div>
+                    <div className="font-semibold mb-2 leading-tight">{article.title}</div>
+                    <p className="text-sm text-[#5A6B62]">{article.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* GRILLE EXISTANTE */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
               <div className="card rounded-3xl p-7 cursor-pointer" onClick={() => setActiveTab('chat')}>
                 <MessageCircle className="h-7 w-7 text-[#5B7B6E] mb-4" />
@@ -298,6 +520,86 @@ function EspaceContent() {
                 <p className="mt-2 text-[#5A6B62] text-sm">Le groupe inclus avec l&apos;offre coaching sur Beacons.</p>
                 <div className="mt-auto pt-3 text-xs text-[#C5A46E]">Ouvrir le groupe →</div>
               </a>
+            </div>
+
+            {/* SUIVI SYMPTÔMES */}
+            <div className="mb-10">
+              <h3 className="font-semibold text-xl tracking-tight mb-1">Suivi de tes symptômes</h3>
+              <p className="text-sm text-[#5A6B62] mb-4">Note tes ressentis au fil des jours pour voir les tendances et ajuster tes protocoles.</p>
+
+              <div className="card rounded-3xl p-6 mb-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Symptômes */}
+                  <div>
+                    <div className="text-sm font-medium mb-2">Symptômes du jour</div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                      {symptomsOptions.map(sym => (
+                        <label key={sym} className="flex items-center gap-2 cursor-pointer py-0.5">
+                          <input 
+                            type="checkbox" 
+                            checked={symptomForm.selectedSymptoms.includes(sym)}
+                            onChange={() => toggleSymptom(sym)}
+                            className="accent-[#5B7B6E]"
+                          />
+                          {sym}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <div className="text-sm font-medium mb-1">Intensité globale (1 = léger, 5 = très fort)</div>
+                      <input 
+                        type="range" 
+                        min="1" max="5" step="1"
+                        value={symptomForm.intensity}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSymptomForm({...symptomForm, intensity: parseInt(e.target.value)})}
+                        className="w-full accent-[#5B7B6E]"
+                      />
+                      <div className="flex justify-between text-xs text-[#5A6B62] mt-0.5">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="text-sm font-medium mb-1">Notes (optionnel)</div>
+                      <textarea 
+                        value={symptomForm.note}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSymptomForm({...symptomForm, note: e.target.value})}
+                        placeholder="Ex: Nuit agitée après le repas du soir..."
+                        className="w-full border border-[#E6EDE9] rounded-xl p-3 text-sm h-20 resize-y"
+                      />
+                    </div>
+
+                    <button 
+                      onClick={handleLogSymptom}
+                      className="btn-primary w-full py-3 rounded-2xl font-semibold text-sm"
+                    >
+                      Enregistrer le suivi d&apos;aujourd&apos;hui
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Historique récent */}
+              {symptomLogs.length > 0 && (
+                <div>
+                  <div className="text-sm font-medium mb-2 text-[#5A6B62]">Derniers suivis</div>
+                  <div className="space-y-3">
+                    {symptomLogs.slice(0, 5).map((log, idx) => (
+                      <div key={idx} className="text-sm flex flex-col sm:flex-row sm:items-center gap-x-3 gap-y-1 border-l-2 border-[#E6EDE9] pl-3">
+                        <span className="font-mono text-xs text-[#5B7B6E] w-20 flex-shrink-0">{log.date}</span>
+                        <span className="text-[#5A6B62]">
+                          {log.symptoms.join(", ")} • Intensité {log.intensity}/5
+                        </span>
+                        {log.note && <span className="text-[#5A6B62] italic">— {log.note}</span>}
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-[#5A6B62] mt-3">Tes données restent sur ton navigateur. Utile pour repérer des schémas.</p>
+                </div>
+              )}
             </div>
 
             {/* UPSELLS PREMIUM - visible pour tous */}
@@ -431,7 +733,7 @@ function EspaceContent() {
                 <form onSubmit={sendMessage} className="border-t p-4 bg-white flex gap-3">
                   <input
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
                     placeholder="Écris ta question sur la santé au naturel..."
                     className="flex-1 bg-[#F8F5F0] border border-[#E6EDE9] rounded-2xl px-5 py-3 focus:outline-none focus:border-[#A8BDB5]"
                     disabled={isLoading}
@@ -470,13 +772,13 @@ function EspaceContent() {
               <div className="card rounded-3xl p-6 mb-8">
                 <input 
                   value={newPostTitle} 
-                  onChange={e => setNewPostTitle(e.target.value)} 
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPostTitle(e.target.value)} 
                   placeholder="Titre de ta question" 
                   className="w-full mb-3 rounded-xl border px-4 py-3" 
                 />
                 <textarea 
                   value={newPostContent} 
-                  onChange={e => setNewPostContent(e.target.value)} 
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewPostContent(e.target.value)} 
                   placeholder="Décris ta situation ou ta question en détail..." 
                   className="w-full h-28 rounded-xl border p-4 mb-3 resize-y" 
                 />
