@@ -120,6 +120,7 @@ export default function NaturaBioByYasLanding() {
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             <a href="#approche" className="hover:text-[#5B7B6E] transition">L'approche</a>
+            <a href="/bilan" className="hover:text-[#5B7B6E] transition font-medium">Faire mon bilan</a>
             <a href="#comment" className="hover:text-[#5B7B6E] transition">Comment ça marche</a>
             <a href="#tarifs" className="hover:text-[#5B7B6E] transition">Tarifs</a>
             <a href="/espace" className="hover:text-[#5B7B6E] transition">Espace membres</a>
@@ -162,17 +163,17 @@ export default function NaturaBioByYasLanding() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a 
-            href="/espace" 
+            href="/bilan" 
             className="btn-primary flex items-center justify-center gap-3 rounded-full px-10 py-4 text-lg font-semibold shadow-sm"
           >
-            Accéder gratuitement au Chat IA
+            Faire mon bilan gratuit
           </a>
-          <button 
-            onClick={() => document.getElementById('tarifs')?.scrollIntoView({ behavior: 'smooth' })}
+          <a 
+            href="/espace" 
             className="btn-secondary flex items-center justify-center gap-3 rounded-full px-8 py-4 text-lg font-semibold"
           >
-            Voir les offres
-          </button>
+            Accéder au Chat IA
+          </a>
         </div>
 
         <p className="mt-6 text-sm text-[#5A6B62]">

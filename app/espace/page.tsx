@@ -348,9 +348,29 @@ function EspaceContent() {
         {activeTab === 'accueil' && (
           <div className="max-w-4xl">
             <h1 className="text-4xl font-semibold tracking-tight mb-3">Bienvenue dans l&apos;Espace Membres</h1>
-            <p className="text-xl text-[#5A6B62] mb-8">
+            <p className="text-xl text-[#5A6B62] mb-4">
               Accès gratuit au Chat IA + Forum communautaire. Explore les 8 piliers physiques + la section dédiée à la charge mentale et aux émotions.
             </p>
+
+            {/* Lien vers le bilan public (email collection) + perso */}
+            <div className="mb-8">
+              <a href="/bilan" className="inline-flex items-center gap-2 text-sm font-medium text-[#5B7B6E] hover:underline">
+                → Faire ou refaire ton bilan initial (avec email pour la newsletter)
+              </a>
+              {(() => {
+                const leads = JSON.parse(localStorage.getItem('natura_leads') || '[]');
+                if (leads.length > 0) {
+                  const last = leads[0];
+                  return (
+                    <div className="mt-3 text-sm bg-[#F4F7F5] p-3 rounded-2xl">
+                      <strong>Ton dernier bilan :</strong> {last.mainConcerns?.slice(0,2).join(", ")}... 
+                      <span className="text-[#5B7B6E]"> Recommandation : commence par l'agent le plus pertinent dans le chat.</span>
+                    </div>
+                  );
+                }
+                return null;
+              })()}
+            </div>
 
             {/* BILAN INITIAL - premier accès */}
             {!bilanInitial ? (
@@ -582,10 +602,24 @@ function EspaceContent() {
                 </div>
               </div>
 
-              {/* Historique récent */}
+              {/* Historique récent + mini graphique */}
               {symptomLogs.length > 0 && (
                 <div>
-                  <div className="text-sm font-medium mb-2 text-[#5A6B62]">Derniers suivis</div>
+                  <div className="text-sm font-medium mb-2 text-[#5A6B62]">Évolution récente</div>
+                  
+                  {/* Simple bar graph */}
+                  <div className="flex gap-2 items-end h-16 mb-4 bg-[#F8F5F0] rounded-xl p-2">
+                    {symptomLogs.slice(0, 7).reverse().map((log, idx) => (
+                      <div key={idx} className="flex-1 flex flex-col items-center">
+                        <div 
+                          className="w-full bg-[#5B7B6E] rounded-t transition-all" 
+                          style={{ height: `${(log.intensity / 5) * 100}%`, minHeight: '4px' }}
+                        />
+                        <div className="text-[9px] text-[#5A6B62] mt-1 font-mono">{log.date.slice(5)}</div>
+                      </div>
+                    ))}
+                  </div>
+
                   <div className="space-y-3">
                     {symptomLogs.slice(0, 5).map((log, idx) => (
                       <div key={idx} className="text-sm flex flex-col sm:flex-row sm:items-center gap-x-3 gap-y-1 border-l-2 border-[#E6EDE9] pl-3">
@@ -597,7 +631,7 @@ function EspaceContent() {
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-[#5A6B62] mt-3">Tes données restent sur ton navigateur. Utile pour repérer des schémas.</p>
+                  <p className="text-xs text-[#5A6B62] mt-3">Graphique des 7 derniers jours (hauteur = intensité).</p>
                 </div>
               )}
             </div>
