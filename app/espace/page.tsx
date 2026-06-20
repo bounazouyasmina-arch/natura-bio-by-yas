@@ -164,21 +164,21 @@ function EspaceContent() {
     <div className="min-h-screen flex flex-col">
       {/* Top bar membre */}
       <div className="border-b border-[#E6EDE9] bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+        <div className="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <a href="/" className="flex items-center gap-2 text-[#5B7B6E] hover:text-[#2A3A32]">
               <ArrowLeft className="h-4 w-4" /> Retour au site
             </a>
             <div className="h-5 w-px bg-[#E6EDE9]" />
-            <div className="flex items-center gap-3 font-semibold">
+            <div className="flex flex-col items-start">
               <img 
                 src="/natura-bio-logo.jpg" 
                 alt="natura'bio" 
-                className="h-8 w-auto" 
+                className="h-16 md:h-20 w-auto" 
               />
-              <span className="hidden sm:inline">natura'bio by yas — Espace Membres</span>
-              <span className="sm:hidden">Espace Membres</span>
+              <div className="text-base font-semibold tracking-tight text-[#5B7B6E] mt-0.5">by yas</div>
             </div>
+            <div className="hidden sm:block text-sm text-[#5A6B62] ml-1">Espace Membres</div>
           </div>
           
           <div className="flex items-center gap-4 text-sm">
@@ -542,6 +542,20 @@ function EspaceContent() {
           </div>
         )}
       </div>
+
+      {/* FOOTER - Logo visible en bas */}
+      <footer className="border-t border-[#E6EDE9] bg-white py-6 mt-auto">
+        <div className="mx-auto max-w-7xl px-6 flex justify-center">
+          <div className="flex flex-col items-center">
+            <img 
+              src="/natura-bio-logo.jpg" 
+              alt="natura'bio" 
+              className="h-14 w-auto mb-1" 
+            />
+            <div className="text-[10px] font-medium text-[#5B7B6E]">by yas</div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

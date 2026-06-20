@@ -107,17 +107,15 @@ export default function NaturaBioByYasLanding() {
     <div className="min-h-screen bg-[#F8F5F0] text-[#2A3A32]">
       {/* NAVBAR */}
       <nav className="sticky top-0 z-50 border-b border-[#E6EDE9] bg-[#F8F5F0]/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-          <div className="flex items-center gap-3">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+          <div className="flex flex-col items-start">
             <img 
               src="/natura-bio-logo.jpg" 
               alt="natura'bio" 
-              className="h-10 w-auto" 
+              className="h-20 md:h-24 w-auto" 
             />
-            <div className="hidden sm:block">
-              <div className="font-semibold tracking-tight text-lg leading-none">by yas</div>
-              <div className="text-[10px] text-[#5A6B62] -mt-0.5">Santé &amp; bien-être au naturel</div>
-            </div>
+            <div className="text-base font-semibold tracking-tight text-[#5B7B6E] mt-1">by yas</div>
+            <div className="text-xs text-[#5A6B62] -mt-0.5">Santé &amp; bien-être au naturel</div>
           </div>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
@@ -516,15 +514,26 @@ export default function NaturaBioByYasLanding() {
 
       {/* FOOTER */}
       <footer className="border-t border-[#E6EDE9] bg-white py-10 text-sm text-[#5A6B62]">
-        <div className="mx-auto max-w-6xl px-6 flex flex-col md:flex-row gap-y-3 items-center justify-between">
-          <div>© {new Date().getFullYear()} natura'bio by yas — Tous droits réservés</div>
+        <div className="mx-auto max-w-6xl px-6 flex flex-col md:flex-row gap-y-4 items-center justify-between">
+          <div className="flex flex-col items-center md:items-start">
+            <img 
+              src="/natura-bio-logo.jpg" 
+              alt="natura'bio" 
+              className="h-14 w-auto mb-1" 
+            />
+            <div className="text-[10px] font-medium text-[#5B7B6E]">by yas</div>
+          </div>
+
+          <div className="text-center md:text-left">© {new Date().getFullYear()} natura'bio by yas — Tous droits réservés</div>
+
           <div className="flex gap-6">
             <a href="/mentions-legales" className="hover:text-[#2A3A32]">Mentions légales</a>
             <a href="/confidentialite" className="hover:text-[#2A3A32]">Confidentialité (RGPD)</a>
             <a href="/cgv" className="hover:text-[#2A3A32]">CGV</a>
             <a href="/avertissement-sante" className="hover:text-[#2A3A32]">Avertissement santé</a>
           </div>
-          <div className="text-xs">Fait avec respect et discernement</div>
+
+          <div className="text-xs text-center md:text-right">Fait avec respect et discernement</div>
         </div>
       </footer>
       </div>
