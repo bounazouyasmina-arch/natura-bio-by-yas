@@ -6,13 +6,12 @@ import {
   Users, ArrowRight, Check, Star, Shield 
 } from 'lucide-react';
 // === LIENS BEACONS (ventes) ===
-// L'espace membres (chat IA + forum) est gratuit (10 questions).
-// Premium : 9.99€/mois illimité + ebook ménopause & hormones offert.
-// Puis coaching pour protocole spécifique.
-// Remplace BEACONS_PREMIUM_MONTHLY_LINK par ton vrai lien Beacons de l'abonnement mensuel 9.99€.
-const BEACONS_EBOOK_LINK = "https://shop.beacons.ai/yas_digital/44ca0203-408c-489d-b6d3-0a5c0af4fee2";   // ← (optionnel, maintenant inclus dans premium)
-const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734-4b80-8243-479d6c1f0213"; // ← Lien coaching
-const BEACONS_PREMIUM_MONTHLY_LINK = "https://shop.beacons.ai/yas_digital/REMPLACE_PAR_TON_LIEN_MENSUEL"; // ← En attente : colle ici le lien Beacons de ton abonnement mensuel 9.99€ (illimité + ebook inclus). Envoie-le moi quand tu l'auras, je le mets à jour tout de suite.
+// Structure simple :
+// - Gratuit : 10 questions + forum
+// - Ebook 9,99 € : accès illimité au chat IA + forum (idéal pour la ménopause & hormones)
+// - Coaching 299,99 € : accompagnement personnalisé 4 semaines
+const BEACONS_EBOOK_LINK = "https://shop.beacons.ai/yas_digital/44ca0203-408c-489d-b6d3-0a5c0af4fee2";
+const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734-4b80-8243-479d6c1f0213";
 
 // Lien du groupe WhatsApp que tu as mis sur ton offre Beacons (pour le coaching)
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
@@ -158,7 +157,7 @@ export default function NaturaBioByYasLanding() {
           Tes questions façonnent ta santé de demain.
         </p>
         <p className="mx-auto max-w-2xl text-lg text-[#5A6B62] mb-10">
-          9 sagesses IA (aromathérapie, naturopathie, nerf vague, hormones, médecine prophétique, chinoise...) te répondent avec précision, respect et profondeur. Commence gratuitement.
+          9 sagesses IA (aromathérapie, naturopathie, nerf vague, hormones, médecine prophétique, chinoise...) te répondent avec précision, respect et profondeur. 10 questions gratuites. Accès illimité avec l&apos;ebook à 9,99 €.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

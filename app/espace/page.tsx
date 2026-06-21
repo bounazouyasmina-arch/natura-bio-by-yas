@@ -14,7 +14,8 @@ const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
 // Liens Beacons (hardcodés pour l'instant - on les mettra en variables d'env plus tard)
 const BEACONS_EBOOK_LINK = "https://shop.beacons.ai/yas_digital/44ca0203-408c-489d-b6d3-0a5c0af4fee2";
 const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734-4b80-8243-479d6c1f0213";
-const BEACONS_PREMIUM_MONTHLY_LINK = "https://shop.beacons.ai/yas_digital/REMPLACE_PAR_TON_LIEN_MENSUEL"; // TODO: remplace par le vrai lien mensuel 9.99€ quand tu l'auras
+// Plus d'abonnement mensuel : l'ebook à 9.99€ donne l'accès illimité au chat + forum
+// Le coaching est l'offre principale d'accompagnement
 
 // Agents disponibles - avec couleurs précises et visuels parlants (alignés landing)
 const agents = [
@@ -50,7 +51,7 @@ function EspaceContent() {
   const isCoaching = unlocked === 'coaching';
   const justPaid = searchParams.get('paid') === 'true';
 
-  // Limite gratuite : 10 questions avant de passer en premium illimité
+  // Limite gratuite : 10 questions. L'ebook à 9,99 € donne l'accès illimité.
   const FREE_QUESTION_LIMIT = 10;
   const [freeQuestionsUsed, setFreeQuestionsUsed] = useState(0);
   const isPremium = unlocked === 'premium' || isCoaching || hasEbook;
@@ -191,7 +192,7 @@ function EspaceContent() {
 
     if (freeQuestionsUsed >= FREE_QUESTION_LIMIT && !isPremium) {
       toast.error("Limite de 10 questions gratuites atteinte", {
-        description: "Passe en illimité à 9,99 €/mois pour continuer (ebook ménopause & hormones inclus).",
+        description: "Passe à l'ebook pour avoir un accès illimité au chat IA (9,99 € une fois).",
       });
       return;
     }
@@ -269,8 +270,9 @@ function EspaceContent() {
     });
   };
 
-  // Note : L'espace Chat IA + Forum est maintenant gratuit pour tout le monde.
-  // Les offres premium (ebook et coaching) sont proposées à l'intérieur via liens Beacons.
+  // Note : 10 questions gratuites + forum.
+  // L'ebook à 9,99 € donne l'accès illimité.
+  // Le coaching est l'accompagnement complet.
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -349,7 +351,7 @@ function EspaceContent() {
           <div className="max-w-4xl">
             <h1 className="text-4xl font-semibold tracking-tight mb-3">Bienvenue dans l&apos;Espace Membres</h1>
             <p className="text-xl text-[#5A6B62] mb-4">
-              Accès gratuit au Chat IA + Forum communautaire. Explore les 8 piliers physiques + la section dédiée à la charge mentale et aux émotions.
+              10 questions gratuites + forum. L&apos;ebook à 9,99 € donne l&apos;accès illimité au chat. Le coaching est l&apos;accompagnement complet.
             </p>
 
             {/* Lien vers le bilan public (email collection) + perso */}
@@ -636,35 +638,38 @@ function EspaceContent() {
               )}
             </div>
 
-            {/* UPSELLS PREMIUM - visible pour tous */}
+            {/* OFFRES - Ebook pour illimité, Coaching pour l'accompagnement profond */}
             <div className="mb-4">
-              <h2 className="text-2xl font-semibold tracking-tight mb-2">Passe à l&apos;offre Premium</h2>
-              <p className="text-[#5A6B62] mb-6">Pour aller plus loin avec des protocoles détaillés et un accompagnement personnalisé.</p>
+              <h2 className="text-2xl font-semibold tracking-tight mb-2">Passe à l&apos;illimité ou au coaching</h2>
+              <p className="text-[#5A6B62] mb-6">L&apos;ebook te donne l&apos;accès illimité. Le coaching est l&apos;accompagnement complet et transformateur.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <a 
-                href={BEACONS_PREMIUM_MONTHLY_LINK} 
+                href={BEACONS_EBOOK_LINK} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="card rounded-3xl p-7 hover:border-[#5B7B6E] border-2 border-[#C5A46E]/40 flex flex-col"
+                className="card rounded-3xl p-7 hover:border-[#5B7B6E] border border-[#5B7B6E]/30 flex flex-col"
               >
-                <div className="font-semibold text-xl mb-1">Passer en Illimité</div>
-                <div className="text-3xl font-semibold tabular-nums mb-3">9,99 € <span className="text-base font-normal">/ mois</span></div>
-                <p className="text-[#5A6B62] mb-4">Questions illimitées dans le chat IA + Ebook complet "Ménopause au Naturel &amp; Régulation Hormonale" offert. Annule à tout moment.</p>
-                <div className="mt-auto text-[#C5A46E] font-semibold">S&apos;abonner sur Beacons →</div>
+                <div className="uppercase tracking-[2px] text-xs text-[#5B7B6E] mb-1">ACCÈS ILLIMITÉ</div>
+                <div className="font-semibold text-xl mb-1">Ebook + Chat Illimité</div>
+                <div className="text-3xl font-semibold tabular-nums mb-3">9,99 € <span className="text-base font-normal">une fois</span></div>
+                <p className="text-[#5A6B62] mb-4">Accès illimité au chat IA + forum + l'ebook complet "Ménopause au Naturel &amp; Régulation Hormonale". Idéal pour avancer à ton rythme.</p>
+                <div className="mt-auto text-[#5B7B6E] font-semibold">Accéder à l&apos;illimité →</div>
               </a>
 
               <a 
                 href={BEACONS_COACHING_LINK} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="card rounded-3xl p-7 hover:border-[#5B7B6E] border-2 border-[#C5A46E]/40 flex flex-col"
+                className="card rounded-3xl p-7 hover:border-[#C5A46E] border-2 border-[#C5A46E] flex flex-col relative"
               >
-                <div className="font-semibold text-xl mb-1">Approfondir : Coaching sur mesure</div>
+                <div className="absolute -top-3 right-8 bg-[#C5A46E] text-white text-xs font-semibold px-4 py-1 rounded-full tracking-widest">LE PLUS TRANSFORMATEUR</div>
+                <div className="uppercase tracking-[2px] text-xs text-[#C5A46E] mb-1">ACCOMPAGNEMENT PERSONNALISÉ</div>
+                <div className="font-semibold text-xl mb-1">Coaching 4 semaines sur mesure</div>
                 <div className="text-3xl font-semibold tabular-nums mb-3">299,99 €</div>
-                <p className="text-[#5A6B62] mb-4">Protocole personnalisé pour une problématique spécifique + visio + suivi 4 semaines + groupe WhatsApp dédié.</p>
-                <div className="mt-auto text-[#C5A46E] font-semibold">Réserver le coaching sur Beacons →</div>
+                <p className="text-[#5A6B62] mb-4">Protocole complet + visio + suivi 4 semaines + groupe WhatsApp + chat privé avec moi.</p>
+                <div className="mt-auto text-[#C5A46E] font-semibold">Réserver le coaching →</div>
               </a>
             </div>
 
@@ -687,7 +692,7 @@ function EspaceContent() {
               </div>
               <div className="text-right text-sm font-medium text-[#5B7B6E]">
                 {isPremium 
-                  ? "Illimité (Premium actif)" 
+                  ? "Accès illimité (via ebook)" 
                   : `Questions gratuites : ${freeQuestionsUsed} / ${FREE_QUESTION_LIMIT}`}
               </div>
             </div>
@@ -754,14 +759,14 @@ function EspaceContent() {
                 <div className="border-t p-6 bg-white text-center">
                   <p className="font-medium mb-3">Tu as utilisé tes 10 questions gratuites.</p>
                   <a 
-                    href={BEACONS_PREMIUM_MONTHLY_LINK} 
+                    href={BEACONS_EBOOK_LINK} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="btn-primary inline-block px-8 py-3 rounded-2xl font-semibold"
                   >
-                    Passer en illimité à 9,99 €/mois + ebook offert
+                    Accéder à l&apos;illimité avec l&apos;ebook à 9,99 €
                   </a>
-                  <p className="text-xs text-[#5A6B62] mt-3">Questions illimitées + Ebook Ménopause &amp; Hormones inclus.</p>
+                  <p className="text-xs text-[#5A6B62] mt-3">Accès illimité au chat IA + forum + l'ebook complet.</p>
                 </div>
               ) : (
                 <form onSubmit={sendMessage} className="border-t p-4 bg-white flex gap-3">
