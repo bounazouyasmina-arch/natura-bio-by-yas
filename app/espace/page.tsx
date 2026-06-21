@@ -124,6 +124,18 @@ function EspaceContent() {
     return dailyTips[day % dailyTips.length];
   };
 
+  // Suggestions dynamiques pour l'espace (basées sur le dernier bilan + variété)
+  function getDynamicSuggestionsForEspace(concerns: string[]) {
+    const pool = [
+      { title: "Mieux dormir", slug: "sommeil-hormones" },
+      { title: "Charge mentale", slug: "charge-mentale" },
+      { title: "Approche holistique", slug: "approche-holistique" },
+      { title: "Science & traditions", slug: "racines-traditionnelles" },
+    ];
+    const relevant = pool.filter(p => concerns.some(c => c.toLowerCase().includes(p.title.toLowerCase().split(' ')[0]) || c.includes("Anxiété")));
+    return (relevant.length ? relevant : pool).slice(0, 2);
+  }
+
   const toggleConcern = (symptom: string) => {
     setBilanForm(prev => ({
       ...prev,
@@ -395,6 +407,28 @@ function EspaceContent() {
                 J'utilise ce tip aujourd'hui
               </button>
             </div>
+
+            {/* ARTICLES DYNAMIQUES - nouveauté pour les visites répétées */}
+            {(() => {
+              const leads = JSON.parse(localStorage.getItem('natura_leads') || '[]');
+              if (leads.length > 0) {
+                const lastConcerns = leads[0].mainConcerns || [];
+                const suggestions = getDynamicSuggestionsForEspace(lastConcerns);
+                return (
+                  <div className="mb-8">
+                    <div className="text-xs text-[var(--mint)] mb-1">POUR TOI AUJOURD'HUI</div>
+                    <div className="flex flex-wrap gap-2">
+                      {suggestions.map((art, idx) => (
+                        <a key={idx} href={`/blog#${art.slug}`} className="text-xs px-3 py-1 rounded-full border border-[var(--border-soft)] hover:border-[var(--mint)] hover:bg-white transition">
+                          {art.title}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            })()}
 
             {/* BILAN INITIAL - premier accès */}
             {!bilanInitial ? (

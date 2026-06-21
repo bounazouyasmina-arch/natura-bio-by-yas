@@ -36,6 +36,28 @@ export default function BilanPage() {
     "Cycle irrégulier ou SPM": "hormones"
   };
 
+  // Pool pour suggestions dynamiques dans les résultats du bilan
+  const suggestionPool = [
+    { title: "Mieux dormir quand les hormones s'affolent", slug: "sommeil-hormones", teaser: "Protocoles pour nuits réparatrices" },
+    { title: "Alléger la charge mentale sans culpabilité", slug: "charge-mentale", teaser: "Poser des limites avec douceur" },
+    { title: "L'approche holistique", slug: "approche-holistique", teaser: "Harmoniser corps et esprit" },
+    { title: "La science valide les traditions", slug: "racines-traditionnelles", teaser: "Plantes validées par les études" },
+  ];
+
+  function getDynamicSuggestions(concerns: string[]) {
+    // Priorise selon les réponses + variété
+    const relevant = suggestionPool.filter(a => 
+      concerns.some(c => a.title.toLowerCase().includes(c.toLowerCase().split(' ')[0]) || 
+                      (c.includes("Anxiété") && a.slug.includes("charge")) ||
+                      (c.includes("Insomnies") && a.slug.includes("sommeil"))
+      )
+    );
+    const base = relevant.length > 0 ? relevant : suggestionPool;
+    // Rotation pour la nouveauté
+    const day = new Date().getDate() % base.length;
+    return [base[day], base[(day + 1) % base.length]].filter(Boolean);
+  }
+
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
@@ -351,6 +373,30 @@ export default function BilanPage() {
 
               <div className="text-sm text-[#5A6B62] italic">
                 {results.personalized.message} Sois constante 7 à 14 jours et note tes symptômes.
+              </div>
+
+              {/* Articles recommandés qui changent - pour la nouveauté */}
+              <div className="mt-6 pt-6 border-t">
+                <div className="flex justify-between items-center mb-3">
+                  <div className="text-xs uppercase tracking-widest text-[var(--mint)]">ARTICLES QUI POURRAIENT T'INTÉRESSER AUJOURD'HUI</div>
+                  <button 
+                    onClick={() => {
+                      // Rafraîchir les suggestions pour plus de variété
+                      window.location.reload();
+                    }}
+                    className="text-xs text-[var(--mint)] hover:underline"
+                  >
+                    Voir d'autres suggestions ↻
+                  </button>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3 text-sm">
+                  {getDynamicSuggestions(results.mainConcerns).map((art, idx) => (
+                    <a key={idx} href={`/blog#${art.slug}`} className="p-3 rounded-xl border border-[var(--border-soft)] hover:border-[var(--mint)] hover:bg-[#F4F7F5] transition block">
+                      {art.title}<br />
+                      <span className="text-xs text-[#5A6B62]">{art.teaser}</span>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
 

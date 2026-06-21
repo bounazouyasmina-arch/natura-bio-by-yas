@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Leaf, Heart, Wind, Apple, BookOpen, Flame, Brain, 
   Users, ArrowRight, Check, Star, Shield 
@@ -15,6 +15,54 @@ const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734
 
 // Lien du groupe WhatsApp que tu as mis sur ton offre Beacons (pour le coaching)
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
+
+// Pool d'articles pour la nouveauté à chaque visite
+const articlePool = [
+  { title: "L'approche holistique", slug: "approche-holistique", teaser: "Harmoniser corps et esprit en ménopause." },
+  { title: "La science valide les traditions", slug: "racines-traditionnelles", teaser: "Plantes et hormones : ce que disent les études." },
+  { title: "Tu n'es pas seule", slug: "tu-nes-pas-seule", teaser: "La force du soutien émotionnel et collectif." },
+  { title: "Mieux dormir quand les hormones s'affolent", slug: "sommeil-hormones", teaser: "Protocoles naturels pour des nuits réparatrices." },
+  { title: "Alléger la charge mentale sans culpabilité", slug: "charge-mentale", teaser: "Poser des limites avec douceur et efficacité." },
+];
+
+function getDailyArticles() {
+  const day = new Date().getDate();
+  const start = day % articlePool.length;
+  return [
+    articlePool[start],
+    articlePool[(start + 2) % articlePool.length],
+    articlePool[(start + 4) % articlePool.length],
+  ];
+}
+
+function DynamicArticleSuggestions() {
+  const [articles, setArticles] = useState(getDailyArticles());
+
+  useEffect(() => {
+    // Petite variété par heure pour que ça change un peu même dans la journée
+    const hour = new Date().getHours();
+    if (hour % 4 === 0) {
+      setArticles([...getDailyArticles()].sort(() => Math.random() - 0.5));
+    }
+  }, []);
+
+  return (
+    <div className="grid md:grid-cols-3 gap-4">
+      {articles.map((art, idx) => (
+        <a 
+          key={idx} 
+          href={`/blog#${art.slug}`} 
+          className="card p-5 hover:border-[var(--mint)] transition group"
+        >
+          <div className="text-xs text-[var(--mint)] mb-1">ARTICLE FRAIS AUJOURD'HUI</div>
+          <div className="font-semibold mb-1 group-hover:text-[var(--mint)] transition">{art.title}</div>
+          <p className="text-sm text-[#5A6B62]">{art.teaser}</p>
+          <span className="text-xs text-[var(--mint)] mt-2 inline-block">Lire l'article →</span>
+        </a>
+      ))}
+    </div>
+  );
+}
 
 const pillars = [
   { 
@@ -120,6 +168,7 @@ export default function NaturaBioByYasLanding() {
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             <a href="#approche" className="hover:text-[var(--mint)] transition">L'approche</a>
+            <a href="/blog" className="hover:text-[var(--mint)] transition">Blog</a>
             <a href="/bilan" className="hover:text-[var(--mint)] transition font-medium">Faire mon bilan</a>
             <a href="#comment" className="hover:text-[var(--mint)] transition">Comment ça marche</a>
             <a href="#tarifs" className="hover:text-[var(--mint)] transition">Tarifs</a>
@@ -263,13 +312,44 @@ export default function NaturaBioByYasLanding() {
             { icon: "🌿", title: "Approche holistique", desc: "Corps, émotions, hormones et spiritualité sont liés. On ne traite pas un symptôme isolé." },
             { icon: "🔬", title: "Racines traditionnelles + science", desc: "Sagesse ancestrale validée par des études modernes sur les plantes, le nerf vague et les hormones." },
             { icon: "🤝", title: "Tu n'es pas seule", desc: "Communauté, IA expertes et accompagnement humain quand tu en as besoin." }
-          ].map((item, i) => (
-            <div key={i} className="feature-card card p-6 flex flex-col items-center text-center border-l-4" style={{ borderColor: i === 1 ? 'var(--blush)' : 'var(--mint)' }}>
-              <div className="text-4xl mb-4">{item.icon}</div>
-              <div className="font-semibold text-lg mb-2 tracking-tight">{item.title}</div>
-              <p className="text-sm text-[#5A6B62] leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
+          ].map((item, i) => {
+            const slugs = ['approche-holistique', 'racines-traditionnelles', 'tu-nes-pas-seule'];
+            return (
+              <a 
+                key={i} 
+                href={`/blog#${slugs[i]}`} 
+                className="feature-card card p-6 flex flex-col items-center text-center border-l-4 no-underline hover:no-underline" 
+                style={{ borderColor: i === 1 ? 'var(--blush)' : 'var(--mint)' }}
+              >
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <div className="font-semibold text-lg mb-2 tracking-tight">{item.title}</div>
+                <p className="text-sm text-[#5A6B62] leading-relaxed">{item.desc}</p>
+                <span className="mt-3 text-xs text-[var(--mint)]">Lire l'article →</span>
+              </a>
+            );
+          })}
+        </div>
+
+        {/* SUGGESTIONS QUI CHANGENT - pour la nouveauté à chaque visite */}
+        <div className="mt-8 mb-12">
+          <div className="text-center mb-6">
+            <div className="text-[var(--mint)] text-sm tracking-[2px] font-medium mb-1">CONSEILS FRAIS AUJOURD'HUI</div>
+            <h3 className="text-2xl font-semibold tracking-tight">Articles et pistes qui varient</h3>
+            <p className="text-[#5A6B62] mt-1">Parce que tu mérites de la nouveauté à chaque passage.</p>
+          </div>
+
+          <DynamicArticleSuggestions />
+        </div>
+
+        {/* SUGGESTIONS QUI CHANGENT - nouveauté pour les visiteurs qui reviennent */}
+        <div className="mt-8 mb-12">
+          <div className="text-center mb-6">
+            <div className="text-[var(--mint)] text-sm tracking-[2px] font-medium mb-1">CONSEILS FRAIS AUJOURD'HUI</div>
+            <h3 className="text-2xl font-semibold tracking-tight">Articles et pistes qui varient</h3>
+            <p className="text-[#5A6B62] mt-1">Parce que tu mérites de la nouveauté à chaque passage.</p>
+          </div>
+
+          <DynamicArticleSuggestions />
         </div>
       </section>
 
