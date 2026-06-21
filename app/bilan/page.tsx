@@ -236,7 +236,7 @@ export default function BilanPage() {
                   <select 
                     value={bilanForm.ageRange} 
                     onChange={(e) => setBilanForm({...bilanForm, ageRange: e.target.value})}
-                    className="w-full border border-[#E6EDE9] rounded-2xl p-3.5 text-base focus:outline-none focus:border-[#5B7B6E]" 
+                    className="w-full border border-[#E6EDE9] rounded-2xl p-3.5 text-base focus:outline-none focus:border-[#5B7B6E] hover:border-[var(--mint)] transition" 
                     required
                   >
                     <option value="">Choisir...</option>
@@ -270,7 +270,7 @@ export default function BilanPage() {
                   <select 
                     value={bilanForm.duration} 
                     onChange={(e) => setBilanForm({...bilanForm, duration: e.target.value})}
-                    className="w-full border border-[#E6EDE9] rounded-2xl p-3.5 text-base focus:outline-none focus:border-[#5B7B6E]" 
+                    className="w-full border border-[#E6EDE9] rounded-2xl p-3.5 text-base focus:outline-none focus:border-[#5B7B6E] hover:border-[var(--mint)] transition" 
                     required
                   >
                     <option value="">Choisir...</option>
@@ -288,7 +288,7 @@ export default function BilanPage() {
                     value={bilanForm.goals}
                     onChange={(e) => setBilanForm({...bilanForm, goals: e.target.value})}
                     placeholder="Ex : mieux dormir, retrouver de l'énergie, calmer les bouffées..."
-                    className="w-full border border-[#E6EDE9] rounded-2xl p-3.5 text-base focus:outline-none focus:border-[#5B7B6E]"
+                    className="w-full border border-[#E6EDE9] rounded-2xl p-3.5 text-base focus:outline-none focus:border-[#5B7B6E] hover:border-[var(--mint)] transition"
                   />
                 </div>
               </div>
@@ -309,13 +309,13 @@ export default function BilanPage() {
 
             <div className="card rounded-3xl p-8 mb-6 bg-white">
               <div className="text-center mb-6 border-b pb-6">
-                <div className="text-[#5B7B6E] text-xs tracking-[2px] mb-1">BILAN PERSONNALISÉ • {new Date().toLocaleDateString('fr-FR')}</div>
+                <div className="text-[var(--mint)] text-xs tracking-[2px] mb-1">BILAN PERSONNALISÉ • {new Date().toLocaleDateString('fr-FR')}</div>
                 <h2 className="text-3xl font-semibold tracking-tight">Ton bilan santé au naturel</h2>
                 <p className="text-[#5A6B62] mt-1">Pour {results.email}</p>
               </div>
 
-              <div className="mb-6">
-                <div className="text-xs uppercase tracking-widest text-[#5B7B6E] mb-2">Ton profil</div>
+              <div className="mb-6 interactive">
+                <div className="text-xs uppercase tracking-widest text-[var(--mint)] mb-2">Ton profil</div>
                 <p className="text-[#2A3A32]">
                   Âge : <strong>{results.ageRange}</strong> • Depuis : <strong>{results.duration || "non précisé"}</strong><br />
                   Objectif principal : <strong>{results.goals || "mieux te comprendre et t'accompagner naturellement"}</strong>
@@ -324,17 +324,17 @@ export default function BilanPage() {
               </div>
 
               <div className="mb-8">
-                <div className="text-xs uppercase tracking-widest text-[#5B7B6E] mb-3">Conseils concrets adaptés à tes symptômes</div>
+                <div className="text-xs uppercase tracking-widest text-[var(--mint)] mb-3">Conseils concrets adaptés à tes symptômes</div>
                 <div className="space-y-4">
                   {results.personalized.detailedAdvice.map((advice: string, i: number) => (
-                    <div key={i} className="pl-4 border-l-2 border-[#5B7B6E] text-[15px] leading-relaxed">
+                    <div key={i} className="pl-4 border-l-2 border-[var(--mint)] text-[15px] leading-relaxed interactive hover:pl-5 transition-all">
                       {advice}
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-[#F4F7F5] rounded-2xl p-6 mb-6">
+              <div className="bg-[#F4F7F5] rounded-2xl p-6 mb-6 interactive">
                 <div className="font-semibold mb-2">Recommandations précises pour le chat IA</div>
                 <ul className="space-y-2 text-sm">
                   {results.personalized.recommendations.map((agent: string, i: number) => {
@@ -344,7 +344,7 @@ export default function BilanPage() {
                       agent === 'emotion' ? "Exemple : « Comment gérer la charge mentale et l'irritabilité avec des outils naturels ? »" :
                       agent === 'alimentation' ? "Exemple : « Que manger pour réduire la fatigue et le brouillard mental ? »" :
                       "Pose des questions très précises sur tes symptômes.";
-                    return <li key={i} className="text-[#5A6B62]">→ <strong>Agent {agent}</strong><br /><span className="text-xs">{example}</span></li>;
+                    return <li key={i} className="text-[#5A6B62] hover:text-[var(--mint)] transition">→ <strong>Agent {agent}</strong><br /><span className="text-xs">{example}</span></li>;
                   })}
                 </ul>
               </div>

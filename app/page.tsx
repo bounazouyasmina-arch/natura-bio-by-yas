@@ -22,15 +22,15 @@ const pillars = [
     emoji: '🌸', 
     title: "Aromathérapie", 
     desc: "Calmer l'anxiété, retrouver un sommeil profond et apaiser les tensions avec des synergies d'huiles essentielles sûres.",
-    color: '#7C6B9C',
-    iconBg: '#F0E9F8'
+    color: '#7EC8B3',  // mint
+    iconBg: '#E8F5F2'
   },
   { 
     icon: Heart, 
     emoji: '🌱', 
     title: "Naturopathie", 
     desc: "Renforcer ton terrain, drainer en douceur et retrouver une vitalité durable avec des remèdes naturels.",
-    color: '#4A6B55',
+    color: '#4F6B5F',  // sage
     iconBg: '#E8F0E9'
   },
   { 
@@ -38,23 +38,23 @@ const pillars = [
     emoji: '💨', 
     title: "Respiration & Nerf Vague", 
     desc: "Réguler ton système nerveux, réduire l'inflammation et sortir du mode « toujours en alerte ».",
-    color: '#5A7E7E',
-    iconBg: '#E6F0F0'
+    color: '#7EC8B3',  // mint
+    iconBg: '#E8F5F2'
   },
   { 
     icon: Apple, 
     emoji: '🍎', 
     title: "Alimentation Thérapeutique", 
     desc: "Nutrition anti-inflammatoire, cycle syncing et micronutrition ciblée pour plus d'énergie et d'équilibre.",
-    color: '#C68E6B',
-    iconBg: '#F9ECE4'
+    color: '#E8B4BC',  // blush
+    iconBg: '#FDF2F4'
   },
   { 
     icon: BookOpen, 
     emoji: '📖', 
     title: "Médecine Prophétique", 
     desc: "Miel, nigelle, henné, jeûne et remèdes ancestraux du Prophète ﷺ pour le corps et l'esprit.",
-    color: '#B38B5E',
+    color: '#C5A46E',  // gold
     iconBg: '#F7F0E6'
   },
   { 
@@ -62,24 +62,24 @@ const pillars = [
     emoji: '☯️', 
     title: "Médecine Traditionnelle Chinoise", 
     desc: "Équilibrer le Qi, les méridiens et adapter ton alimentation aux saisons pour un mieux-être global.",
-    color: '#B36B5E',
-    iconBg: '#F8EDE9'
+    color: '#E8B4BC',  // blush
+    iconBg: '#FDF2F4'
   },
   { 
     icon: Brain, 
     emoji: '🌙', 
     title: "Régulation Hormonale", 
     desc: "Soutenir ton cycle, ta thyroïde, le cortisol et la ménopause avec des approches naturelles douces mais puissantes.",
-    color: '#B37E8F',
-    iconBg: '#F8ECF1'
+    color: '#7EC8B3',  // mint
+    iconBg: '#E8F5F2'
   },
   { 
     icon: Shield, 
     emoji: '🌿', 
     title: "Approche Intégrative", 
     desc: "Combiner avec discernement toutes les sagesses pour des protocoles cohérents, sûrs et vraiment efficaces.",
-    color: '#4F6B5F',
-    iconBg: '#E8F0EC'
+    color: '#4F6B5F',  // sage
+    iconBg: '#E8F0E9'
   },
 ];
 
@@ -103,10 +103,10 @@ const testimonials = [
 
 export default function NaturaBioByYasLanding() {
   return (
-    <div className="min-h-screen bg-[#F8F5F0] text-[#2A3A32]">
+    <div className="min-h-screen bg-[var(--cream)] text-[#2A3A32]">
 
       {/* NAVBAR */}
-      <nav className="sticky top-0 z-50 border-b border-[#E6EDE9] bg-[#F8F5F0]/95 backdrop-blur-md">
+      <nav className="sticky top-0 z-50 border-b border-[#E6EDE9] bg-[var(--cream)]/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
           <div className="flex flex-col items-start">
             <img 
@@ -114,23 +114,23 @@ export default function NaturaBioByYasLanding() {
               alt="natura'bio" 
               className="h-20 md:h-24 w-auto" 
             />
-            <div className="text-[11px] font-medium tracking-tight text-[#5B7B6E] mt-1">by yas</div>
-            <div className="text-[10px] text-[#5A6B62] -mt-0.5">Santé &amp; bien-être au naturel</div>
+            <div className="text-[11px] font-medium tracking-tight text-[var(--sage-600)] mt-1">by yas</div>
+            <div className="text-[10px] text-[var(--text-light)] -mt-0.5">Santé &amp; bien-être au naturel</div>
           </div>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            <a href="#approche" className="hover:text-[#5B7B6E] transition">L'approche</a>
-            <a href="/bilan" className="hover:text-[#5B7B6E] transition font-medium">Faire mon bilan</a>
-            <a href="#comment" className="hover:text-[#5B7B6E] transition">Comment ça marche</a>
-            <a href="#tarifs" className="hover:text-[#5B7B6E] transition">Tarifs</a>
-            <a href="/espace" className="hover:text-[#5B7B6E] transition">Espace membres</a>
-            <a href={WHATSAPP_GROUP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-[#5B7B6E] transition">💬 Groupe WhatsApp (coaching)</a>
+            <a href="#approche" className="hover:text-[var(--mint)] transition">L'approche</a>
+            <a href="/bilan" className="hover:text-[var(--mint)] transition font-medium">Faire mon bilan</a>
+            <a href="#comment" className="hover:text-[var(--mint)] transition">Comment ça marche</a>
+            <a href="#tarifs" className="hover:text-[var(--mint)] transition">Tarifs</a>
+            <a href="/espace" className="hover:text-[var(--mint)] transition">Espace membres</a>
+            <a href={WHATSAPP_GROUP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--mint)] transition">💬 Groupe WhatsApp (coaching)</a>
           </div>
 
           <div className="flex items-center gap-3">
             <a 
               href="/espace" 
-              className="hidden sm:block rounded-full px-5 py-2 text-sm font-medium border border-[#A8BDB5] hover:bg-white transition"
+              className="hidden sm:block rounded-full px-5 py-2 text-sm font-medium border border-[var(--mint)] hover:bg-[var(--mint)] hover:text-white transition"
             >
               Se connecter
             </a>
@@ -146,7 +146,7 @@ export default function NaturaBioByYasLanding() {
 
       {/* HERO */}
       <section className="mx-auto max-w-5xl px-6 pt-20 pb-16 text-center">
-        <div className="inline-block rounded-full bg-[#E6EDE9] px-4 py-1 text-xs font-medium tracking-[2px] text-[#5B7B6E] mb-6">
+        <div className="inline-block rounded-full bg-[var(--mint)]/20 px-4 py-1 text-xs font-medium tracking-[2px] text-[var(--sage-600)] mb-6">
           APPROCHES ANCESTRALES • SCIENCE MODERNE • FOI &amp; RESPECT
         </div>
 
@@ -216,8 +216,8 @@ export default function NaturaBioByYasLanding() {
       {/* LES 8 + 1 SAGesses */}
       <section id="approche" className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center mb-12">
-          <div className="text-[#5B7B6E] font-medium tracking-[3px] text-sm mb-2">UNE APPROCHE INTÉGRATIVE</div>
-          <h2 className="text-5xl font-semibold tracking-tight">Huit sagesses pour comprendre et agir</h2>
+          <div className="text-[var(--mint)] font-medium tracking-[3px] text-sm mb-2">UNE APPROCHE INTÉGRATIVE</div>
+          <h2 className="text-5xl font-semibold tracking-tight" style={{color: 'var(--sage-500)'}}>Huit sagesses pour comprendre et agir</h2>
           <p className="mt-3 max-w-md mx-auto text-[#5A6B62]">
             Chaque tradition apporte des réponses uniques. L&apos;IA les maîtrise et les combine avec respect et précision. Plus une section complète sur la charge mentale et les émotions.
           </p>
@@ -243,18 +243,18 @@ export default function NaturaBioByYasLanding() {
                   <h3 className="font-semibold text-xl tracking-tight">{pillar.title}</h3>
                 </div>
                 <p className="text-[#5A6B62] text-[15px] leading-relaxed">{pillar.desc}</p>
-                <div className="mt-auto pt-3 text-xs text-[#5B7B6E] opacity-70 group-hover:opacity-100 transition">Explorer →</div>
+                <div className="mt-auto pt-3 text-xs text-[var(--sage-600)] opacity-70 group-hover:opacity-100 transition">Explorer →</div>
               </div>
             );
           })}
         </div>
       </section>
 
-      {/* NOTRE APPROCHE - style Cara Care : visuel + clair */}
-      <section className="mx-auto max-w-5xl px-6 py-16">
+      {/* NOTRE APPROCHE - plus cara-like : propre, moderne, visuel */}
+      <section className="mx-auto max-w-5xl px-6 py-16 bg-white rounded-3xl border border-[var(--border-soft)]">
         <div className="text-center mb-10">
-          <div className="text-[#5B7B6E] text-sm tracking-[2px] font-medium mb-1">NOTRE MISSION</div>
-          <h2 className="text-3xl font-semibold tracking-tight">Accompagner les femmes avec douceur, science et sagesse ancestrale</h2>
+          <div className="text-[var(--mint)] text-sm tracking-[2px] font-medium mb-1">NOTRE MISSION</div>
+          <h2 className="text-3xl font-semibold tracking-tight" style={{color: 'var(--sage-500)'}}>Accompagner les femmes avec douceur, science et sagesse ancestrale</h2>
           <p className="mt-3 text-[#5A6B62] max-w-lg mx-auto">Allier les approches naturelles (aromathérapie, MTC, naturopathie, médecine prophétique...) à une écoute bienveillante de ton corps et de ton esprit.</p>
         </div>
 
@@ -264,10 +264,10 @@ export default function NaturaBioByYasLanding() {
             { icon: "🔬", title: "Racines traditionnelles + science", desc: "Sagesse ancestrale validée par des études modernes sur les plantes, le nerf vague et les hormones." },
             { icon: "🤝", title: "Tu n'es pas seule", desc: "Communauté, IA expertes et accompagnement humain quand tu en as besoin." }
           ].map((item, i) => (
-            <div key={i} className="feature-card card p-6 text-center">
-              <div className="text-4xl mb-3">{item.icon}</div>
-              <div className="font-semibold text-lg mb-2">{item.title}</div>
-              <p className="text-sm text-[#5A6B62]">{item.desc}</p>
+            <div key={i} className="feature-card card p-6 flex flex-col items-center text-center border-l-4" style={{ borderColor: i === 1 ? 'var(--blush)' : 'var(--mint)' }}>
+              <div className="text-4xl mb-4">{item.icon}</div>
+              <div className="font-semibold text-lg mb-2 tracking-tight">{item.title}</div>
+              <p className="text-sm text-[#5A6B62] leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -276,7 +276,7 @@ export default function NaturaBioByYasLanding() {
       {/* EXEMPLES CONCRETS (inspiré de lucis) */}
       <section className="mx-auto max-w-5xl px-6 pb-16">
         <div className="text-center mb-8">
-          <div className="text-[#5B7B6E] text-sm tracking-[2px] font-medium mb-1">DES RÉPONSES QUI PARLENT VRAI</div>
+          <div className="text-[var(--mint)] text-sm tracking-[2px] font-medium mb-1">DES RÉPONSES QUI PARLENT VRAI</div>
           <h3 className="text-2xl font-semibold tracking-tight">Exemples de questions que les femmes posent</h3>
         </div>
         <div className="grid md:grid-cols-3 gap-4 text-sm">
@@ -288,7 +288,7 @@ export default function NaturaBioByYasLanding() {
             "Mon cycle est irrégulier, par où commencer naturellement ?",
             "Je me sens vidée émotionnellement, quels outils en MTC et naturopathie ?"
           ].map((q, i) => (
-            <div key={i} className="card rounded-2xl px-5 py-4 text-[#5A6B62] border border-[#E6EDE9]">
+            <div key={i} className="feature-card card rounded-2xl px-5 py-4 text-[#5A6B62] border border-[var(--border-soft)]">
               « {q} »
             </div>
           ))}
@@ -301,7 +301,7 @@ export default function NaturaBioByYasLanding() {
         <div 
           className="feature-card rounded-3xl p-10 md:p-14 border"
           style={{ 
-            backgroundColor: '#FDF2F4', /* blush doux inspiré Cara */
+            backgroundColor: '#FDF2F4', /* using blush var in css */
             borderColor: 'var(--blush)' 
           }}
         >
@@ -358,7 +358,7 @@ export default function NaturaBioByYasLanding() {
       <section id="comment" className="bg-white border-y border-[#E6EDE9] py-20">
         <div className="mx-auto max-w-5xl px-6">
           <div className="text-center mb-12">
-            <div className="uppercase tracking-[3px] text-xs font-medium text-[#5B7B6E] mb-2">COMMENT ÇA MARCHE</div>
+            <div className="uppercase tracking-[3px] text-xs font-medium text-[var(--sage-600)] mb-2">COMMENT ÇA MARCHE</div>
             <h2 className="text-5xl font-semibold tracking-tight">Commence gratuitement. Avance à ton rythme.</h2>
             <p className="mt-2 text-[#5A6B62]">Chat IA + forum ouvert. Ebook ou coaching quand tu veux aller plus loin.</p>
           </div>
@@ -366,14 +366,14 @@ export default function NaturaBioByYasLanding() {
           <div className="grid md:grid-cols-3 gap-6">
             {/* Étape 1 */}
             <div className="card rounded-3xl p-8 border-2 border-[#5B7B6E]">
-              <div className="uppercase tracking-[2px] text-xs font-medium text-[#5B7B6E] mb-1">ÉTAPE 1 — POINT D&apos;ENTRÉE</div>
+              <div className="uppercase tracking-[2px] text-xs font-medium text-[var(--sage-600)] mb-1">ÉTAPE 1 — POINT D&apos;ENTRÉE</div>
               <div className="text-[22px] font-semibold tracking-tight mb-4">L&apos;ebook « Ménopause au Naturel »</div>
               <div className="text-4xl font-semibold tabular-nums mb-6">9,99 €</div>
               
               <ul className="space-y-3 text-[15px] leading-relaxed mb-8 text-[#5A6B62]">
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> 80+ pages de protocoles concrets</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> Accès à l&apos;application IA + forum</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> Mises à jour à vie</li>
+                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> 80+ pages de protocoles concrets</li>
+                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Accès à l&apos;application IA + forum</li>
+                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Mises à jour à vie</li>
               </ul>
               
               <a 
@@ -389,7 +389,7 @@ export default function NaturaBioByYasLanding() {
 
             {/* Étape 2 */}
             <div className="card rounded-3xl p-8 border border-[#E6EDE9]">
-              <div className="uppercase tracking-[2px] text-xs font-medium text-[#5B7B6E] mb-1">ÉTAPE 2 — L&apos;APP &amp; LA COMMUNAUTÉ</div>
+              <div className="uppercase tracking-[2px] text-xs font-medium text-[var(--sage-600)] mb-1">ÉTAPE 2 — L&apos;APP &amp; LA COMMUNAUTÉ</div>
               <div className="text-[22px] font-semibold tracking-tight mb-4">Posez vos questions. Recevez des réponses expertes.</div>
               
               <div className="space-y-4 text-[15px] leading-relaxed text-[#5A6B62]">
@@ -407,12 +407,12 @@ export default function NaturaBioByYasLanding() {
               <div className="text-4xl font-semibold tabular-nums mb-6">299,99 €</div>
 
               <ul className="space-y-3 text-[15px] mb-8 text-[#5A6B62]">
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> 1 visio ou appel découverte (45 min)</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> Protocole personnalisé écrit</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> Accès au groupe WhatsApp inclus avec l&apos;offre</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> Chat privé illimité avec la coach</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> Suivi hebdo + ajustements 4 semaines</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[#5B7B6E] flex-shrink-0" /> Accès prioritaire à l&apos;espace IA</li>
+                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> 1 visio ou appel découverte (45 min)</li>
+                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Protocole personnalisé écrit</li>
+                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Accès au groupe WhatsApp inclus avec l&apos;offre</li>
+                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Chat privé illimité avec la coach</li>
+                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Suivi hebdo + ajustements 4 semaines</li>
+                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Accès prioritaire à l&apos;espace IA</li>
               </ul>
 
               <a 
@@ -462,7 +462,7 @@ export default function NaturaBioByYasLanding() {
         <div className="mx-auto max-w-5xl px-6 grid md:grid-cols-2 gap-6">
           {/* Ebook */}
           <div className="card rounded-3xl p-9">
-            <div className="uppercase tracking-[2px] text-xs text-[#5B7B6E] mb-2">POUR COMMENCER</div>
+            <div className="uppercase tracking-[2px] text-xs text-[var(--sage-600)] mb-2">POUR COMMENCER</div>
             <div className="text-3xl font-semibold">Ebook Ménopause au Naturel</div>
             <div className="mt-1 text-5xl font-semibold tabular-nums tracking-tighter">9,99 €<span className="text-xl align-super font-normal text-[#5A6B62]"> une fois</span></div>
 
@@ -470,7 +470,7 @@ export default function NaturaBioByYasLanding() {
 
             <ul className="space-y-3 mb-9 text-[15px]">
               {["Protocoles complets pour les symptômes de la ménopause", "Focus aromathérapie, nerf vague, hormones, alimentation", "Accès à vie à l'application IA + forum de la communauté", "Mises à jour régulières"].map((item, idx) => (
-                <li key={idx} className="flex items-start gap-3"><Check className="mt-1 text-[#5B7B6E] h-4 w-4 shrink-0" /> {item}</li>
+                <li key={idx} className="flex items-start gap-3"><Check className="mt-1 text-[var(--sage-600)] h-4 w-4 shrink-0" /> {item}</li>
               ))}
             </ul>
 
@@ -497,7 +497,7 @@ export default function NaturaBioByYasLanding() {
 
             <ul className="space-y-3 mb-9 text-[15px]">
               {["Tout ce qui est inclus dans l&apos;ebook + accès prioritaire", "Appel ou visio découverte de 45 min pour poser le diagnostic", "Protocole écrit sur mesure (PDF + explications)", "Accès au groupe WhatsApp inclus avec l&apos;offre sur Beacons", "Chat privé avec moi pendant 4 semaines (réponses sous 24-48h)", "2 points d'étape + ajustements du protocole", "Soutien émotionnel et spirituel respectueux"].map((item, idx) => (
-                <li key={idx} className="flex items-start gap-3"><Check className="mt-1 text-[#5B7B6E] h-4 w-4 shrink-0" /> {item}</li>
+                <li key={idx} className="flex items-start gap-3"><Check className="mt-1 text-[var(--sage-600)] h-4 w-4 shrink-0" /> {item}</li>
               ))}
             </ul>
 
@@ -546,7 +546,7 @@ export default function NaturaBioByYasLanding() {
               alt="natura'bio" 
               className="h-14 w-auto mb-1" 
             />
-            <div className="text-[10px] font-medium tracking-tight text-[#5B7B6E]">by yas</div>
+            <div className="text-[10px] font-medium tracking-tight text-[var(--sage-600)]">by yas</div>
           </div>
 
           <div className="text-center md:text-left">© {new Date().getFullYear()} natura'bio by yas — Tous droits réservés</div>

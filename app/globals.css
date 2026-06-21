@@ -4,19 +4,18 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Palette inspirée Cara Care + ton univers naturel chaleureux */
-  /* Doux, apaisant, féminin, santé naturelle */
-  --sage-400: #6B8A7C;
-  --sage-500: #4F6B5F;      /* principal */
-  --sage-600: #3F574C;
-  --sage-700: #2F463B;
-  --sage-800: #24352D;
+  /* Palette plus Cara-like : frais, moderne, doux, apaisant */
+  --sage-400: #8AB8A8;
+  --sage-500: #4A9B8C;      /* vert principal frais (Cara-inspired) */
+  --sage-600: #3D7A6F;
+  --sage-700: #2F5C54;
+  --sage-800: #1F3C37;
 
-  --mint: #7EC8B3;          /* frais, santé, calme (inspiré Cara) */
-  --blush: #E8B4BC;         /* doux, émotionnel, féminin */
-  --cream: #F9F6F0;
+  --mint: #7EC8B3;          /* accent frais santé */
+  --blush: #E8B4BC;         /* accent doux émotionnel */
+  --cream: #F8F9F7; /* plus blanc, style Cara */
   --off-white: #F8F5EF;
-  --soft-gold: #C5A46E;     /* chaleur naturelle */
+  --soft-gold: #C5A46E;
   --deep-forest: #2C3F36;
 
   --text: #1F2B24;
@@ -31,6 +30,11 @@ body {
   color: var(--text);
   background: var(--cream);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Cara inspired accents */
+.feature-card {
+  border-color: var(--mint);
 }
 
 /* Typographie élégante et aérée (inspirée premium wellness) */
@@ -63,28 +67,29 @@ p {
   line-height: 1.7;
 }
 
-/* Styles app wellness premium - inspiré Cara + ton univers */
+/* Styles plus Cara-like : moderne, doux, spacieux */
 .card {
   background: var(--white);
   border: 1px solid var(--border-soft);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 20px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .card:hover {
   border-color: var(--mint);
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.06), 0 10px 10px -5px rgb(0 0 0 / 0.04);
-  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transform: translateY(-3px);
 }
 
-/* Interactions douces pour les cartes et éléments */
+/* Feature cards style Cara (icônes + texte clair) */
 .feature-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .feature-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 .interactive {
@@ -102,17 +107,31 @@ p {
 }
 
 .btn-primary {
-  background: var(--sage-600);
-  color: white;
+  background: var(--mint);
+  color: var(--deep-forest);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
 }
 
 .btn-primary:hover {
-  background: var(--mint);
-  color: var(--deep-forest);
+  background: var(--sage-600);
+  color: white;
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+/* Apply new colors more visibly */
+a {
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--mint);
+}
+
+/* More Cara-inspired accents */
+a:hover {
+  color: var(--mint);
 }
 
 .btn-secondary {

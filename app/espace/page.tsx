@@ -280,7 +280,7 @@ function EspaceContent() {
       <div className="border-b border-[#E6EDE9] bg-white">
         <div className="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a href="/" className="flex items-center gap-2 text-[#5B7B6E] hover:text-[#2A3A32]">
+            <a href="/" className="flex items-center gap-2 text-[var(--sage-600)] hover:text-[#2A3A32]">
               <ArrowLeft className="h-4 w-4" /> Retour au site
             </a>
             <div className="h-5 w-px bg-[#E6EDE9]" />
@@ -290,7 +290,7 @@ function EspaceContent() {
                 alt="natura'bio" 
                 className="h-16 md:h-20 w-auto" 
               />
-              <div className="text-xs font-medium tracking-tight text-[#5B7B6E] mt-0.5">by yas</div>
+              <div className="text-xs font-medium tracking-tight text-[var(--sage-600)] mt-0.5">by yas</div>
             </div>
             <div className="hidden sm:block text-sm text-[#5A6B62] ml-1">Espace Membres</div>
           </div>
@@ -328,8 +328,8 @@ function EspaceContent() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`flex items-center gap-2 px-5 py-3 border-b-2 font-medium transition ${activeTab === tab.id 
-                    ? 'border-[#5B7B6E] text-[#2A3A32]' 
-                    : 'border-transparent text-[#5A6B62] hover:text-[#2A3A32]'}`}
+                    ? 'border-[var(--sage-600)] text-[#2A3A32]' 
+                    : 'border-transparent text-[#5A6B62] hover:text-[var(--mint)]'}`}
                 >
                   <Icon className="h-4 w-4" /> {tab.label}
                 </button>
@@ -356,7 +356,7 @@ function EspaceContent() {
 
             {/* Lien vers le bilan public (email collection) + perso */}
             <div className="mb-8">
-              <a href="/bilan" className="inline-flex items-center gap-2 text-sm font-medium text-[#5B7B6E] hover:underline">
+              <a href="/bilan" className="inline-flex items-center gap-2 text-sm font-medium text-[var(--sage-600)] hover:underline">
                 → Faire ou refaire ton bilan initial (avec email pour la newsletter)
               </a>
               {(() => {
@@ -366,7 +366,7 @@ function EspaceContent() {
                   return (
                     <div className="mt-3 text-sm bg-[#F4F7F5] p-3 rounded-2xl">
                       <strong>Ton dernier bilan :</strong> {last.mainConcerns?.slice(0,2).join(", ")}... 
-                      <span className="text-[#5B7B6E]"> Recommandation : commence par l'agent le plus pertinent dans le chat.</span>
+                      <span className="text-[var(--sage-600)]"> Recommandation : commence par l'agent le plus pertinent dans le chat.</span>
                     </div>
                   );
                 }
@@ -374,24 +374,23 @@ function EspaceContent() {
               })()}
             </div>
 
-            {/* DAILY TIP - style Cara interactions, adapté à ton univers */}
-            <div className="card rounded-3xl p-6 mb-8 border border-[#E6EDE9] bg-gradient-to-br from-[#F4F7F5] to-white">
+            {/* DAILY TIP - style Cara : clean, modern, interaction */}
+            <div className="feature-card card rounded-3xl p-6 mb-8 border border-[var(--border-soft)] bg-white">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <div className="uppercase tracking-[2px] text-xs font-medium text-[#5B7B6E]">TIP DU JOUR</div>
-                  <div className="font-semibold text-lg">Conseil naturel pour aujourd'hui</div>
+                  <div className="uppercase tracking-[2px] text-xs font-medium text-[var(--mint)]">TIP DU JOUR</div>
+                  <div className="font-semibold text-lg tracking-tight">Conseil naturel pour aujourd'hui</div>
                 </div>
                 <span className="text-3xl">🌿</span>
               </div>
               <p className="text-[#2A3A32] mb-4 leading-relaxed">{getDailyTip()}</p>
               <button 
                 onClick={() => {
-                  // Simple interaction: "mark as done" for today
                   const today = new Date().toISOString().slice(0,10);
                   localStorage.setItem('natura_tip_done_' + today, 'true');
                   alert("Merci ! Tip notée. Tu peux la retrouver dans tes protocoles.");
                 }}
-                className="text-xs px-4 py-1.5 rounded-full border border-[#5B7B6E]/30 hover:bg-[#5B7B6E] hover:text-white transition"
+                className="text-xs px-4 py-1.5 rounded-full border border-[var(--mint)] hover:bg-[var(--mint)] hover:text-white transition"
               >
                 J'utilise ce tip aujourd'hui
               </button>
@@ -400,7 +399,7 @@ function EspaceContent() {
             {/* BILAN INITIAL - premier accès */}
             {!bilanInitial ? (
               <div className="card rounded-3xl p-8 mb-8 border-2 border-[#5B7B6E]">
-                <div className="text-[#5B7B6E] text-sm font-medium tracking-[2px] mb-1">PREMIER PAS</div>
+                <div className="text-[var(--sage-600)] text-sm font-medium tracking-[2px] mb-1">PREMIER PAS</div>
                 <h2 className="text-2xl font-semibold tracking-tight mb-2">Questionnaire de bilan initial</h2>
                 <p className="text-[#5A6B62] mb-6">Pour t&apos;accompagner au mieux, dis-nous où tu en es. Ça prend 1 minute.</p>
 
@@ -470,13 +469,13 @@ function EspaceContent() {
             ) : (
               <div className="card rounded-3xl p-6 mb-6 bg-[#F4F7F5]">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[#5B7B6E]">✓</span> 
+                  <span className="text-[var(--sage-600)]">✓</span> 
                   <span className="font-medium">Bilan initial enregistré</span>
                 </div>
                 <p className="text-sm text-[#5A6B62]">
                   Merci ! Tu peux maintenant explorer le chat en commençant par les agents qui correspondent à tes préoccupations.
                 </p>
-                {showBilanSuccess && <p className="text-[#5B7B6E] text-sm mt-2">Merci, ton bilan est sauvegardé localement.</p>}
+                {showBilanSuccess && <p className="text-[var(--sage-600)] text-sm mt-2">Merci, ton bilan est sauvegardé localement.</p>}
               </div>
             )}
 
@@ -484,7 +483,7 @@ function EspaceContent() {
             <div className="card rounded-3xl p-6 mb-8 border border-[#E6EDE9]">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-xl">💡</span>
-                <span className="uppercase tracking-[2px] text-xs font-medium text-[#5B7B6E]">TIP DU JOUR</span>
+                <span className="uppercase tracking-[2px] text-xs font-medium text-[var(--sage-600)]">TIP DU JOUR</span>
               </div>
               <p className="text-[#2A3A32] font-medium leading-relaxed">{getDailyTip()}</p>
             </div>
@@ -498,7 +497,7 @@ function EspaceContent() {
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {miniArticles.map(article => (
                   <div key={article.id} className="card rounded-2xl p-5 border border-[#E6EDE9]">
-                    <div className="text-[10px] uppercase tracking-widest text-[#5B7B6E] mb-1">{article.cat}</div>
+                    <div className="text-[10px] uppercase tracking-widest text-[var(--sage-600)] mb-1">{article.cat}</div>
                     <div className="font-semibold mb-2 leading-tight">{article.title}</div>
                     <p className="text-sm text-[#5A6B62]">{article.text}</p>
                   </div>
@@ -509,13 +508,13 @@ function EspaceContent() {
             {/* GRILLE EXISTANTE */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
               <div className="card rounded-3xl p-7 cursor-pointer" onClick={() => setActiveTab('chat')}>
-                <MessageCircle className="h-7 w-7 text-[#5B7B6E] mb-4" />
+                <MessageCircle className="h-7 w-7 text-[var(--sage-600)] mb-4" />
                 <div className="font-semibold text-xl">Parler avec les agents IA</div>
                 <p className="mt-2 text-[#5A6B62]">9 expertes spécialisées dont une dédiée à la charge mentale et aux émotions. Gratuit (10 questions).</p>
               </div>
 
               <div className="card rounded-3xl p-7 cursor-pointer" onClick={() => setActiveTab('forum')}>
-                <Users className="h-7 w-7 text-[#5B7B6E] mb-4" />
+                <Users className="h-7 w-7 text-[var(--sage-600)] mb-4" />
                 <div className="font-semibold text-xl">Rejoindre la communauté</div>
                 <p className="mt-2 text-[#5A6B62]">Pose tes questions et partage tes expériences avec d&apos;autres femmes. Gratuit.</p>
               </div>
@@ -545,7 +544,7 @@ function EspaceContent() {
                   className="card rounded-3xl p-7 flex flex-col hover:border-[#5B7B6E] border-2 border-[#5B7B6E]/30"
                   download
                 >
-                  <div className="mb-4 text-[#5B7B6E]">
+                  <div className="mb-4 text-[var(--sage-600)]">
                     <BookOpen className="h-7 w-7" />
                   </div>
                   <div className="font-semibold text-xl">Télécharger mon ebook</div>
@@ -560,7 +559,7 @@ function EspaceContent() {
                 rel="noopener noreferrer"
                 className="card rounded-3xl p-7 flex flex-col hover:border-[#5B7B6E] border-2 border-[#5B7B6E]/30"
               >
-                <div className="mb-4 text-[#5B7B6E] text-3xl">💬</div>
+                <div className="mb-4 text-[var(--sage-600)] text-3xl">💬</div>
                 <div className="font-semibold text-xl">Groupe WhatsApp</div>
                 <p className="mt-2 text-[#5A6B62] text-sm">Le groupe inclus avec l&apos;offre coaching sur Beacons.</p>
                 <div className="mt-auto pt-3 text-xs text-[#C5A46E]">Ouvrir le groupe →</div>
@@ -574,47 +573,62 @@ function EspaceContent() {
 
               <div className="card rounded-3xl p-6 mb-6">
                 <div className="grid md:grid-cols-2 gap-6">
-                  {/* Symptômes */}
+                  {/* Symptômes - style Cara tracking */}
                   <div>
-                    <div className="text-sm font-medium mb-2">Symptômes du jour</div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-sm mb-3">
-                      {symptomsOptions.map(sym => (
-                        <label key={sym} className="flex items-center gap-2 cursor-pointer py-0.5 interactive">
-                          <input 
-                            type="checkbox" 
-                            checked={symptomForm.selectedSymptoms.includes(sym)}
-                            onChange={() => toggleSymptom(sym)}
-                            className="accent-[var(--mint)]"
-                          />
-                          {sym}
-                        </label>
-                      ))}
+                    <div className="text-sm font-medium mb-2 flex items-center gap-2">
+                      <span>📋</span> Symptômes du jour
                     </div>
-                    {/* Live summary - interaction style Cara */}
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {symptomsOptions.map(sym => {
+                        const isSelected = symptomForm.selectedSymptoms.includes(sym);
+                        return (
+                          <button
+                            key={sym}
+                            type="button"
+                            onClick={() => toggleSymptom(sym)}
+                            className={`px-3 py-1 text-xs rounded-full border transition-all interactive ${
+                              isSelected 
+                                ? 'bg-[var(--mint)] text-white border-[var(--mint)]' 
+                                : 'bg-white border-[var(--border-soft)] hover:border-[var(--mint)] hover:bg-[#F4F7F5]'
+                            }`}
+                          >
+                            {sym}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {/* Live summary - app style */}
                     {symptomForm.selectedSymptoms.length > 0 && (
-                      <div className="text-xs bg-[#F4F7F5] p-2 rounded-lg">
-                        Aujourd'hui : {symptomForm.selectedSymptoms.length} symptôme(s) • Intensité {symptomForm.intensity}/5
+                      <div className="text-xs bg-[var(--mint)]/10 p-2 rounded-lg border border-[var(--mint)]/30">
+                        <strong>Aujourd'hui :</strong> {symptomForm.selectedSymptoms.length} symptôme(s) • Intensité {symptomForm.intensity}/5
                       </div>
                     )}
                   </div>
 
                   <div className="space-y-4">
                     <div>
-                      <div className="text-sm font-medium mb-1">Intensité globale (1 = léger, 5 = très fort)</div>
-                      <input 
-                        type="range" 
-                        min="1" max="5" step="1"
-                        value={symptomForm.intensity}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSymptomForm({...symptomForm, intensity: parseInt(e.target.value)})}
-                        className="w-full accent-[#5B7B6E]"
-                      />
-                      <div className="flex justify-between text-xs text-[#5A6B62] mt-0.5">
-                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                      <div className="text-sm font-medium mb-1 flex items-center gap-2">
+                        <span>📊</span> Intensité globale
                       </div>
+                      <div className="flex gap-2 mb-1">
+                        {[1,2,3,4,5].map(val => (
+                          <button
+                            key={val}
+                            type="button"
+                            onClick={() => setSymptomForm({...symptomForm, intensity: val})}
+                            className={`flex-1 py-1 text-sm rounded-lg border transition interactive ${symptomForm.intensity === val ? 'bg-[var(--mint)] text-white border-[var(--mint)]' : 'bg-white border-[var(--border-soft)] hover:border-[var(--mint)]'}`}
+                          >
+                            {val}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="text-xs text-[#5A6B62]">1 = très léger • 5 = très fort</div>
                     </div>
 
                     <div>
-                      <div className="text-sm font-medium mb-1">Notes (optionnel)</div>
+                      <div className="text-sm font-medium mb-1 flex items-center gap-2">
+                        <span>📝</span> Notes (optionnel)
+                      </div>
                       <textarea 
                         value={symptomForm.note}
                         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSymptomForm({...symptomForm, note: e.target.value})}
@@ -638,31 +652,41 @@ function EspaceContent() {
                 <div>
                   <div className="text-sm font-medium mb-2 text-[#5A6B62]">Évolution récente</div>
                   
-                  {/* Simple bar graph - style Cara interactions */}
-                  <div className="flex gap-2 items-end h-16 mb-4 bg-[#F4F7F5] rounded-2xl p-3">
+                  {/* Bar graph - app style with hover tooltips */}
+                  <div className="flex gap-1.5 items-end h-16 mb-4 bg-[#F4F7F5] rounded-2xl p-3">
                     {symptomLogs.slice(0, 7).reverse().map((log, idx) => (
-                      <div key={idx} className="flex-1 flex flex-col items-center group">
+                      <div 
+                        key={idx} 
+                        className="flex-1 flex flex-col items-center group relative cursor-default"
+                        title={`${log.date} — Intensité ${log.intensity}/5`}
+                      >
                         <div 
                           className="w-full rounded-t transition-all group-hover:brightness-110" 
                           style={{ 
                             height: `${(log.intensity / 5) * 100}%`, 
-                            minHeight: '6px',
+                            minHeight: '8px',
                             backgroundColor: log.intensity > 3 ? 'var(--blush)' : 'var(--mint)'
                           }}
                         />
-                        <div className="text-[9px] text-[#5A6B62] mt-1 font-mono">{log.date.slice(5)}</div>
+                        <div className="text-[8px] text-[#5A6B62] mt-0.5 font-mono">{log.date.slice(8)}</div>
                       </div>
                     ))}
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     {symptomLogs.slice(0, 5).map((log, idx) => (
-                      <div key={idx} className="text-sm flex flex-col sm:flex-row sm:items-center gap-x-3 gap-y-1 border-l-2 border-[#E6EDE9] pl-3">
-                        <span className="font-mono text-xs text-[#5B7B6E] w-20 flex-shrink-0">{log.date}</span>
-                        <span className="text-[#5A6B62]">
-                          {log.symptoms.join(", ")} • Intensité {log.intensity}/5
-                        </span>
-                        {log.note && <span className="text-[#5A6B62] italic">— {log.note}</span>}
+                      <div 
+                        key={idx} 
+                        className="text-sm p-2 rounded-lg border border-[var(--border-soft)] hover:border-[var(--mint)] hover:bg-[#F4F7F5] transition cursor-default"
+                      >
+                        <div className="flex justify-between text-xs text-[var(--sage-600)] mb-0.5">
+                          <span className="font-mono">{log.date}</span>
+                          <span>Intensité {log.intensity}/5</span>
+                        </div>
+                        <div className="text-[#5A6B62]">
+                          {log.symptoms.join(", ")}
+                        </div>
+                        {log.note && <div className="text-xs italic mt-1 text-[#5A6B62]">“{log.note}”</div>}
                       </div>
                     ))}
                   </div>
@@ -684,11 +708,11 @@ function EspaceContent() {
                 rel="noopener noreferrer"
                 className="card rounded-3xl p-7 hover:border-[#5B7B6E] border border-[#5B7B6E]/30 flex flex-col"
               >
-                <div className="uppercase tracking-[2px] text-xs text-[#5B7B6E] mb-1">ACCÈS ILLIMITÉ</div>
+                <div className="uppercase tracking-[2px] text-xs text-[var(--sage-600)] mb-1">ACCÈS ILLIMITÉ</div>
                 <div className="font-semibold text-xl mb-1">Ebook + Chat Illimité</div>
                 <div className="text-3xl font-semibold tabular-nums mb-3">9,99 € <span className="text-base font-normal">une fois</span></div>
                 <p className="text-[#5A6B62] mb-4">Accès illimité au chat IA + forum + l'ebook complet "Ménopause au Naturel &amp; Régulation Hormonale". Idéal pour avancer à ton rythme.</p>
-                <div className="mt-auto text-[#5B7B6E] font-semibold">Accéder à l&apos;illimité →</div>
+                <div className="mt-auto text-[var(--sage-600)] font-semibold">Accéder à l&apos;illimité →</div>
               </a>
 
               <a 
@@ -723,7 +747,7 @@ function EspaceContent() {
                 <h2 className="text-3xl font-semibold tracking-tight">Chat avec les sages</h2>
                 <p className="text-[#5A6B62]">Choisis l&apos;experte qui te parle aujourd&apos;hui. 9 agents dont un dédié à la charge mentale et aux émotions.</p>
               </div>
-              <div className="text-right text-sm font-medium text-[#5B7B6E]">
+              <div className="text-right text-sm font-medium text-[var(--sage-600)]">
                 {isPremium 
                   ? "Accès illimité (via ebook)" 
                   : `Questions gratuites : ${freeQuestionsUsed} / ${FREE_QUESTION_LIMIT}`}
@@ -867,7 +891,7 @@ function EspaceContent() {
                   <div className="font-semibold text-lg mb-1">{post.title}</div>
                   <div className="text-sm text-[#5A6B62] mb-3">Par {post.author} • {post.replies} réponses</div>
                   <p className="text-[15px]">{post.content}</p>
-                  <div className="mt-4 text-xs px-3 py-1 inline-block rounded bg-[#E6EDE9] text-[#5B7B6E]">
+                  <div className="mt-4 text-xs px-3 py-1 inline-block rounded bg-[#E6EDE9] text-[var(--sage-600)]">
                     {agents.find(a => a.id === post.agent)?.name || 'Discussion'}
                   </div>
                 </div>
@@ -926,7 +950,7 @@ function EspaceContent() {
               alt="natura'bio" 
               className="h-14 w-auto mb-1" 
             />
-            <div className="text-[10px] font-medium tracking-tight text-[#5B7B6E]">by yas</div>
+            <div className="text-[10px] font-medium tracking-tight text-[var(--sage-600)]">by yas</div>
           </div>
         </div>
       </footer>
