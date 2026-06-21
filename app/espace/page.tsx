@@ -374,6 +374,29 @@ function EspaceContent() {
               })()}
             </div>
 
+            {/* DAILY TIP - style Cara interactions, adapté à ton univers */}
+            <div className="card rounded-3xl p-6 mb-8 border border-[#E6EDE9] bg-gradient-to-br from-[#F4F7F5] to-white">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <div className="uppercase tracking-[2px] text-xs font-medium text-[#5B7B6E]">TIP DU JOUR</div>
+                  <div className="font-semibold text-lg">Conseil naturel pour aujourd'hui</div>
+                </div>
+                <span className="text-3xl">🌿</span>
+              </div>
+              <p className="text-[#2A3A32] mb-4 leading-relaxed">{getDailyTip()}</p>
+              <button 
+                onClick={() => {
+                  // Simple interaction: "mark as done" for today
+                  const today = new Date().toISOString().slice(0,10);
+                  localStorage.setItem('natura_tip_done_' + today, 'true');
+                  alert("Merci ! Tip notée. Tu peux la retrouver dans tes protocoles.");
+                }}
+                className="text-xs px-4 py-1.5 rounded-full border border-[#5B7B6E]/30 hover:bg-[#5B7B6E] hover:text-white transition"
+              >
+                J'utilise ce tip aujourd'hui
+              </button>
+            </div>
+
             {/* BILAN INITIAL - premier accès */}
             {!bilanInitial ? (
               <div className="card rounded-3xl p-8 mb-8 border-2 border-[#5B7B6E]">
@@ -554,19 +577,25 @@ function EspaceContent() {
                   {/* Symptômes */}
                   <div>
                     <div className="text-sm font-medium mb-2">Symptômes du jour</div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-sm mb-3">
                       {symptomsOptions.map(sym => (
-                        <label key={sym} className="flex items-center gap-2 cursor-pointer py-0.5">
+                        <label key={sym} className="flex items-center gap-2 cursor-pointer py-0.5 interactive">
                           <input 
                             type="checkbox" 
                             checked={symptomForm.selectedSymptoms.includes(sym)}
                             onChange={() => toggleSymptom(sym)}
-                            className="accent-[#5B7B6E]"
+                            className="accent-[var(--mint)]"
                           />
                           {sym}
                         </label>
                       ))}
                     </div>
+                    {/* Live summary - interaction style Cara */}
+                    {symptomForm.selectedSymptoms.length > 0 && (
+                      <div className="text-xs bg-[#F4F7F5] p-2 rounded-lg">
+                        Aujourd'hui : {symptomForm.selectedSymptoms.length} symptôme(s) • Intensité {symptomForm.intensity}/5
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-4">
@@ -609,13 +638,17 @@ function EspaceContent() {
                 <div>
                   <div className="text-sm font-medium mb-2 text-[#5A6B62]">Évolution récente</div>
                   
-                  {/* Simple bar graph */}
-                  <div className="flex gap-2 items-end h-16 mb-4 bg-[#F8F5F0] rounded-xl p-2">
+                  {/* Simple bar graph - style Cara interactions */}
+                  <div className="flex gap-2 items-end h-16 mb-4 bg-[#F4F7F5] rounded-2xl p-3">
                     {symptomLogs.slice(0, 7).reverse().map((log, idx) => (
-                      <div key={idx} className="flex-1 flex flex-col items-center">
+                      <div key={idx} className="flex-1 flex flex-col items-center group">
                         <div 
-                          className="w-full bg-[#5B7B6E] rounded-t transition-all" 
-                          style={{ height: `${(log.intensity / 5) * 100}%`, minHeight: '4px' }}
+                          className="w-full rounded-t transition-all group-hover:brightness-110" 
+                          style={{ 
+                            height: `${(log.intensity / 5) * 100}%`, 
+                            minHeight: '6px',
+                            backgroundColor: log.intensity > 3 ? 'var(--blush)' : 'var(--mint)'
+                          }}
                         />
                         <div className="text-[9px] text-[#5A6B62] mt-1 font-mono">{log.date.slice(5)}</div>
                       </div>

@@ -104,6 +104,7 @@ const testimonials = [
 export default function NaturaBioByYasLanding() {
   return (
     <div className="min-h-screen bg-[#F8F5F0] text-[#2A3A32]">
+
       {/* NAVBAR */}
       <nav className="sticky top-0 z-50 border-b border-[#E6EDE9] bg-[#F8F5F0]/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
@@ -180,13 +181,13 @@ export default function NaturaBioByYasLanding() {
         </p>
       </section>
 
-      {/* CONFIANCE - style lucis.life */}
-      <div className="border-y border-[#E6EDE9] bg-white py-4">
-        <div className="mx-auto max-w-5xl px-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-sm text-[#5A6B62]">
-          <div className="flex items-center gap-2"><Check className="h-4 w-4 text-[#5B7B6E]" /> +1 200 femmes accompagnées</div>
-          <div className="flex items-center gap-2"><Check className="h-4 w-4 text-[#5B7B6E]" /> 9 sagesses IA précises</div>
-          <div className="flex items-center gap-2"><Check className="h-4 w-4 text-[#5B7B6E]" /> Approches respectueuses de la foi</div>
-          <div className="flex items-center gap-2"><Check className="h-4 w-4 text-[#5B7B6E]" /> Chat gratuit + forum dès maintenant</div>
+      {/* CONFIANCE - style Cara visuel + stats */}
+      <div className="border-y border-[#E6EDE9] bg-white py-5">
+        <div className="mx-auto max-w-5xl px-6 grid grid-cols-2 md:grid-cols-4 gap-y-4 text-sm text-[#5A6B62]">
+          <div className="flex items-center gap-3"><span className="text-2xl">🌿</span> <div><strong>+1 200</strong> femmes accompagnées</div></div>
+          <div className="flex items-center gap-3"><span className="text-2xl">✨</span> <div><strong>9 sagesses IA</strong> précises et adaptées</div></div>
+          <div className="flex items-center gap-3"><span className="text-2xl">🕊️</span> <div>Approches respectueuses de la foi</div></div>
+          <div className="flex items-center gap-3"><span className="text-2xl">💬</span> <div>Commence gratuitement aujourd'hui</div></div>
         </div>
       </div>
 
@@ -228,11 +229,11 @@ export default function NaturaBioByYasLanding() {
             return (
               <div 
                 key={index} 
-                className="pillar card rounded-3xl p-7 flex flex-col"
+                className="feature-card card rounded-3xl p-7 flex flex-col group"
                 style={{ borderLeft: `5px solid ${pillar.color}` }}
               >
                 <div 
-                  className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl"
+                  className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl transition group-hover:scale-110"
                   style={{ backgroundColor: pillar.iconBg }}
                 >
                   <Icon className="h-7 w-7" style={{ color: pillar.color }} />
@@ -242,9 +243,33 @@ export default function NaturaBioByYasLanding() {
                   <h3 className="font-semibold text-xl tracking-tight">{pillar.title}</h3>
                 </div>
                 <p className="text-[#5A6B62] text-[15px] leading-relaxed">{pillar.desc}</p>
+                <div className="mt-auto pt-3 text-xs text-[#5B7B6E] opacity-70 group-hover:opacity-100 transition">Explorer →</div>
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* NOTRE APPROCHE - style Cara Care : visuel + clair */}
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <div className="text-center mb-10">
+          <div className="text-[#5B7B6E] text-sm tracking-[2px] font-medium mb-1">NOTRE MISSION</div>
+          <h2 className="text-3xl font-semibold tracking-tight">Accompagner les femmes avec douceur, science et sagesse ancestrale</h2>
+          <p className="mt-3 text-[#5A6B62] max-w-lg mx-auto">Allier les approches naturelles (aromathérapie, MTC, naturopathie, médecine prophétique...) à une écoute bienveillante de ton corps et de ton esprit.</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { icon: "🌿", title: "Approche holistique", desc: "Corps, émotions, hormones et spiritualité sont liés. On ne traite pas un symptôme isolé." },
+            { icon: "🔬", title: "Racines traditionnelles + science", desc: "Sagesse ancestrale validée par des études modernes sur les plantes, le nerf vague et les hormones." },
+            { icon: "🤝", title: "Tu n'es pas seule", desc: "Communauté, IA expertes et accompagnement humain quand tu en as besoin." }
+          ].map((item, i) => (
+            <div key={i} className="feature-card card p-6 text-center">
+              <div className="text-4xl mb-3">{item.icon}</div>
+              <div className="font-semibold text-lg mb-2">{item.title}</div>
+              <p className="text-sm text-[#5A6B62]">{item.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -274,10 +299,10 @@ export default function NaturaBioByYasLanding() {
       {/* SECTION ÉMOTIONNELLE & CHARGE MENTALE - MISE EN AVANT (9e section visuelle) */}
       <section className="mx-auto max-w-6xl px-6 pb-20">
         <div 
-          className="rounded-3xl p-10 md:p-14 border"
+          className="feature-card rounded-3xl p-10 md:p-14 border"
           style={{ 
-            backgroundColor: '#F1EFF8', 
-            borderColor: '#D9D4EC' 
+            backgroundColor: '#FDF2F4', /* blush doux inspiré Cara */
+            borderColor: 'var(--blush)' 
           }}
         >
           <div className="grid md:grid-cols-2 gap-10 items-center">

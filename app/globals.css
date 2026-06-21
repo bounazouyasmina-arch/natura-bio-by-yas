@@ -4,16 +4,19 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Palette premium wellness inspirée (crème doux, sauge profond, or chaud) */
+  /* Palette inspirée Cara Care + ton univers naturel chaleureux */
+  /* Doux, apaisant, féminin, santé naturelle */
   --sage-400: #6B8A7C;
-  --sage-500: #4F6B5F;
+  --sage-500: #4F6B5F;      /* principal */
   --sage-600: #3F574C;
   --sage-700: #2F463B;
   --sage-800: #24352D;
 
+  --mint: #7EC8B3;          /* frais, santé, calme (inspiré Cara) */
+  --blush: #E8B4BC;         /* doux, émotionnel, féminin */
   --cream: #F9F6F0;
   --off-white: #F8F5EF;
-  --soft-gold: #C5A46E;
+  --soft-gold: #C5A46E;     /* chaleur naturelle */
   --deep-forest: #2C3F36;
 
   --text: #1F2B24;
@@ -60,7 +63,7 @@ p {
   line-height: 1.7;
 }
 
-/* Styles app wellness premium */
+/* Styles app wellness premium - inspiré Cara + ton univers */
 .card {
   background: var(--white);
   border: 1px solid var(--border-soft);
@@ -69,8 +72,27 @@ p {
 }
 
 .card:hover {
-  border-color: var(--sage-400);
-  box-shadow: 0 18px 25px -6px rgb(0 0 0 / 0.06), 0 8px 10px -5px rgb(0 0 0 / 0.04);
+  border-color: var(--mint);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.06), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+  transform: translateY(-2px);
+}
+
+/* Interactions douces pour les cartes et éléments */
+.feature-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+}
+
+.interactive {
+  transition: all 0.15s ease;
+}
+
+.interactive:hover {
+  transform: scale(1.02);
 }
 
 /* Petits ajustements pour les nouveaux blocs exemples */
@@ -82,26 +104,29 @@ p {
 .btn-primary {
   background: var(--sage-600);
   color: white;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
 }
 
 .btn-primary:hover {
-  background: var(--sage-700);
-  transform: translateY(-1px);
+  background: var(--mint);
+  color: var(--deep-forest);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
 
 .btn-secondary {
   background: transparent;
   color: var(--sage-700);
   border: 1px solid var(--sage-400);
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
 }
 
 .btn-secondary:hover {
   background: var(--sage-50);
-  border-color: var(--sage-500);
+  border-color: var(--mint);
+  color: var(--deep-forest);
 }
 
 .pillar {

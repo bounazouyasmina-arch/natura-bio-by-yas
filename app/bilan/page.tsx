@@ -180,6 +180,7 @@ export default function BilanPage() {
         )}
         {step === 'email' && (
           <div className="text-center">
+  
             <div className="inline-block rounded-full bg-[#E6EDE9] px-4 py-1 text-xs font-medium tracking-[2px] text-[#5B7B6E] mb-4">
               GRATUIT • SANS ENGAGEMENT
             </div>
@@ -231,7 +232,7 @@ export default function BilanPage() {
               <div className="space-y-6">
                 {/* Âge */}
                 <div>
-                  <label className="block text-sm font-medium mb-2">Tranche d'âge</label>
+                  <label className="block text-sm font-medium mb-2 flex items-center gap-2"><span>🎂</span> Tranche d'âge</label>
                   <select 
                     value={bilanForm.ageRange} 
                     onChange={(e) => setBilanForm({...bilanForm, ageRange: e.target.value})}
@@ -247,15 +248,15 @@ export default function BilanPage() {
 
                 {/* Symptômes - grouped nicely like Tally */}
                 <div>
-                  <label className="block text-sm font-medium mb-3">Tes principaux symptômes / préoccupations</label>
+                  <label className="block text-sm font-medium mb-3 flex items-center gap-2"><span>🩺</span> Tes principaux symptômes / préoccupations</label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 bg-[#F8F5F0] p-4 rounded-2xl">
                     {symptomsOptions.map(sym => (
-                      <label key={sym} className="flex items-center gap-2.5 text-sm cursor-pointer py-1">
+                      <label key={sym} className="flex items-center gap-2.5 text-sm cursor-pointer py-1 hover:text-[var(--sage-600)] transition interactive">
                         <input 
                           type="checkbox" 
                           checked={bilanForm.mainConcerns.includes(sym)}
                           onChange={() => toggleConcern(sym)}
-                          className="accent-[#5B7B6E] w-4 h-4"
+                          className="accent-[var(--mint)] w-4 h-4"
                         />
                         <span>{sym}</span>
                       </label>
@@ -265,7 +266,7 @@ export default function BilanPage() {
 
                 {/* Durée */}
                 <div>
-                  <label className="block text-sm font-medium mb-2">Depuis combien de temps ressens-tu cela ?</label>
+                  <label className="block text-sm font-medium mb-2 flex items-center gap-2"><span>📅</span> Depuis combien de temps ressens-tu cela ?</label>
                   <select 
                     value={bilanForm.duration} 
                     onChange={(e) => setBilanForm({...bilanForm, duration: e.target.value})}
@@ -281,7 +282,7 @@ export default function BilanPage() {
 
                 {/* Objectif */}
                 <div>
-                  <label className="block text-sm font-medium mb-2">Ton objectif principal en ce moment</label>
+                  <label className="block text-sm font-medium mb-2 flex items-center gap-2"><span>🎯</span> Ton objectif principal en ce moment</label>
                   <input 
                     type="text" 
                     value={bilanForm.goals}
