@@ -93,10 +93,57 @@ function EspaceContent() {
   const [freeQuestionsUsed, setFreeQuestionsUsed] = useState(0);
   const [accessTier, setAccessTier] = useState<AccessTier>('free');
   const [accessSince, setAccessSince] = useState<string | null>(null);
+  const [accessCode, setAccessCode] = useState('');
+  const [activatingCode, setActivatingCode] = useState(false);
 
   const hasEbook = hasEbookAccess(accessTier);
   const isCoaching = hasCoachingAccess(accessTier);
   const isPremium = isPremiumAccess(accessTier);
+
+  const activateWithCode = async () => {
+    const raw = accessCode.trim();
+    if (!raw) {
+      toast.error('Entre ton code d’accès');
+      return;
+    }
+
+    // Accepte le code seul OU l’URL complète collée depuis l’email Beacons
+    let token = raw;
+    const urlMatch = raw.match(/\/acces\/(ebook|coaching)\/([A-Za-z0-9_-]+)/);
+    if (urlMatch) {
+      token = urlMatch[2];
+    } else if (raw.includes('token=')) {
+      try {
+        const u = new URL(raw.startsWith('http') ? raw : `https://x.local/?${raw}`);
+        token = u.searchParams.get('token') || token;
+      } catch {
+        /* ignore */
+      }
+    }
+
+    setActivatingCode(true);
+    try {
+      const res = await fetch('/api/access/activate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || 'Code invalide');
+        return;
+      }
+      const saved = saveAccessTier(data.plan as AccessTier);
+      setAccessTier(saved);
+      setAccessSince(readAccessSince());
+      setAccessCode('');
+      toast.success(data.message || 'Accès activé');
+    } catch {
+      toast.error('Impossible d’activer le code pour le moment');
+    } finally {
+      setActivatingCode(false);
+    }
+  };
 
   useEffect(() => {
     const saved = localStorage.getItem('sv_free_questions') || '0';
@@ -399,57 +446,57 @@ function EspaceContent() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Top bar membre */}
-      <div className="border-b border-[#E6EDE9] bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <a href="/" className="flex items-center gap-2 text-[var(--sage-600)] hover:text-[#2A3A32]">
-              <ArrowLeft className="h-4 w-4" /> Retour au site
+      <div className="border-b border-[#E6EDE9] bg-white sticky top-0 z-30">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-3 sm:py-5 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            <a href="/" className="flex items-center gap-1.5 text-[var(--sage-600)] hover:text-[#2A3A32] shrink-0 text-sm">
+              <ArrowLeft className="h-4 w-4" /> <span className="hidden sm:inline">Retour au site</span>
             </a>
-            <div className="h-5 w-px bg-[#E6EDE9]" />
-            <div className="flex flex-col items-start">
+            <div className="hidden sm:block h-5 w-px bg-[#E6EDE9]" />
+            <div className="flex flex-col items-start min-w-0">
               <img 
                 src="/natura-bio-logo.jpg" 
                 alt="natura'bio" 
-                className="h-16 md:h-20 w-auto" 
+                className="h-10 sm:h-16 md:h-20 w-auto" 
               />
-              <div className="text-xs font-medium tracking-tight text-[var(--sage-600)] mt-0.5">by yas</div>
+              <div className="text-[10px] sm:text-xs font-medium tracking-tight text-[var(--sage-600)] mt-0.5">by yas · Espace</div>
             </div>
-            <div className="hidden sm:block text-sm text-[#5A6B62] ml-1">Espace Membres</div>
           </div>
           
-          <div className="flex items-center gap-4 text-sm">
-            {isCoaching && (
-              <div className="rounded-full bg-[#C5A46E] text-white px-3 py-1 text-xs font-semibold">COACHING ACTIF • 4 semaines</div>
+          <div className="flex items-center gap-2 sm:gap-4 text-sm shrink-0">
+            {isPremium && (
+              <div className={`rounded-full text-white px-2.5 sm:px-3 py-1 text-[10px] sm:text-xs font-semibold ${isCoaching ? 'bg-[#C5A46E]' : 'bg-[var(--sage-600)]'}`}>
+                {isCoaching ? 'COACHING' : 'ILLIMITÉ'}
+              </div>
             )}
-            <div className="text-[#5A6B62]">Bonjour, chère sœur</div>
+            <div className="hidden md:block text-[#5A6B62]">Bonjour, chère sœur</div>
             <button 
               onClick={() => {
-                // Simulation déconnexion
                 window.location.href = "/";
               }}
-              className="text-xs px-4 py-1.5 rounded-full border border-[#A8BDB5] hover:bg-[#F8F5F0]"
+              className="text-xs px-3 sm:px-4 py-1.5 rounded-full border border-[#A8BDB5] hover:bg-[#F8F5F0]"
             >
-              Se déconnecter
+              Quitter
             </button>
           </div>
         </div>
 
-        {/* Tabs */}
+        {/* Tabs — scroll horizontal sur mobile */}
         <div className="border-t border-[#E6EDE9]">
-          <div className="mx-auto max-w-7xl px-6 flex gap-1 text-sm">
+          <div className="mx-auto max-w-7xl px-2 sm:px-6 flex gap-0.5 sm:gap-1 text-sm overflow-x-auto scrollbar-hide">
             {[
               { id: 'accueil', label: 'Accueil', icon: Leaf },
               { id: 'chat', label: 'Chat IA', icon: MessageCircle },
               { id: 'forum', label: 'Forum', icon: Users },
-              { id: 'protocoles', label: 'Mes Protocoles', icon: FileText },
-              { id: 'compte', label: 'Mon Compte', icon: User },
+              { id: 'protocoles', label: 'Protocoles', icon: FileText },
+              { id: 'compte', label: 'Compte', icon: User },
             ].map(tab => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center gap-2 px-5 py-3 border-b-2 font-medium transition ${activeTab === tab.id 
+                  className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-3 border-b-2 font-medium transition whitespace-nowrap shrink-0 ${activeTab === tab.id 
                     ? 'border-[var(--sage-600)] text-[#2A3A32]' 
                     : 'border-transparent text-[#5A6B62] hover:text-[var(--mint)]'}`}
                 >
@@ -1071,9 +1118,9 @@ function EspaceContent() {
 
         {/* COMPTE */}
         {activeTab === 'compte' && (
-          <div className="max-w-md">
+          <div className="max-w-lg">
             <h2 className="text-3xl font-semibold tracking-tight mb-6">Mon compte</h2>
-            <div className="card rounded-3xl p-8 space-y-4 text-sm">
+            <div className="card rounded-3xl p-6 sm:p-8 space-y-4 text-sm mb-6">
               <div>
                 <span className="text-[#5A6B62]">Statut :</span>{' '}
                 <span className="font-medium">{getAccessLabel(accessTier)}</span>
@@ -1094,8 +1141,17 @@ function EspaceContent() {
               </div>
               {isPremium && (
                 <div className="text-[#5A6B62]">
-                  Ton accès reste actif sur cet appareil. Si tu changes de téléphone ou d&apos;ordinateur, réutilise le lien reçu après ton achat Beacons.
+                  Ton accès reste actif sur cet appareil. Si tu changes de téléphone ou d&apos;ordinateur, utilise le lien de ton email Beacons, ou le formulaire ci-dessous.
                 </div>
+              )}
+              {hasEbook && (
+                <a
+                  href="/api/download/ebook?paid=true"
+                  className="inline-flex items-center gap-2 text-[var(--sage-600)] font-medium hover:underline"
+                  download
+                >
+                  <BookOpen className="h-4 w-4" /> Télécharger mon ebook PDF
+                </a>
               )}
               {!isPremium && (
                 <a
@@ -1108,6 +1164,28 @@ function EspaceContent() {
                 </a>
               )}
               {isCoaching && <div className="pt-2 text-[#C5A46E]">Chat privé avec la coach activé</div>}
+            </div>
+
+            <div className="card rounded-3xl p-6 sm:p-8 space-y-3">
+              <h3 className="font-semibold text-lg">Activer mon accès</h3>
+              <p className="text-sm text-[#5A6B62]">
+                Tu as déjà acheté sur Beacons ? Colle ici le <strong>lien</strong> de ton email, ou ton <strong>code d&apos;accès</strong>, pour débloquer cet appareil.
+              </p>
+              <input
+                type="text"
+                value={accessCode}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAccessCode(e.target.value)}
+                placeholder="Lien ou code (ex: nb-ebook-...)"
+                className="w-full border border-[#E6EDE9] rounded-xl px-4 py-3 text-sm"
+              />
+              <button
+                type="button"
+                onClick={activateWithCode}
+                disabled={activatingCode}
+                className="btn-primary w-full py-3 rounded-2xl font-semibold text-sm disabled:opacity-60"
+              >
+                {activatingCode ? 'Activation…' : 'Activer mon accès'}
+              </button>
             </div>
           </div>
         )}
