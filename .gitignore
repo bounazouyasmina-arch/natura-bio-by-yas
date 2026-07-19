@@ -45,3 +45,7 @@ ebooks/*.pdf
 ebooks/*.PDF
 !ebooks/.gitkeep
 !ebooks/README.txt
+# PDF produit livré via /api/download/ebook (accès contrôlé)
+!ebooks/menopause-au-naturel.pdf
+
+.vercel
