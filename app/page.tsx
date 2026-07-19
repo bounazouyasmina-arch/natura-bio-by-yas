@@ -72,7 +72,7 @@ function DynamicArticleSuggestions() {
             href={`/blog#${art.slug}`} 
             className="card p-5 hover:border-[var(--mint)] transition group"
           >
-            <div className="text-xs text-[var(--mint)] mb-1">ARTICLE VARIÉ (aléatoire)</div>
+            <div className="text-xs text-[var(--mint)] mb-1">À LIRE</div>
             <div className="font-semibold mb-1 group-hover:text-[var(--mint)] transition">{art.title}</div>
             <p className="text-sm text-[#5A6B62]">{art.teaser}</p>
             <span className="text-xs text-[var(--mint)] mt-2 inline-block">Lire l'article →</span>
@@ -175,93 +175,125 @@ const testimonials = [
 ];
 
 export default function NaturaBioByYasLanding() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[var(--cream)] text-[#2A3A32]">
 
       {/* NAVBAR */}
       <nav className="sticky top-0 z-50 border-b border-[#E6EDE9] bg-[var(--cream)]/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-          <div className="flex flex-col items-start">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
+          <a href="/" className="flex flex-col items-start shrink-0">
             <img 
               src="/natura-bio-logo.jpg" 
-              alt="natura'bio" 
-              className="h-20 md:h-24 w-auto" 
+              alt="natura'bio by yas" 
+              className="h-14 sm:h-16 md:h-20 w-auto" 
             />
-            <div className="text-[11px] font-medium tracking-tight text-[var(--sage-600)] mt-1">by yas</div>
-            <div className="text-[10px] text-[var(--text-light)] -mt-0.5">Santé &amp; bien-être au naturel</div>
-          </div>
+            <div className="text-[10px] sm:text-[11px] font-medium tracking-tight text-[var(--sage-600)] mt-0.5">by yas · santé au naturel</div>
+          </a>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            <a href="#approche" className="hover:text-[var(--mint)] transition">L'approche</a>
-            <a href="/blog" className="hover:text-[var(--mint)] transition">Blog</a>
-            <a href="/bilan" className="hover:text-[var(--mint)] transition font-medium">Faire mon bilan</a>
+          <div className="hidden lg:flex items-center gap-6 text-sm font-medium">
+            <a href="#approche" className="hover:text-[var(--mint)] transition">L&apos;approche</a>
+            <a href="/bilan" className="hover:text-[var(--mint)] transition">Bilan gratuit</a>
             <a href="#comment" className="hover:text-[var(--mint)] transition">Comment ça marche</a>
-            <a href="#tarifs" className="hover:text-[var(--mint)] transition">Tarifs</a>
-            <a href="/espace" className="hover:text-[var(--mint)] transition">Espace membres</a>
-            <a href={WHATSAPP_GROUP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--mint)] transition">💬 Groupe WhatsApp (coaching)</a>
+            <a href="#tarifs" className="hover:text-[var(--mint)] transition">Offres</a>
+            <a href="/blog" className="hover:text-[var(--mint)] transition">Blog</a>
+            <a href="/espace" className="hover:text-[var(--mint)] transition">Espace</a>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <a 
               href="/espace" 
-              className="hidden sm:block rounded-full px-5 py-2 text-sm font-medium border border-[var(--mint)] hover:bg-[var(--mint)] hover:text-white transition"
+              className="hidden sm:inline-flex rounded-full px-4 py-2 text-sm font-medium border border-[var(--mint)] hover:bg-[var(--mint)] hover:text-white transition"
             >
-              Se connecter
+              Espace membres
             </a>
-            <button 
-              onClick={() => document.getElementById('tarifs')?.scrollIntoView({ behavior: 'smooth' })}
-              className="btn-primary rounded-full px-6 py-2 text-sm font-semibold"
+            <a 
+              href="#tarifs"
+              className="btn-primary rounded-full px-4 sm:px-6 py-2 text-sm font-semibold"
             >
-              Commencer
+              Voir les offres
+            </a>
+            <button
+              type="button"
+              className="lg:hidden p-2 rounded-xl border border-[#E6EDE9] text-[#2A3A32]"
+              aria-label="Menu"
+              onClick={() => setMobileOpen((v) => !v)}
+            >
+              {mobileOpen ? '✕' : '☰'}
             </button>
           </div>
         </div>
+        {mobileOpen && (
+          <div className="lg:hidden border-t border-[#E6EDE9] bg-white px-4 py-4 flex flex-col gap-3 text-sm font-medium">
+            <a href="#approche" onClick={() => setMobileOpen(false)}>L&apos;approche</a>
+            <a href="/bilan" onClick={() => setMobileOpen(false)}>Bilan gratuit</a>
+            <a href="#comment" onClick={() => setMobileOpen(false)}>Comment ça marche</a>
+            <a href="#tarifs" onClick={() => setMobileOpen(false)}>Offres</a>
+            <a href="/blog" onClick={() => setMobileOpen(false)}>Blog</a>
+            <a href="/espace" onClick={() => setMobileOpen(false)}>Espace membres</a>
+            <a href={WHATSAPP_GROUP_LINK} target="_blank" rel="noopener noreferrer">Groupe WhatsApp (coaching)</a>
+          </div>
+        )}
       </nav>
 
       {/* HERO */}
-      <section className="mx-auto max-w-5xl px-6 pt-20 pb-16 text-center">
-        <div className="inline-block rounded-full bg-[var(--mint)]/20 px-4 py-1 text-xs font-medium tracking-[2px] text-[var(--sage-600)] mb-6">
-          APPROCHES ANCESTRALES • SCIENCE MODERNE • FOI &amp; RESPECT
+      <section className="relative mx-auto max-w-5xl px-4 sm:px-6 pt-12 sm:pt-16 pb-12 sm:pb-16 text-center overflow-hidden">
+        <div className="absolute inset-0 -z-10 pointer-events-none">
+          <div className="absolute top-10 left-1/4 h-40 w-40 rounded-full bg-[var(--mint)]/15 blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 h-48 w-48 rounded-full bg-[var(--blush)]/20 blur-3xl" />
         </div>
 
-        <h1 className="text-6xl md:text-[72px] font-semibold tracking-[-2.5px] leading-[1.05] mb-6">
-          Une question.<br />Huit sagesses.<br />Une réponse qui te parle.
+        <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full bg-white border border-[var(--border-soft)] px-4 py-1.5 text-[11px] sm:text-xs font-medium tracking-[1.5px] text-[var(--sage-600)] mb-6 shadow-sm">
+          <span>NATUREL</span>
+          <span className="text-[#C9D6D0]">·</span>
+          <span>SCIENCE</span>
+          <span className="text-[#C9D6D0]">·</span>
+          <span>FOI &amp; RESPECT</span>
+        </div>
+
+        <h1 className="text-[2.35rem] sm:text-5xl md:text-6xl font-semibold tracking-tight leading-[1.08] mb-5 max-w-3xl mx-auto">
+          Ta santé au naturel,<br />
+          <span className="text-[var(--sage-600)]">guidée par 9 expertes IA</span>
         </h1>
 
-        <p className="mx-auto max-w-2xl text-2xl text-[#5A6B62] tracking-[-0.3px] mb-4">
-          Tes questions façonnent ta santé de demain.
+        <p className="mx-auto max-w-2xl text-base sm:text-lg text-[#5A6B62] mb-3">
+          Stress, sommeil, énergie, hormones, charge mentale… pose ta question.
+          Reçois des protocoles concrets (huiles, plantes, respiration, MTC, remèdes ancestraux).
         </p>
-        <p className="mx-auto max-w-2xl text-lg text-[#5A6B62] mb-10">
-          9 sagesses IA (aromathérapie, naturopathie, nerf vague, équilibre hormonal, médecine prophétique, chinoise...) te répondent avec précision, respect et profondeur pour la santé au naturel à tout âge. 10 questions gratuites. Accès illimité avec l&apos;ebook à 9,99 €.
+        <p className="mx-auto max-w-xl text-sm sm:text-base text-[#5A6B62] mb-8">
+          <strong className="text-[#2A3A32]">Gratuit :</strong> 10 questions + forum.
+          <strong className="text-[#2A3A32]"> Illimité :</strong> ebook 9,99 €.
+          <strong className="text-[#2A3A32]"> Sur-mesure :</strong> coaching 299,99 €.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a 
-            href="/bilan" 
-            className="btn-primary flex items-center justify-center gap-3 rounded-full px-10 py-4 text-lg font-semibold shadow-sm"
-          >
-            Faire mon bilan gratuit
-          </a>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <a 
             href="/espace" 
-            className="btn-secondary flex items-center justify-center gap-3 rounded-full px-8 py-4 text-lg font-semibold"
+            className="btn-primary flex items-center justify-center gap-2 rounded-full px-8 py-3.5 sm:py-4 text-base sm:text-lg font-semibold shadow-sm"
           >
-            Accéder au Chat IA
+            Essayer le chat IA gratuitement <ArrowRight className="h-4 w-4" />
+          </a>
+          <a 
+            href="/bilan" 
+            className="btn-secondary flex items-center justify-center gap-2 rounded-full px-8 py-3.5 sm:py-4 text-base sm:text-lg font-semibold"
+          >
+            Faire mon bilan (2 min)
           </a>
         </div>
 
-        <p className="mt-6 text-sm text-[#5A6B62]">
-          Pas de carte. Pas d’engagement. Teste les réponses naturelles dès maintenant.
+        <p className="mt-5 text-sm text-[#5A6B62]">
+          Sans carte bancaire · Sans engagement · Réponses en français
         </p>
       </section>
 
-      {/* CONFIANCE - style Cara visuel + stats */}
-      <div className="border-y border-[#E6EDE9] bg-white py-5">
-        <div className="mx-auto max-w-5xl px-6 grid grid-cols-2 md:grid-cols-4 gap-y-4 text-sm text-[#5A6B62]">
-          <div className="flex items-center gap-3"><span className="text-2xl">🌿</span> <div><strong>+1 200</strong> femmes accompagnées</div></div>
-          <div className="flex items-center gap-3"><span className="text-2xl">✨</span> <div><strong>9 sagesses IA</strong> précises et adaptées</div></div>
-          <div className="flex items-center gap-3"><span className="text-2xl">🕊️</span> <div>Approches respectueuses de la foi</div></div>
-          <div className="flex items-center gap-3"><span className="text-2xl">💬</span> <div>Commence gratuitement aujourd'hui</div></div>
+      {/* CONFIANCE */}
+      <div className="border-y border-[#E6EDE9] bg-white py-6">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-[#5A6B62]">
+          <div className="flex items-start gap-2"><span className="text-xl">✨</span> <div><strong className="text-[#2A3A32]">9 expertes IA</strong><br />spécialités distinctes</div></div>
+          <div className="flex items-start gap-2"><span className="text-xl">📖</span> <div><strong className="text-[#2A3A32]">Ebook 9,99 €</strong><br />chat illimité inclus</div></div>
+          <div className="flex items-start gap-2"><span className="text-xl">🕊️</span> <div><strong className="text-[#2A3A32]">Respect de la foi</strong><br />&amp; approches douces</div></div>
+          <div className="flex items-start gap-2"><span className="text-xl">💬</span> <div><strong className="text-[#2A3A32]">10 questions offertes</strong><br />pour tester sans risque</div></div>
         </div>
       </div>
 
@@ -448,76 +480,73 @@ export default function NaturaBioByYasLanding() {
         </div>
       </section>
 
-      {/* COMMENT ÇA MARCHE + FUNNEL */}
-      <section id="comment" className="bg-white border-y border-[#E6EDE9] py-20">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="text-center mb-12">
+      {/* COMMENT ÇA MARCHE — 3 étapes claires */}
+      <section id="comment" className="bg-white border-y border-[#E6EDE9] py-16 sm:py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-12">
             <div className="uppercase tracking-[3px] text-xs font-medium text-[var(--sage-600)] mb-2">COMMENT ÇA MARCHE</div>
-            <h2 className="text-5xl font-semibold tracking-tight">Commence gratuitement. Avance à ton rythme.</h2>
-            <p className="mt-2 text-[#5A6B62]">Chat IA + forum ouvert. Ebook ou coaching quand tu veux aller plus loin.</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight">3 niveaux. Tu avances à ton rythme.</h2>
+            <p className="mt-3 text-[#5A6B62] max-w-xl mx-auto">Commence gratuite. Passe à l&apos;illimité quand tu es convaincue. Choisis le coaching pour un accompagnement humain.</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Étape 1 */}
-            <div className="card rounded-3xl p-8 border-2 border-[#5B7B6E]">
-              <div className="uppercase tracking-[2px] text-xs font-medium text-[var(--sage-600)] mb-1">ÉTAPE 1 — POINT D&apos;ENTRÉE</div>
-              <div className="text-[22px] font-semibold tracking-tight mb-4">L&apos;ebook « Ménopause au Naturel »</div>
-              <div className="text-4xl font-semibold tabular-nums mb-6">9,99 €</div>
-              
-              <ul className="space-y-3 text-[15px] leading-relaxed mb-8 text-[#5A6B62]">
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> 80+ pages de protocoles concrets</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Accès à l&apos;application IA + forum</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Mises à jour à vie</li>
+          <div className="grid md:grid-cols-3 gap-5">
+            <div className="card rounded-3xl p-7 border border-[#E6EDE9] flex flex-col">
+              <div className="text-xs font-semibold tracking-[2px] text-[var(--mint)] mb-2">1 · GRATUIT</div>
+              <div className="text-xl font-semibold mb-2">Tester le chat IA</div>
+              <div className="text-3xl font-semibold tabular-nums mb-4">0 €</div>
+              <ul className="space-y-2.5 text-sm text-[#5A6B62] mb-6 flex-1">
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> 10 questions au chat (9 expertes)</li>
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Forum communauté</li>
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Bilan initial + tip du jour</li>
               </ul>
-              
+              <a href="/espace" className="btn-secondary w-full rounded-2xl py-3 font-semibold text-center text-sm">
+                Commencer gratuitement
+              </a>
+            </div>
+
+            <div className="card rounded-3xl p-7 border-2 border-[var(--sage-600)] flex flex-col relative shadow-sm">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[var(--sage-600)] text-white text-[10px] font-semibold px-3 py-1 rounded-full tracking-widest">
+                LE PLUS CHOISI
+              </div>
+              <div className="text-xs font-semibold tracking-[2px] text-[var(--sage-600)] mb-2">2 · ILLIMITÉ</div>
+              <div className="text-xl font-semibold mb-2">Ebook Ménopause Sereine</div>
+              <div className="text-3xl font-semibold tabular-nums mb-1">9,99 €</div>
+              <div className="text-xs text-[#5A6B62] mb-4">paiement unique · accès immédiat</div>
+              <ul className="space-y-2.5 text-sm text-[#5A6B62] mb-6 flex-1">
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> PDF ebook complet</li>
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Chat IA illimité + forum</li>
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Suivi symptômes &amp; protocoles</li>
+              </ul>
               <a 
                 href={BEACONS_EBOOK_LINK} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="btn-primary w-full rounded-2xl py-4 font-semibold flex items-center justify-center gap-2 text-base mt-2"
+                className="btn-primary w-full rounded-2xl py-3 font-semibold flex items-center justify-center gap-2 text-sm"
               >
-                Acheter l&apos;ebook à 9,99 € sur Beacons <ArrowRight className="h-4 w-4" />
+                Acheter l&apos;ebook <ArrowRight className="h-4 w-4" />
               </a>
-              <p className="text-center text-xs mt-2 text-[#5A6B62]">Accès immédiat à l&apos;espace membres IA + forum après achat</p>
+              <p className="text-center text-[11px] mt-2 text-[#5A6B62]">Paiement sécurisé sur Beacons</p>
             </div>
 
-            {/* Étape 2 */}
-            <div className="card rounded-3xl p-8 border border-[#E6EDE9]">
-              <div className="uppercase tracking-[2px] text-xs font-medium text-[var(--sage-600)] mb-1">ÉTAPE 2 — L&apos;APP &amp; LA COMMUNAUTÉ</div>
-              <div className="text-[22px] font-semibold tracking-tight mb-4">Posez vos questions. Recevez des réponses expertes.</div>
-              
-              <div className="space-y-4 text-[15px] leading-relaxed text-[#5A6B62]">
-                <div>• Chat IA avec 9 agents spécialisés (dont un dédié à la charge mentale et aux émotions)</div>
-                <div>• Forum bienveillant entre femmes + réponses de l&apos;IA</div>
-                <div>• Historique de tes conversations et protocoles</div>
-                <div>• Accès réservé aux acheteuses via Beacons</div>
-              </div>
-            </div>
-
-            {/* Étape 3 - Upsell */}
-            <div className="card rounded-3xl p-8 border-2 border-[#C5A46E]">
-              <div className="text-[#C5A46E] text-sm font-semibold mb-1">ÉTAPE 3 — ACCOMPAGNEMENT PREMIUM</div>
-              <div className="text-3xl font-semibold tracking-tight mb-4">Coaching 4 semaines sur mesure</div>
-              <div className="text-4xl font-semibold tabular-nums mb-6">299,99 €</div>
-
-              <ul className="space-y-3 text-[15px] mb-8 text-[#5A6B62]">
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> 1 visio ou appel découverte (45 min)</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Protocole personnalisé écrit</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Accès au groupe WhatsApp inclus avec l&apos;offre</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Chat privé illimité avec la coach</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Suivi hebdo + ajustements 4 semaines</li>
-                <li className="flex gap-3"><Check className="mt-1 h-4 w-4 text-[var(--sage-600)] flex-shrink-0" /> Accès prioritaire à l&apos;espace IA</li>
+            <div className="card rounded-3xl p-7 border-2 border-[#C5A46E] flex flex-col">
+              <div className="text-xs font-semibold tracking-[2px] text-[#C5A46E] mb-2">3 · ACCOMPAGNEMENT</div>
+              <div className="text-xl font-semibold mb-2">Coaching 4 semaines</div>
+              <div className="text-3xl font-semibold tabular-nums mb-1">299,99 €</div>
+              <div className="text-xs text-[#5A6B62] mb-4">suivi humain personnalisé</div>
+              <ul className="space-y-2.5 text-sm text-[#5A6B62] mb-6 flex-1">
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Tout l&apos;illimité inclus</li>
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Visio + protocole écrit</li>
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> WhatsApp + suivi 4 semaines</li>
               </ul>
-
               <a 
                 href={BEACONS_COACHING_LINK} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-full rounded-2xl py-4 font-semibold flex items-center justify-center gap-2 text-base bg-[#C5A46E] hover:bg-[#B38C55] text-white transition mt-2"
+                className="w-full rounded-2xl py-3 font-semibold flex items-center justify-center gap-2 text-sm bg-[#C5A46E] hover:bg-[#B38C55] text-white transition"
               >
-                Réserver le coaching 4 semaines sur Beacons <ArrowRight className="h-4 w-4" />
+                Réserver le coaching <ArrowRight className="h-4 w-4" />
               </a>
-              <p className="text-center text-xs mt-2 text-[#5A6B62]">Places limitées • Accès prioritaire à l&apos;espace après achat</p>
+              <p className="text-center text-[11px] mt-2 text-[#5A6B62]">Places limitées chaque mois</p>
             </div>
           </div>
         </div>
@@ -527,12 +556,13 @@ export default function NaturaBioByYasLanding() {
       <section className="mx-auto max-w-5xl px-6 py-20">
         <div className="text-center mb-10">
           <div className="flex justify-center mb-3"><Star className="text-[#C5A46E]" /></div>
-          <h3 className="text-3xl font-semibold tracking-tight">Elles ont repris le pouvoir sur leur santé</h3>
+          <h3 className="text-3xl font-semibold tracking-tight">Ce qu&apos;elles recherchent chez nous</h3>
+          <p className="text-sm text-[#5A6B62] mt-2">Retours typiques de lectrices et clientes (exemples illustratifs)</p>
         </div>
         
         <div className="grid md:grid-cols-3 gap-6">
           {testimonials.map((t, i) => (
-            <div key={i} className="card rounded-3xl p-8">
+            <div key={i} className="card rounded-3xl p-8 bg-white">
               <div className="flex gap-1 mb-4 text-[#C5A46E]">
                 {[...Array(5)].map((_, idx) => <Star key={idx} className="h-4 w-4 fill-current" />)}
               </div>
@@ -546,24 +576,33 @@ export default function NaturaBioByYasLanding() {
         </div>
       </section>
 
-      {/* TARIFS DÉTAILLÉS (ancre) */}
-      <section id="tarifs" className="bg-white py-20 border-t border-[#E6EDE9]">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-4xl font-semibold tracking-tight mb-3">Choisissez votre niveau d&apos;accompagnement</h2>
-          <p className="text-[#5A6B62] mb-10">L&apos;ebook est le meilleur point de départ. Le coaching est l&apos;expérience complète et transformatrice.</p>
+      {/* TARIFS DÉTAILLÉS */}
+      <section id="tarifs" className="bg-[var(--cream)] py-16 sm:py-20 border-t border-[#E6EDE9]">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
+          <div className="uppercase tracking-[3px] text-xs font-medium text-[var(--sage-600)] mb-2">OFFRES</div>
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">Choisis ce qui te correspond</h2>
+          <p className="text-[#5A6B62] mb-10 max-w-lg mx-auto">
+            L&apos;ebook débloque l&apos;illimité tout de suite. Le coaching est pour celles qui veulent un suivi humain, pas seulement des réponses IA.
+          </p>
         </div>
 
-        <div className="mx-auto max-w-5xl px-6 grid md:grid-cols-2 gap-6">
-          {/* Ebook */}
-          <div className="card rounded-3xl p-9">
-            <div className="uppercase tracking-[2px] text-xs text-[var(--sage-600)] mb-2">POUR COMMENCER</div>
-            <div className="text-3xl font-semibold">Ebook Ménopause au Naturel</div>
-            <div className="mt-1 text-5xl font-semibold tabular-nums tracking-tighter">9,99 €<span className="text-xl align-super font-normal text-[#5A6B62]"> une fois</span></div>
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 grid md:grid-cols-2 gap-6">
+          <div className="card rounded-3xl p-7 sm:p-9 bg-white">
+            <div className="uppercase tracking-[2px] text-xs text-[var(--sage-600)] mb-2">POUR AVANCER SEULE, À TON RYTHME</div>
+            <div className="text-2xl sm:text-3xl font-semibold">Ebook Ménopause Sereine</div>
+            <p className="text-sm text-[#5A6B62] mt-1">PDF + chat IA illimité + forum</p>
+            <div className="mt-3 text-4xl sm:text-5xl font-semibold tabular-nums tracking-tighter">9,99 €<span className="text-lg align-super font-normal text-[#5A6B62]"> une fois</span></div>
 
-            <div className="my-8 h-px bg-[#E6EDE9]" />
+            <div className="my-6 h-px bg-[#E6EDE9]" />
 
-            <ul className="space-y-3 mb-9 text-[15px]">
-              {["Protocoles complets pour les symptômes de la ménopause", "Focus aromathérapie, nerf vague, hormones, alimentation", "Accès à vie à l'application IA + forum de la communauté", "Mises à jour régulières"].map((item, idx) => (
+            <ul className="space-y-3 mb-8 text-[15px]">
+              {[
+                "Ebook PDF « Ménopause Sereine » à télécharger",
+                "Chat IA illimité avec les 9 expertes",
+                "Forum, bilan, suivi de symptômes",
+                "Idéal pour la ménopause, l'énergie et l'équilibre hormonal",
+                "Accès immédiat après achat Beacons",
+              ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-3"><Check className="mt-1 text-[var(--sage-600)] h-4 w-4 shrink-0" /> {item}</li>
               ))}
             </ul>
@@ -574,23 +613,30 @@ export default function NaturaBioByYasLanding() {
               rel="noopener noreferrer"
               className="btn-primary w-full py-4 rounded-2xl font-semibold text-base block text-center"
             >
-              Acheter l&apos;ebook à 9,99 €
+              Je prends l&apos;ebook à 9,99 €
             </a>
-            <p className="text-center text-xs mt-3 text-[#5A6B62]">Achat sur Beacons → Accès immédiat à l&apos;espace membres (IA + forum).</p>
+            <p className="text-center text-xs mt-3 text-[#5A6B62]">Paiement sur Beacons · Lien d&apos;accès envoyé par email</p>
           </div>
 
-          {/* Coaching */}
-          <div className="card rounded-3xl p-9 border-[#C5A46E] border-2 relative">
-            <div className="absolute -top-3 right-8 bg-[#C5A46E] text-white text-xs font-semibold px-4 py-1 rounded-full tracking-widest">LE PLUS PUISSANT</div>
+          <div className="card rounded-3xl p-7 sm:p-9 border-[#C5A46E] border-2 relative bg-white">
+            <div className="absolute -top-3 right-6 sm:right-8 bg-[#C5A46E] text-white text-xs font-semibold px-4 py-1 rounded-full tracking-widest">TRANSFORMATEUR</div>
             
-            <div className="uppercase tracking-[2px] text-xs text-[#C5A46E] mb-2">ACCOMPAGNEMENT PERSONNALISÉ</div>
-            <div className="text-3xl font-semibold">Coaching 4 semaines</div>
-            <div className="mt-1 text-5xl font-semibold tabular-nums tracking-tighter">299,99 €<span className="text-xl align-super font-normal text-[#5A6B62]"> une fois</span></div>
+            <div className="uppercase tracking-[2px] text-xs text-[#C5A46E] mb-2">ACCOMPAGNEMENT HUMAIN</div>
+            <div className="text-2xl sm:text-3xl font-semibold">Coaching 4 semaines</div>
+            <p className="text-sm text-[#5A6B62] mt-1">Protocole sur-mesure + suivi avec Yas</p>
+            <div className="mt-3 text-4xl sm:text-5xl font-semibold tabular-nums tracking-tighter">299,99 €<span className="text-lg align-super font-normal text-[#5A6B62]"> une fois</span></div>
 
-            <div className="my-8 h-px bg-[#E6EDE9]" />
+            <div className="my-6 h-px bg-[#E6EDE9]" />
 
-            <ul className="space-y-3 mb-9 text-[15px]">
-              {["Tout ce qui est inclus dans l&apos;ebook + accès prioritaire", "Appel ou visio découverte de 45 min pour poser le diagnostic", "Protocole écrit sur mesure (PDF + explications)", "Accès au groupe WhatsApp inclus avec l&apos;offre sur Beacons", "Chat privé avec moi pendant 4 semaines (réponses sous 24-48h)", "2 points d'étape + ajustements du protocole", "Soutien émotionnel et spirituel respectueux"].map((item, idx) => (
+            <ul className="space-y-3 mb-8 text-[15px]">
+              {[
+                "Tout l'illimité ebook + chat inclus",
+                "Appel / visio découverte 45 min",
+                "Protocole écrit personnalisé",
+                "Groupe WhatsApp + chat privé 4 semaines",
+                "Points d'étape et ajustements",
+                "Soutien émotionnel et spirituel respectueux",
+              ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-3"><Check className="mt-1 text-[var(--sage-600)] h-4 w-4 shrink-0" /> {item}</li>
               ))}
             </ul>
@@ -601,11 +647,23 @@ export default function NaturaBioByYasLanding() {
               rel="noopener noreferrer"
               className="w-full py-4 rounded-2xl font-semibold text-base bg-[#C5A46E] hover:bg-[#B38C55] text-white transition block text-center"
             >
-              Réserver le coaching à 299,99 €
+              Je réserve le coaching à 299,99 €
             </a>
-            <p className="text-center text-xs mt-3 text-[#5A6B62]">Seulement quelques places par mois pour un suivi de qualité</p>
+            <p className="text-center text-xs mt-3 text-[#5A6B62]">Peu de places · Suivi de qualité garanti</p>
           </div>
         </div>
+
+        <p className="text-center text-sm text-[#5A6B62] mt-8 px-4">
+          Pas encore sûre ?{' '}
+          <a href="/espace" className="text-[var(--sage-600)] font-medium underline underline-offset-2">
+            Teste d&apos;abord 10 questions gratuites
+          </a>
+          {' '}ou{' '}
+          <a href="/bilan" className="text-[var(--sage-600)] font-medium underline underline-offset-2">
+            fais ton bilan
+          </a>
+          .
+        </p>
       </section>
 
       {/* DISCLAIMER IMPORTANT */}
@@ -620,14 +678,21 @@ export default function NaturaBioByYasLanding() {
       </div>
 
       {/* FINAL CTA */}
-      <div className="bg-[#2C3F36] text-white py-16">
-        <div className="mx-auto max-w-lg text-center px-6">
-          <h3 className="text-4xl font-semibold tracking-tight mb-3">Prête à reprendre les rênes de ton bien-être ?</h3>
-          <p className="text-[#C9D6D0] mb-8">Commence par l&apos;ebook. Tu pourras toujours passer au coaching ensuite.</p>
-          <button onClick={() => document.getElementById('tarifs')?.scrollIntoView({ behavior: 'smooth' })} className="bg-white text-[#2C3F36] font-semibold rounded-full px-9 py-4 text-lg">
-            Je commence maintenant
-          </button>
-          <div className="mt-5 text-xs text-[#A8BDB5]">Paiement sécurisé • Satisfaite ou accompagnée</div>
+      <div className="bg-[#2C3F36] text-white py-14 sm:py-16">
+        <div className="mx-auto max-w-xl text-center px-4 sm:px-6">
+          <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">Prête à t&apos;écouter vraiment ?</h3>
+          <p className="text-[#C9D6D0] mb-8">
+            Commence gratuite. Si les réponses te parlent, l&apos;ebook à 9,99 € débloque l&apos;illimité.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="/espace" className="bg-white text-[#2C3F36] font-semibold rounded-full px-8 py-3.5 text-base sm:text-lg">
+              Essayer le chat gratuit
+            </a>
+            <a href="#tarifs" className="border border-white/40 text-white font-semibold rounded-full px-8 py-3.5 text-base sm:text-lg hover:bg-white/10 transition">
+              Voir l&apos;ebook &amp; le coaching
+            </a>
+          </div>
+          <div className="mt-5 text-xs text-[#A8BDB5]">Paiement sécurisé Beacons · Accès immédiat après achat</div>
         </div>
       </div>
 
