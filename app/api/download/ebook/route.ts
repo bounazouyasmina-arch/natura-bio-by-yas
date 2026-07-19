@@ -12,8 +12,13 @@ export async function GET(request: NextRequest) {
   const referer = request.headers.get("referer") || "";
   const url = new URL(request.url);
   const hasPaidFlag = url.searchParams.get("paid") === "true";
+  const accessCookie = request.cookies.get("natura_access")?.value;
 
-  const isAuthorized = referer.includes("/espace") || hasPaidFlag;
+  const isAuthorized =
+    referer.includes("/espace") ||
+    hasPaidFlag ||
+    accessCookie === "ebook" ||
+    accessCookie === "coaching";
 
   if (!isAuthorized) {
     return NextResponse.json(

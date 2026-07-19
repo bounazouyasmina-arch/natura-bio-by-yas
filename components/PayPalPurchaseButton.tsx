@@ -46,7 +46,7 @@ export default function PayPalPurchaseButton({
 
       // Redirige vers l'espace avec le flag de déblocage
       // (en vrai plus tard on stockera l'achat via email/orderID dans Supabase)
-      const redirectUrl = `/espace?unlocked=${successUnlocked}&paid=true&order=${details.id || ""}`;
+      const redirectUrl = `/espace?unlocked=${successUnlocked}&paid=true&welcome=1&order=${details.id || ""}`;
       
       // Petit délai pour voir le toast
       setTimeout(() => {

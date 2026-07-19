@@ -16,50 +16,75 @@ const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734
 // Lien du groupe WhatsApp que tu as mis sur ton offre Beacons (pour le coaching)
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
 
-// Pool d'articles pour la nouveauté à chaque visite
+// Pool LARGE et TRÈS VARIÉ pour TOUT public (jeunes et adultes) - santé au naturel générale
 const articlePool = [
-  { title: "L'approche holistique", slug: "approche-holistique", teaser: "Harmoniser corps et esprit en ménopause." },
-  { title: "La science valide les traditions", slug: "racines-traditionnelles", teaser: "Plantes et hormones : ce que disent les études." },
+  { title: "L'approche holistique", slug: "approche-holistique", teaser: "Harmoniser corps, esprit et émotions au quotidien." },
+  { title: "La science valide les traditions", slug: "racines-traditionnelles", teaser: "Plantes et remèdes ancestraux validés par les études." },
   { title: "Tu n'es pas seule", slug: "tu-nes-pas-seule", teaser: "La force du soutien émotionnel et collectif." },
-  { title: "Mieux dormir quand les hormones s'affolent", slug: "sommeil-hormones", teaser: "Protocoles naturels pour des nuits réparatrices." },
+  { title: "Mieux dormir naturellement", slug: "sommeil-hormones", teaser: "Protocoles pour des nuits réparatrices à tout âge." },
   { title: "Alléger la charge mentale sans culpabilité", slug: "charge-mentale", teaser: "Poser des limites avec douceur et efficacité." },
+  { title: "Aromathérapie pour le sommeil", slug: "aromatherapie-sommeil", teaser: "Huiles essentielles pour des nuits paisibles." },
+  { title: "Huiles pour calmer l'anxiété", slug: "aromatherapie-bouffees", teaser: "Synergies douces pour apaiser le mental." },
+  { title: "Naturopathie pour l'énergie vitale", slug: "naturopathie-energie", teaser: "Remèdes pour retrouver vitalité et clarté." },
+  { title: "Respiration et nerf vague", slug: "respiration-nerf-vague", teaser: "Techniques pour calmer l'anxiété et l'inflammation." },
+  { title: "Alimentation pour l'énergie", slug: "alimentation-hormones", teaser: "Nutrition pour plus d'énergie et clarté mentale." },
+  { title: "Huiles contre l'anxiété", slug: "aromatherapie-anxiete", teaser: "Synergies douces pour apaiser le mental rapidement." },
+  { title: "Points d'acupression MTC", slug: "mtc-bouffees", teaser: "Gestes simples de médecine chinoise pour l'énergie et la digestion." },
+  { title: "Nigelle & remèdes prophétiques", slug: "prophetique-nigelle", teaser: "Le trésor du Prophète ﷺ pour l'immunité et le bien-être." },
+  { title: "Alimentation anti-inflammatoire", slug: "alimentation-inflammatoire", teaser: "Ce qu'il faut manger pour calmer l'inflammation et l'énergie." },
+  { title: "Soutien naturel de l'énergie", slug: "libido-hormones", teaser: "Plantes, huiles et habitudes pour plus de vitalité." },
+  { title: "Gérer le poids naturellement", slug: "poids-menopause", teaser: "Stratégies douces et durables sans frustration." },
+  { title: "Magnésium et nutriments clés", slug: "magnesium-hormones", teaser: "Le minéral souvent manquant qui change tout." },
+  { title: "Respiration pour les émotions", slug: "respiration-emotions", teaser: "Calmer le stress et les émotions en quelques minutes." },
+  { title: "Énergie et fatigue chronique", slug: "thyroide-fatigue", teaser: "Solutions naturelles pour retrouver vitalité." },
+  { title: "Digestion & ballonnements", slug: "digestion-hormones", teaser: "Solutions naturelles pour un ventre léger et une meilleure digestion." },
 ];
 
 function getDailyArticles() {
-  const day = new Date().getDate();
-  const start = day % articlePool.length;
-  return [
-    articlePool[start],
-    articlePool[(start + 2) % articlePool.length],
-    articlePool[(start + 4) % articlePool.length],
-  ];
+  const mainSlugs = ['approche-holistique', 'racines-traditionnelles', 'tu-nes-pas-seule'];
+  let filtered = articlePool.filter(a => !mainSlugs.includes(a.slug));
+  // Full random shuffle for true variety each visit (not date-based)
+  for (let i = filtered.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+  }
+  return filtered.slice(0, 3);
 }
 
 function DynamicArticleSuggestions() {
-  const [articles, setArticles] = useState(getDailyArticles());
+  const [articles, setArticles] = useState<{title: string; slug: string; teaser: string}[]>([]);
 
   useEffect(() => {
-    // Petite variété par heure pour que ça change un peu même dans la journée
-    const hour = new Date().getHours();
-    if (hour % 4 === 0) {
-      setArticles([...getDailyArticles()].sort(() => Math.random() - 0.5));
-    }
+    // Random shuffle on each page load for true variety per visit
+    setArticles(getDailyArticles());
   }, []);
 
+  const refreshSuggestions = () => {
+    setArticles(getDailyArticles());
+  };
+
   return (
-    <div className="grid md:grid-cols-3 gap-4">
-      {articles.map((art, idx) => (
-        <a 
-          key={idx} 
-          href={`/blog#${art.slug}`} 
-          className="card p-5 hover:border-[var(--mint)] transition group"
-        >
-          <div className="text-xs text-[var(--mint)] mb-1">ARTICLE FRAIS AUJOURD'HUI</div>
-          <div className="font-semibold mb-1 group-hover:text-[var(--mint)] transition">{art.title}</div>
-          <p className="text-sm text-[#5A6B62]">{art.teaser}</p>
-          <span className="text-xs text-[var(--mint)] mt-2 inline-block">Lire l'article →</span>
-        </a>
-      ))}
+    <div>
+      <div className="grid md:grid-cols-3 gap-4">
+        {articles.map((art, idx) => (
+          <a 
+            key={idx} 
+            href={`/blog#${art.slug}`} 
+            className="card p-5 hover:border-[var(--mint)] transition group"
+          >
+            <div className="text-xs text-[var(--mint)] mb-1">ARTICLE VARIÉ (aléatoire)</div>
+            <div className="font-semibold mb-1 group-hover:text-[var(--mint)] transition">{art.title}</div>
+            <p className="text-sm text-[#5A6B62]">{art.teaser}</p>
+            <span className="text-xs text-[var(--mint)] mt-2 inline-block">Lire l'article →</span>
+          </a>
+        ))}
+      </div>
+      <button 
+        onClick={refreshSuggestions}
+        className="mt-3 text-sm text-[var(--mint)] hover:underline"
+      >
+        ↻ Voir d'autres suggestions aléatoires
+      </button>
     </div>
   );
 }
@@ -117,7 +142,7 @@ const pillars = [
     icon: Brain, 
     emoji: '🌙', 
     title: "Régulation Hormonale", 
-    desc: "Soutenir ton cycle, ta thyroïde, le cortisol et la ménopause avec des approches naturelles douces mais puissantes.",
+    desc: "Soutenir ton équilibre hormonal, ton énergie, ta thyroïde et ton bien-être général avec des approches naturelles douces.",
     color: '#7EC8B3',  // mint
     iconBg: '#E8F5F2'
   },
@@ -207,7 +232,7 @@ export default function NaturaBioByYasLanding() {
           Tes questions façonnent ta santé de demain.
         </p>
         <p className="mx-auto max-w-2xl text-lg text-[#5A6B62] mb-10">
-          9 sagesses IA (aromathérapie, naturopathie, nerf vague, hormones, médecine prophétique, chinoise...) te répondent avec précision, respect et profondeur. 10 questions gratuites. Accès illimité avec l&apos;ebook à 9,99 €.
+          9 sagesses IA (aromathérapie, naturopathie, nerf vague, équilibre hormonal, médecine prophétique, chinoise...) te répondent avec précision, respect et profondeur pour la santé au naturel à tout âge. 10 questions gratuites. Accès illimité avec l&apos;ebook à 9,99 €.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -245,7 +270,7 @@ export default function NaturaBioByYasLanding() {
         <div className="max-w-3xl">
           <h2 className="text-3xl font-semibold tracking-tight mb-4">natura’bio by yas est ton compagnon santé au naturel.</h2>
           <p className="text-lg text-[#5A6B62] mb-6">
-            Tu poses une question sur ton cycle, ta ménopause, ton énergie ou ta charge mentale…<br />
+            Tu poses une question sur ton énergie, ton sommeil, ton stress, ton cycle ou ta charge mentale…<br />
             9 sagesses IA te répondent avec des conseils précis, concrets et respectueux de ta foi et de ton corps.
           </p>
 
@@ -303,7 +328,7 @@ export default function NaturaBioByYasLanding() {
       <section className="mx-auto max-w-5xl px-6 py-16 bg-white rounded-3xl border border-[var(--border-soft)]">
         <div className="text-center mb-10">
           <div className="text-[var(--mint)] text-sm tracking-[2px] font-medium mb-1">NOTRE MISSION</div>
-          <h2 className="text-3xl font-semibold tracking-tight" style={{color: 'var(--sage-500)'}}>Accompagner les femmes avec douceur, science et sagesse ancestrale</h2>
+          <h2 className="text-3xl font-semibold tracking-tight" style={{color: 'var(--sage-500)'}}>Accompagner chacun avec douceur, science et sagesse ancestrale</h2>
           <p className="mt-3 text-[#5A6B62] max-w-lg mx-auto">Allier les approches naturelles (aromathérapie, MTC, naturopathie, médecine prophétique...) à une écoute bienveillante de ton corps et de ton esprit.</p>
         </div>
 
@@ -330,23 +355,12 @@ export default function NaturaBioByYasLanding() {
           })}
         </div>
 
-        {/* SUGGESTIONS QUI CHANGENT - pour la nouveauté à chaque visite */}
+        {/* SUGGESTIONS QUI CHANGENT - variété supplémentaire (articles différents des 3 cartes principales) */}
         <div className="mt-8 mb-12">
           <div className="text-center mb-6">
-            <div className="text-[var(--mint)] text-sm tracking-[2px] font-medium mb-1">CONSEILS FRAIS AUJOURD'HUI</div>
-            <h3 className="text-2xl font-semibold tracking-tight">Articles et pistes qui varient</h3>
-            <p className="text-[#5A6B62] mt-1">Parce que tu mérites de la nouveauté à chaque passage.</p>
-          </div>
-
-          <DynamicArticleSuggestions />
-        </div>
-
-        {/* SUGGESTIONS QUI CHANGENT - nouveauté pour les visiteurs qui reviennent */}
-        <div className="mt-8 mb-12">
-          <div className="text-center mb-6">
-            <div className="text-[var(--mint)] text-sm tracking-[2px] font-medium mb-1">CONSEILS FRAIS AUJOURD'HUI</div>
-            <h3 className="text-2xl font-semibold tracking-tight">Articles et pistes qui varient</h3>
-            <p className="text-[#5A6B62] mt-1">Parce que tu mérites de la nouveauté à chaque passage.</p>
+            <div className="text-[var(--mint)] text-sm tracking-[2px] font-medium mb-1">AUTRES ARTICLES VARIÉS AUJOURD'HUI</div>
+            <h3 className="text-2xl font-semibold tracking-tight">Conseils frais (différents des thèmes ci-dessus)</h3>
+            <p className="text-[#5A6B62] mt-1">Nouveauté quotidienne pour ne pas voir toujours la même chose.</p>
           </div>
 
           <DynamicArticleSuggestions />
@@ -357,15 +371,15 @@ export default function NaturaBioByYasLanding() {
       <section className="mx-auto max-w-5xl px-6 pb-16">
         <div className="text-center mb-8">
           <div className="text-[var(--mint)] text-sm tracking-[2px] font-medium mb-1">DES RÉPONSES QUI PARLENT VRAI</div>
-          <h3 className="text-2xl font-semibold tracking-tight">Exemples de questions que les femmes posent</h3>
+          <h3 className="text-2xl font-semibold tracking-tight">Exemples de questions que les gens posent</h3>
         </div>
         <div className="grid md:grid-cols-3 gap-4 text-sm">
           {[
             "Pourquoi je craque à 15h tous les jours ?",
-            "Comment calmer mes bouffées de chaleur sans hormones ?",
+            "Comment calmer l'anxiété et le stress naturellement ?",
             "J’ai tout le temps la charge mentale, comment poser des limites ?",
             "Insomnies malgré la fatigue : que faire avec les huiles et la respiration ?",
-            "Mon cycle est irrégulier, par où commencer naturellement ?",
+            "Comment booster mon énergie et mon immunité naturellement ?",
             "Je me sens vidée émotionnellement, quels outils en MTC et naturopathie ?"
           ].map((q, i) => (
             <div key={i} className="feature-card card rounded-2xl px-5 py-4 text-[#5A6B62] border border-[var(--border-soft)]">

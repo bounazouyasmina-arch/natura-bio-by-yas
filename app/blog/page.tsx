@@ -13,6 +13,7 @@ export default function BlogPage() {
             <span className="font-semibold">natura'bio by yas</span>
           </Link>
           <Link href="/" className="text-sm hover:text-[#4A9B8C]">← Retour à l'accueil</Link>
+          <Link href="/bilan" className="text-sm hover:text-[#4A9B8C] ml-4">← Retour à mon bilan</Link>
         </div>
       </nav>
 
@@ -26,24 +27,24 @@ export default function BlogPage() {
         {/* Article 1 */}
         <article id="approche-holistique" className="card rounded-3xl p-8 mb-10 scroll-mt-20">
           <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">APPROCHE HOLISTIQUE</div>
-          <h2 className="text-3xl font-semibold tracking-tight mb-4">L'approche holistique : harmoniser corps, émotions et hormones</h2>
+          <h2 className="text-3xl font-semibold tracking-tight mb-4">L'approche holistique : harmoniser corps, émotions et énergie</h2>
           
           <div className="prose prose-sm max-w-none text-[#5A6B62]">
-            <p>En période de ménopause ou de déséquilibre hormonal, il est rare qu’un seul symptôme se manifeste isolément. Bouffées de chaleur, insomnies, irritabilité, brouillard mental et prise de poids sont souvent interconnectés.</p>
+            <p>Qu’on soit étudiant stressé, parent débordé, ou en période de transition, il est rare qu’un seul symptôme se manifeste isolément. Anxiété, insomnies, fatigue, brouillard mental et troubles digestifs sont souvent interconnectés.</p>
             
             <p>L’approche holistique consiste à traiter la personne dans sa globalité plutôt que de masquer un symptôme. Chez natura’bio, nous combinons :</p>
             
             <ul>
-              <li><strong>Aromathérapie</strong> : synergies d’huiles essentielles ciblées (sauge sclarée, lavande, géranium)</li>
+              <li><strong>Aromathérapie</strong> : synergies d’huiles essentielles ciblées (lavande, sauge sclarée, géranium)</li>
               <li><strong>Régulation du nerf vague</strong> : exercices de respiration et techniques de recentrage</li>
-              <li><strong>Alimentation thérapeutique</strong> : cycle syncing, adaptogènes et micronutrition</li>
+              <li><strong>Alimentation thérapeutique</strong> : alimentation anti-inflammatoire, adaptogènes et micronutrition</li>
               <li><strong>Médecine traditionnelle chinoise et prophétique</strong> : points d’acupression, plantes et rituels ancestraux</li>
             </ul>
 
             <p>Cette vision intégrative permet d’obtenir des résultats durables, car elle agit sur les causes profondes plutôt que sur les manifestations.</p>
 
             <p className="mt-4 font-medium text-[#2A3A32]">Exemple concret :</p>
-            <p>Une femme en périménopause qui souffre de bouffées de chaleur et d’anxiété peut bénéficier d’une synergie huile essentielle de sauge sclarée + respiration 4-6 + infusion de mélisse le soir. Les résultats sont souvent visibles en 2 à 3 semaines.</p>
+            <p>Une personne stressée qui souffre d’anxiété et de troubles du sommeil peut bénéficier d’une synergie huile essentielle de lavande + respiration 4-6 + infusion de mélisse le soir. Les résultats sont souvent visibles en 2 à 3 semaines.</p>
           </div>
 
           <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
@@ -54,7 +55,7 @@ export default function BlogPage() {
         {/* Article 2 */}
         <article id="racines-traditionnelles" className="card rounded-3xl p-8 mb-10 scroll-mt-20">
           <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">RACINES TRADITIONNELLES + SCIENCE</div>
-          <h2 className="text-3xl font-semibold tracking-tight mb-4">La science valide les traditions : plantes et hormones</h2>
+          <h2 className="text-3xl font-semibold tracking-tight mb-4">La science valide les traditions : plantes et remèdes naturels</h2>
           
           <div className="prose prose-sm max-w-none text-[#5A6B62]">
             <p>Les médecines ancestrales n’étaient pas des « remèdes de grand-mère » sans fondement. De nombreuses études modernes confirment aujourd’hui l’efficacité de plantes utilisées depuis des millénaires.</p>
@@ -62,9 +63,9 @@ export default function BlogPage() {
             <h3 className="text-lg font-semibold mt-6 mb-2 text-[#2A3A32]">Quelques exemples validés par la science :</h3>
             
             <ul>
-              <li><strong>Nigelle (cumin noir)</strong> : études montrent son action régulatrice sur les hormones thyroïdiennes et la réduction de l’inflammation.</li>
-              <li><strong>Sauge sclarée</strong> : des recherches ont démontré son effet sur les bouffées de chaleur et l’équilibre des œstrogènes.</li>
-              <li><strong>Maca</strong> : plusieurs essais cliniques confirment son action sur l’énergie, la libido et l’humeur pendant la ménopause.</li>
+              <li><strong>Nigelle (cumin noir)</strong> : études montrent son action sur l’immunité, la réduction de l’inflammation et le soutien général de l’énergie.</li>
+              <li><strong>Sauge sclarée et lavande</strong> : des recherches ont démontré leurs effets sur l’anxiété, le stress et la qualité du sommeil.</li>
+              <li><strong>Maca et adaptogènes</strong> : plusieurs essais cliniques confirment leur action sur l’énergie, la résistance au stress et l’humeur.</li>
               <li><strong>Huiles essentielles</strong> : la lavande et le géranium ont des effets prouvés sur le système nerveux et la qualité du sommeil.</li>
             </ul>
 
@@ -84,9 +85,9 @@ export default function BlogPage() {
           <h2 className="text-3xl font-semibold tracking-tight mb-4">La force du collectif et du soutien émotionnel</h2>
           
           <div className="prose prose-sm max-w-none text-[#5A6B62]">
-            <p>La charge mentale, l’isolement et le manque de reconnaissance sont souvent les symptômes les plus invisibles de la ménopause et des déséquilibres hormonaux.</p>
+            <p>La charge mentale, l’isolement et le manque de reconnaissance sont souvent les symptômes les plus invisibles du stress moderne, du burnout ou des périodes de transition.</p>
 
-            <p>Pourtant, des études montrent que le soutien social et émotionnel joue un rôle majeur dans l’amélioration des symptômes physiques et de la qualité de vie.</p>
+            <p>Pourtant, des études montrent que le soutien social et émotionnel joue un rôle majeur dans l’amélioration du bien-être physique et de la qualité de vie à tout âge.</p>
 
             <h3 className="text-lg font-semibold mt-6 mb-2 text-[#2A3A32]">Ce que nous proposons concrètement :</h3>
             
@@ -97,7 +98,7 @@ export default function BlogPage() {
               <li>Des protocoles qui intègrent le travail intérieur et la revalorisation de soi</li>
             </ul>
 
-            <p className="mt-4">Vous n’avez pas à porter seule la transformation de cette période de vie. Des centaines de femmes vivent les mêmes questionnements et trouvent du réconfort et des solutions dans la communauté.</p>
+            <p className="mt-4">Vous n’avez pas à porter seul(e) vos questionnements. Des centaines de personnes trouvent du réconfort et des solutions dans la communauté.</p>
           </div>
 
           <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
@@ -107,11 +108,11 @@ export default function BlogPage() {
 
         {/* Article 4 - Nouveauté pour variété */}
         <article id="sommeil-hormones" className="card rounded-3xl p-8 mb-10 scroll-mt-20">
-          <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">SOMMEIL &amp; HORMONES</div>
-          <h2 className="text-3xl font-semibold tracking-tight mb-4">Mieux dormir quand les hormones s'affolent</h2>
+          <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">SOMMEIL NATUREL</div>
+          <h2 className="text-3xl font-semibold tracking-tight mb-4">Mieux dormir naturellement</h2>
           
           <div className="prose prose-sm max-w-none text-[#5A6B62]">
-            <p>Les insomnies en ménopause ou en cas de déséquilibre hormonal sont souvent liées à la chute de progestérone et à l'augmentation du cortisol le soir.</p>
+            <p>Les insomnies sont souvent liées au stress, aux écrans, à l'alimentation tardive ou à un rythme de vie intense. Elles touchent les étudiants, les actifs et les parents à tout âge.</p>
 
             <p>Plutôt que de lutter contre le sommeil, on peut accompagner le corps avec des outils naturels ciblés :</p>
             
@@ -122,7 +123,7 @@ export default function BlogPage() {
               <li>Éviter les écrans bleus et les repas lourds après 20h.</li>
             </ul>
 
-            <p className="mt-4">Beaucoup de femmes remarquent une amélioration notable en combinant 2-3 de ces outils de façon régulière.</p>
+            <p className="mt-4">Beaucoup de personnes remarquent une amélioration notable en combinant 2-3 de ces outils de façon régulière.</p>
           </div>
 
           <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
@@ -136,7 +137,7 @@ export default function BlogPage() {
           <h2 className="text-3xl font-semibold tracking-tight mb-4">Alléger la charge mentale sans culpabilité</h2>
           
           <div className="prose prose-sm max-w-none text-[#5A6B62]">
-            <p>La charge mentale n'est pas qu'une question d'organisation : c'est aussi une charge émotionnelle et identitaire, surtout à la ménopause quand on remet beaucoup de choses en question.</p>
+            <p>La charge mentale n'est pas qu'une question d'organisation : c'est aussi une charge émotionnelle et identitaire, que l'on soit étudiant, parent, ou professionnel. Elle touche tout le monde à différents moments de la vie.</p>
 
             <p>Quelques pistes puissantes et douces :</p>
             
@@ -155,11 +156,35 @@ export default function BlogPage() {
           </div>
         </article>
 
+        {/* Article 6 - for variety in suggestions */}
+        <article id="aromatherapie-sommeil" className="card rounded-3xl p-8 mb-10 scroll-mt-20">
+          <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">AROMATHÉRAPIE</div>
+          <h2 className="text-3xl font-semibold tracking-tight mb-4">Aromathérapie pour le sommeil et la détente</h2>
+          
+          <div className="prose prose-sm max-w-none text-[#5A6B62]">
+            <p>Les huiles essentielles peuvent grandement aider à apaiser le système nerveux et favoriser un sommeil réparateur ou une meilleure détente, que ce soit face au stress du quotidien, aux examens ou à une vie bien remplie.</p>
+
+            <p>Recette simple pour la nuit :</p>
+            
+            <ul>
+              <li>2 gouttes de lavande vraie + 1 goutte de camomille romaine sur un mouchoir près de l'oreiller.</li>
+              <li>Ou un roll-on : 5ml d'huile végétale + 10 gouttes lavande + 5 gouttes marjolaine.</li>
+              <li>Masser les poignets et le plexus avant de dormir.</li>
+            </ul>
+
+            <p className="mt-4">Évitez les huiles stimulantes comme le romarin le soir. Testez et notez ce qui fonctionne pour vous.</p>
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
+            <Link href="/espace" className="text-sm text-[#4A9B8C] hover:underline">→ Demander un mélange personnalisé à l'agent Aromathérapie</Link>
+          </div>
+        </article>
+
         <div className="text-center mt-12">
           <p className="text-[#5A6B62] mb-4">Vous voulez aller plus loin sur ces thématiques ?</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/espace" className="btn-primary px-6 py-3 rounded-2xl font-semibold">Accéder à l'espace membres</Link>
-            <Link href="/bilan" className="px-6 py-3 rounded-2xl font-semibold border border-[#4A9B8C] hover:bg-[#F4F7F5]">Faire mon bilan personnalisé</Link>
+            <Link href="/bilan" className="px-6 py-3 rounded-2xl font-semibold border border-[#4A9B8C] hover:bg-[#F4F7F5]">Retour à mon bilan (pour voir d'autres articles)</Link>
           </div>
         </div>
       </div>

@@ -7,6 +7,17 @@ import {
   Send, ArrowLeft, Lock, BookOpen 
 } from 'lucide-react';
 import { toast } from 'sonner';
+import {
+  type AccessTier,
+  getAccessLabel,
+  hasCoachingAccess,
+  hasEbookAccess,
+  isPremiumAccess,
+  readAccessSince,
+  readStoredAccessTier,
+  resolveAccessTier,
+  saveAccessTier,
+} from '@/lib/member-access';
 
 // Lien du groupe WhatsApp que tu as mis sur ton offre Beacons (coaching)
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
@@ -21,9 +32,9 @@ const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734
 const agents = [
   { id: 'globale', name: 'La Sage Globale', emoji: '🌿', desc: 'Toutes les approches combinées', color: '#4F6B5F', iconBg: '#E8F0EC' },
   { id: 'aromatherapie', name: 'Aromathérapeute', emoji: '🌸', desc: 'Huiles essentielles & synergies', color: '#7C6B9C', iconBg: '#F0E9F8' },
-  { id: 'naturopathie', name: 'Naturopathe', emoji: '🌱', desc: 'Terrain & vitalité', color: '#4A6B55', iconBg: '#E8F0E9' },
-  { id: 'respiration', name: 'Respiration & Nerf Vague', emoji: '💨', desc: 'Régulation nerveuse', color: '#5A7E7E', iconBg: '#E6F0F0' },
-  { id: 'hormones', name: 'Hormones & Ménopause', emoji: '🌙', desc: 'Cycle et équilibre hormonal', color: '#B37E8F', iconBg: '#F8ECF1' },
+  { id: 'naturopathie', name: 'Naturopathe', emoji: '🌱', desc: 'Terrain, vitalité & immunité', color: '#4A6B55', iconBg: '#E8F0E9' },
+  { id: 'respiration', name: 'Respiration & Nerf Vague', emoji: '💨', desc: 'Régulation nerveuse & stress', color: '#5A7E7E', iconBg: '#E6F0F0' },
+  { id: 'hormones', name: 'Équilibre Hormonal', emoji: '🌙', desc: 'Cycle, énergie et bien-être hormonal', color: '#B37E8F', iconBg: '#F8ECF1' },
   { id: 'mtc', name: 'Médecine Chinoise', emoji: '☯️', desc: 'Qi, méridiens, diététique', color: '#B36B5E', iconBg: '#F8EDE9' },
   { id: 'prophetique', name: 'Médecine Prophétique', emoji: '📖', desc: 'Remèdes du Prophète ﷺ', color: '#B38B5E', iconBg: '#F7F0E6' },
   { id: 'alimentation', name: 'Nutrition Thérapeutique', emoji: '🍎', desc: 'Alimentation & micronutrition', color: '#C68E6B', iconBg: '#F9ECE4' },
@@ -32,13 +43,41 @@ const agents = [
 
 // Forum mock (on branchera Supabase plus tard)
 const initialPosts = [
-  { id: 1, author: "Amina", title: "Huile essentielle pour les bouffées de chaleur ?", content: "Quelles huiles sont les plus adaptées en période de ménopause sans risque ?", replies: 4, agent: "aromatherapie" },
+  { id: 1, author: "Amina", title: "Huiles pour l'anxiété et le stress ?", content: "Quelles huiles sont les plus adaptées pour calmer l'anxiété au quotidien sans risque ?", replies: 4, agent: "aromatherapie" },
   { id: 2, author: "Fatima", title: "Respiration pour calmer les insomnies", content: "Je cherche des exercices simples à faire le soir qui agissent vraiment sur le nerf vague.", replies: 7, agent: "respiration" },
 ];
 
 function EspaceContent() {
   const searchParams = useSearchParams();
-  const unlocked = searchParams.get('unlocked'); // ebook | coaching | null
+  const unlockedParam = searchParams.get('unlocked');
+  const fromBeacons = searchParams.get('from') === 'beacons';
+  const showWelcome = searchParams.get('welcome') === '1';
+
+  // Exemples variés et adaptés à TOUT public (jeunes, adultes, tous âges) - pas que hormones/ménopause
+  const agentExamples: Record<string, string> = {
+    globale: 'Comment combiner plusieurs approches naturelles pour mieux gérer le stress, le sommeil et l\'énergie au quotidien ?',
+    aromatherapie: 'Quelles huiles essentielles et synergies pour apaiser l\'anxiété, améliorer le sommeil ou soulager les maux de tête ?',
+    naturopathie: 'Quels remèdes naturels et plantes pour booster l\'immunité, l\'énergie ou améliorer la digestion ?',
+    respiration: 'Quels exercices de respiration et techniques du nerf vague pour réduire le stress et améliorer la concentration ?',
+    hormones: 'Comment soutenir naturellement mon équilibre hormonal pour plus d\'énergie, une meilleure peau et un cycle régulier ?',
+    mtc: 'Quels points d\'acupression ou conseils de diététique chinoise pour la digestion, l\'énergie ou le stress ?',
+    prophetique: 'Comment utiliser nigelle, miel et autres remèdes ancestraux pour l\'immunité, l\'énergie et le bien-être général ?',
+    alimentation: 'Quels aliments et micronutriments pour plus d\'énergie, une meilleure concentration et une peau éclatante ?',
+    emotion: 'Comment alléger la charge mentale, gérer l\'anxiété et retrouver un meilleur équilibre émotionnel ?',
+  };
+
+  // Versions courtes pour le placeholder de l'input (variées pour tous)
+  const agentPrompts: Record<string, string> = {
+    globale: 'Gérer stress, sommeil et énergie naturellement ?',
+    aromatherapie: 'Huiles pour anxiété, sommeil ou maux de tête ?',
+    naturopathie: 'Plantes pour immunité, énergie ou digestion ?',
+    respiration: 'Respiration pour stress et concentration ?',
+    hormones: 'Équilibre hormonal pour énergie et peau ?',
+    mtc: 'Acupression et diététique pour digestion/stress ?',
+    prophetique: 'Nigelle et remèdes pour immunité et énergie ?',
+    alimentation: 'Aliments pour énergie, concentration et peau ?',
+    emotion: 'Alléger charge mentale et anxiété ?',
+  };
 
   const [activeTab, setActiveTab] = useState<'accueil' | 'chat' | 'forum' | 'protocoles' | 'compte'>('accueil');
   const [selectedAgent, setSelectedAgent] = useState('globale');
@@ -47,19 +86,48 @@ function EspaceContent() {
   const [newPostContent, setNewPostContent] = useState('');
   const [showNewPost, setShowNewPost] = useState(false);
 
-  const hasEbook = unlocked === 'ebook' || unlocked === 'coaching';
-  const isCoaching = unlocked === 'coaching';
   const justPaid = searchParams.get('paid') === 'true';
 
   // Limite gratuite : 10 questions. L'ebook à 9,99 € donne l'accès illimité.
   const FREE_QUESTION_LIMIT = 10;
   const [freeQuestionsUsed, setFreeQuestionsUsed] = useState(0);
-  const isPremium = unlocked === 'premium' || isCoaching || hasEbook;
+  const [accessTier, setAccessTier] = useState<AccessTier>('free');
+  const [accessSince, setAccessSince] = useState<string | null>(null);
+
+  const hasEbook = hasEbookAccess(accessTier);
+  const isCoaching = hasCoachingAccess(accessTier);
+  const isPremium = isPremiumAccess(accessTier);
 
   useEffect(() => {
     const saved = localStorage.getItem('sv_free_questions') || '0';
     setFreeQuestionsUsed(parseInt(saved, 10));
-  }, []);
+
+    const urlTier =
+      unlockedParam === 'ebook' || unlockedParam === 'coaching' || unlockedParam === 'premium'
+        ? (unlockedParam === 'premium' ? 'ebook' : unlockedParam)
+        : null;
+
+    const storedTier = readStoredAccessTier();
+    const merged = resolveAccessTier(storedTier, urlTier);
+
+    if (urlTier) {
+      const savedTier = saveAccessTier(urlTier);
+      setAccessTier(savedTier);
+      setAccessSince(readAccessSince());
+
+      if (showWelcome || fromBeacons || justPaid) {
+        toast.success(
+          savedTier === 'coaching'
+            ? 'Coaching activé — bienvenue dans ton espace !'
+            : 'Accès illimité activé — bienvenue dans ton espace !',
+          { description: 'Ton accès est enregistré sur cet appareil.' }
+        );
+      }
+    } else {
+      setAccessTier(merged);
+      setAccessSince(readAccessSince());
+    }
+  }, [unlockedParam, fromBeacons, showWelcome, justPaid]);
 
   // === NOUVEAUTÉS : Bilan initial, Tips, Articles, Suivi symptômes ===
   const [bilanInitial, setBilanInitial] = useState<any>(null);
@@ -85,29 +153,35 @@ function EspaceContent() {
     note: ''
   });
   const [showBilanSuccess, setShowBilanSuccess] = useState(false);
+  const [lastLead, setLastLead] = useState<{ mainConcerns?: string[] } | null>(null);
 
   const symptomsOptions = [
-    "Bouffées de chaleur", "Insomnies / Troubles du sommeil", "Fatigue chronique",
+    "Stress et anxiété", "Insomnies / Troubles du sommeil", "Fatigue chronique",
     "Anxiété / Stress / Charge mentale", "Irritabilité / Sautes d'humeur",
-    "Brouillard mental", "Douleurs articulaires", "Prise de poids",
-    "Baisse d'énergie ou de libido", "Troubles digestifs", "Cycle irrégulier ou SPM"
+    "Brouillard mental / Difficultés de concentration", "Problèmes de peau",
+    "Baisse d'énergie", "Troubles digestifs", "Baisse d'immunité",
+    "Douleurs articulaires ou musculaires", "Cycle irrégulier ou SPM", "Prise de poids"
   ];
 
   const dailyTips = [
-    "Aujourd'hui : 3 gouttes de sauge sclarée dans un inhalateur pour équilibrer les hormones.",
-    "Astuce : Bois une infusion de sauge + menthe poivrée l'après-midi pour réduire les bouffées.",
+    "Astuce : 3 gouttes de lavande en diffusion ou inhalateur pour apaiser le stress et bien dormir.",
     "Pour le nerf vague : 5 min de respiration 4-6 (4 sec inspire, 6 sec expire) avant de dormir.",
-    "Nutrition : Ajoute des graines de lin moulues à tes yaourts pour les oméga-3 et phyto-œstrogènes.",
+    "Nutrition : Ajoute des graines de lin moulues à tes yaourts pour les oméga-3 et l'énergie.",
     "Émotionnel : Note 3 choses positives de ta journée avant de te coucher – ça réduit la charge mentale.",
     "Huile essentielle : Mélange lavande + ylang-ylang dans un roll-on pour les nuits agitées.",
-    "Mouvement doux : 10 min de marche consciente après manger aide la régulation glycémique.",
-    "Plante : Le maca en poudre (1/2 c à c) dans un smoothie pour soutenir l'énergie et les hormones."
+    "Mouvement doux : 10 min de marche consciente après manger aide la digestion et l'énergie.",
+    "Plante : Le maca en poudre (1/2 c à c) dans un smoothie pour soutenir l'énergie générale.",
+    "Astuce MTC : Masse le point « Eau de la source » (gros orteil) 1 min pour booster l'énergie.",
+    "Prophétique : Une cuillère de nigelle + miel le matin pour l'immunité et le bien-être.",
+    "Respiration : 4-7-8 avant de dormir améliore la qualité du sommeil en quelques jours.",
+    "Alimentation : 1 avocat par jour + noix pour les bons gras et la clarté mentale.",
+    "Astuce : Infusion de menthe + gingembre l'après-midi pour la digestion et l'énergie."
   ];
 
   const miniArticles = [
-    { id: 1, title: "Les 5 huiles essentielles pour la ménopause", cat: "Aromathérapie", text: "La lavande apaise, la sauge sclarée équilibre, le géranium régule. Découvre les synergies sûres." },
-    { id: 2, title: "Pourquoi le nerf vague est ton meilleur ami", cat: "Régulation nerveuse", text: "80% des signaux corps-cerveau passent par lui. Une respiration lente = moins d'inflammation et meilleur sommeil." },
-    { id: 3, title: "Alimentation cycle & ménopause : les bases", cat: "Alimentation", text: "Protéines à chaque repas, oméga-3, fibres et magnésium. Évite les pics de sucre qui aggravent les symptômes." },
+    { id: 1, title: "Les 5 huiles essentielles essentielles", cat: "Aromathérapie", text: "La lavande apaise, la sauge sclarée équilibre, le géranium régule. Découvre les synergies sûres pour tous." },
+    { id: 2, title: "Pourquoi le nerf vague est ton meilleur ami", cat: "Régulation nerveuse", text: "80% des signaux corps-cerveau passent par lui. Une respiration lente = moins de stress et meilleur sommeil." },
+    { id: 3, title: "Alimentation anti-inflammatoire : les bases", cat: "Alimentation", text: "Protéines à chaque repas, oméga-3, fibres et magnésium. Pour plus d'énergie et clarté." },
     { id: 4, title: "Comment poser des limites sans culpabilité", cat: "Charge mentale", text: "La charge invisible commence par des micro-décisions. Commence par une phrase simple : « Je ne peux pas ce jour-là »." }
   ];
 
@@ -117,24 +191,63 @@ function EspaceContent() {
 
     const savedLogs = localStorage.getItem('natura_symptom_logs');
     if (savedLogs) setSymptomLogs(JSON.parse(savedLogs));
+
+    const leads = JSON.parse(localStorage.getItem('natura_leads') || '[]');
+    if (leads.length > 0) setLastLead(leads[0]);
   }, []);
 
-  const getDailyTip = () => {
-    const day = new Date().getDate();
-    return dailyTips[day % dailyTips.length];
+  // Tip vraiment aléatoire à chaque visite / clic (plus de date-based répétitif)
+  const [currentTip, setCurrentTip] = useState("");
+
+  const getNewDailyTip = () => {
+    // Pick random, but avoid the exact same one as currently shown (for real variety)
+    let tip = dailyTips[Math.floor(Math.random() * dailyTips.length)];
+    if (dailyTips.length > 1 && tip === currentTip) {
+      const idx = dailyTips.indexOf(tip);
+      tip = dailyTips[(idx + 1) % dailyTips.length];
+    }
+    setCurrentTip(tip);
+    return tip;
   };
 
-  // Suggestions dynamiques pour l'espace (basées sur le dernier bilan + variété)
-  function getDynamicSuggestionsForEspace(concerns: string[]) {
-    const pool = [
-      { title: "Mieux dormir", slug: "sommeil-hormones" },
-      { title: "Charge mentale", slug: "charge-mentale" },
-      { title: "Approche holistique", slug: "approche-holistique" },
-      { title: "Science & traditions", slug: "racines-traditionnelles" },
-    ];
-    const relevant = pool.filter(p => concerns.some(c => c.toLowerCase().includes(p.title.toLowerCase().split(' ')[0]) || c.includes("Anxiété")));
-    return (relevant.length ? relevant : pool).slice(0, 2);
-  }
+  // Always pick a fresh random tip on mount / page load for variety
+  useEffect(() => {
+    getNewDailyTip();
+  }, []);
+
+  // Pool TRÈS VARIÉ pour TOUT public (suggestions générales pour tous âges)
+  const espaceSuggestionPool = [
+    { title: "Mieux dormir naturellement", slug: "sommeil-hormones" },
+    { title: "Alléger la charge mentale", slug: "charge-mentale" },
+    { title: "Approche holistique", slug: "approche-holistique" },
+    { title: "Science & traditions", slug: "racines-traditionnelles" },
+    { title: "Huiles contre l'anxiété", slug: "aromatherapie-anxiete" },
+    { title: "Points MTC pour l'énergie", slug: "mtc-bouffees" },
+    { title: "Nigelle & remèdes prophétiques", slug: "prophetique-nigelle" },
+    { title: "Alimentation anti-inflammatoire", slug: "alimentation-inflammatoire" },
+    { title: "Booster l'énergie vitale", slug: "libido-hormones" },
+    { title: "Gérer le poids naturellement", slug: "poids-menopause" },
+    { title: "Magnésium & nutriments clés", slug: "magnesium-hormones" },
+    { title: "Respiration pour les émotions", slug: "respiration-emotions" },
+    { title: "Énergie et fatigue", slug: "thyroide-fatigue" },
+    { title: "Digestion & confort intestinal", slug: "digestion-hormones" },
+  ];
+
+  const [espaceSuggestions, setEspaceSuggestions] = useState<any[]>([]);
+
+  const refreshEspaceSuggestions = () => {
+    // Full random shuffle + pick 3 different each time
+    let shuffled = [...espaceSuggestionPool];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    setEspaceSuggestions(shuffled.slice(0, 3));
+  };
+
+  useEffect(() => {
+    refreshEspaceSuggestions();
+  }, []);
 
   const toggleConcern = (symptom: string) => {
     setBilanForm(prev => ({
@@ -236,7 +349,7 @@ function EspaceContent() {
         }
       }
 
-      const aiMessage = fullText.trim() || "Désolé, je n'ai pas pu générer de réponse. Vérifie ta clé XAI_API_KEY.";
+      const aiMessage = fullText.trim() || `[Mode démo] Merci pour ta question ! En conditions réelles (avec clé XAI_API_KEY), l'agent ${agents.find(a => a.id === selectedAgent)?.name} analyserait précisément ta demande et te proposerait des conseils adaptés. Voici une réponse de démonstration : les approches naturelles (huiles, respiration, plantes, etc.) peuvent t'aider selon ton besoin. N'oublie pas : ceci n'est pas un avis médical.`;
       setMessages([...newMessages, { role: 'assistant' as const, content: aiMessage }]);
 
       // Incrémente le compteur gratuit seulement si pas premium
@@ -246,13 +359,10 @@ function EspaceContent() {
         localStorage.setItem('sv_free_questions', newCount.toString());
       }
     } catch (err: any) {
-      toast.error("Erreur IA", { 
-        description: "Vérifie que XAI_API_KEY est configurée dans .env.local ou ajoute un message de test." 
-      });
-      // Fallback démo
+      // Fallback démo silencieux (pas d'erreur bloquante si pas de clé)
       setMessages([...newMessages, { 
         role: 'assistant', 
-        content: `[Mode démo] Merci pour ta question sur ${selectedAgent}. En conditions réelles, la Sage te répondrait avec des conseils précis en ${agents.find(a => a.id === selectedAgent)?.name}. N'oublie pas le disclaimer : ceci n'est pas un avis médical.` 
+        content: `[Mode démo] Merci pour ta question ! En conditions réelles avec XAI_API_KEY, l'agent ${agents.find(a => a.id === selectedAgent)?.name} te donnerait une réponse personnalisée et adaptée. Pour l'instant : utilise les approches naturelles (aromathérapie, respiration, plantes...) selon ton besoin. N'oublie pas : ceci n'est pas un avis médical.` 
       }]);
     } finally {
       setIsLoading(false);
@@ -352,9 +462,11 @@ function EspaceContent() {
       </div>
 
       <div className="mx-auto max-w-7xl w-full px-6 py-8 flex-1">
-        {justPaid && (
+        {(justPaid || (showWelcome && isPremium)) && (
           <div className="mb-6 rounded-2xl bg-[#5B7B6E] text-white p-4 text-center text-sm font-medium">
-            Paiement reçu avec succès via PayPal 🎉 Bienvenue dans ton espace. Ton ebook est prêt à être téléchargé.
+            {isCoaching
+              ? 'Bienvenue ! Ton coaching est actif — protocoles, chat illimité et groupe WhatsApp t\'attendent.'
+              : 'Bienvenue ! Ton accès illimité est actif — chat IA, forum et ebook te sont ouverts.'}
           </div>
         )}
 
@@ -371,19 +483,12 @@ function EspaceContent() {
               <a href="/bilan" className="inline-flex items-center gap-2 text-sm font-medium text-[var(--sage-600)] hover:underline">
                 → Faire ou refaire ton bilan initial (avec email pour la newsletter)
               </a>
-              {(() => {
-                const leads = JSON.parse(localStorage.getItem('natura_leads') || '[]');
-                if (leads.length > 0) {
-                  const last = leads[0];
-                  return (
-                    <div className="mt-3 text-sm bg-[#F4F7F5] p-3 rounded-2xl">
-                      <strong>Ton dernier bilan :</strong> {last.mainConcerns?.slice(0,2).join(", ")}... 
-                      <span className="text-[var(--sage-600)]"> Recommandation : commence par l'agent le plus pertinent dans le chat.</span>
-                    </div>
-                  );
-                }
-                return null;
-              })()}
+              {lastLead && (
+                <div className="mt-3 text-sm bg-[#F4F7F5] p-3 rounded-2xl">
+                  <strong>Ton dernier bilan :</strong> {lastLead.mainConcerns?.slice(0, 2).join(", ")}...
+                  <span className="text-[var(--sage-600)]"> Recommandation : commence par l&apos;agent le plus pertinent dans le chat.</span>
+                </div>
+              )}
             </div>
 
             {/* DAILY TIP - style Cara : clean, modern, interaction */}
@@ -395,40 +500,48 @@ function EspaceContent() {
                 </div>
                 <span className="text-3xl">🌿</span>
               </div>
-              <p className="text-[#2A3A32] mb-4 leading-relaxed">{getDailyTip()}</p>
-              <button 
-                onClick={() => {
-                  const today = new Date().toISOString().slice(0,10);
-                  localStorage.setItem('natura_tip_done_' + today, 'true');
-                  alert("Merci ! Tip notée. Tu peux la retrouver dans tes protocoles.");
-                }}
-                className="text-xs px-4 py-1.5 rounded-full border border-[var(--mint)] hover:bg-[var(--mint)] hover:text-white transition"
-              >
-                J'utilise ce tip aujourd'hui
-              </button>
+              <p className="text-[#2A3A32] mb-4 leading-relaxed">{currentTip}</p>
+              <div className="flex gap-2">
+                <button 
+                  onClick={getNewDailyTip}
+                  className="text-xs px-4 py-1.5 rounded-full border border-[var(--mint)] hover:bg-[var(--mint)] hover:text-white transition"
+                >
+                  ↻ Nouveau tip
+                </button>
+                <button 
+                  onClick={() => {
+                    const today = new Date().toISOString().slice(0,10);
+                    localStorage.setItem('natura_tip_done_' + today, 'true');
+                    alert("Merci ! Tip notée. Tu peux la retrouver dans tes protocoles.");
+                  }}
+                  className="text-xs px-4 py-1.5 rounded-full border border-[var(--border-soft)] hover:border-[var(--mint)] transition"
+                >
+                  J'utilise ce tip aujourd'hui
+                </button>
+              </div>
             </div>
 
-            {/* ARTICLES DYNAMIQUES - nouveauté pour les visites répétées */}
-            {(() => {
-              const leads = JSON.parse(localStorage.getItem('natura_leads') || '[]');
-              if (leads.length > 0) {
-                const lastConcerns = leads[0].mainConcerns || [];
-                const suggestions = getDynamicSuggestionsForEspace(lastConcerns);
-                return (
-                  <div className="mb-8">
-                    <div className="text-xs text-[var(--mint)] mb-1">POUR TOI AUJOURD'HUI</div>
-                    <div className="flex flex-wrap gap-2">
-                      {suggestions.map((art, idx) => (
-                        <a key={idx} href={`/blog#${art.slug}`} className="text-xs px-3 py-1 rounded-full border border-[var(--border-soft)] hover:border-[var(--mint)] hover:bg-white transition">
-                          {art.title}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                );
-              }
-              return null;
-            })()}
+            {/* ARTICLES DYNAMIQUES - vraiment variés (pool large + shuffle) */}
+            {espaceSuggestions.length > 0 && (
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="text-xs text-[var(--mint)]">SUGGESTIONS VARIÉES POUR TOI</div>
+                  <button 
+                    onClick={refreshEspaceSuggestions}
+                    className="text-xs text-[var(--mint)] hover:underline"
+                  >
+                    ↻ Autres sujets
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {espaceSuggestions.map((art, idx) => (
+                    <a key={idx} href={`/blog#${art.slug}`} className="text-xs px-3 py-1 rounded-full border border-[var(--border-soft)] hover:border-[var(--mint)] hover:bg-white transition">
+                      {art.title}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* BILAN INITIAL - premier accès */}
             {!bilanInitial ? (
@@ -447,6 +560,8 @@ function EspaceContent() {
                       required
                     >
                       <option value="">Choisir...</option>
+                      <option value="18-24">18-24 ans</option>
+                      <option value="25-34">25-34 ans</option>
                       <option value="35-44">35-44 ans</option>
                       <option value="45-54">45-54 ans</option>
                       <option value="55+">55 ans et +</option>
@@ -512,15 +627,6 @@ function EspaceContent() {
                 {showBilanSuccess && <p className="text-[var(--sage-600)] text-sm mt-2">Merci, ton bilan est sauvegardé localement.</p>}
               </div>
             )}
-
-            {/* TIP DU JOUR */}
-            <div className="card rounded-3xl p-6 mb-8 border border-[#E6EDE9]">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xl">💡</span>
-                <span className="uppercase tracking-[2px] text-xs font-medium text-[var(--sage-600)]">TIP DU JOUR</span>
-              </div>
-              <p className="text-[#2A3A32] font-medium leading-relaxed">{getDailyTip()}</p>
-            </div>
 
             {/* MINI ARTICLES */}
             <div className="mb-10">
@@ -824,7 +930,9 @@ function EspaceContent() {
                             {current?.emoji}
                           </div>
                           <p className="font-medium">Pose ta première question à {current?.name}.</p>
-                          <p className="text-sm mt-2 max-w-xs mx-auto">Exemple : « Quelles huiles pour les bouffées de chaleur en période de ménopause ? »</p>
+                          <p className="text-sm mt-2 max-w-xs mx-auto">
+                            Exemple : « {agentExamples[current?.id || 'globale']} »
+                          </p>
                         </>
                       );
                     })()}
@@ -864,7 +972,7 @@ function EspaceContent() {
                   <input
                     value={input}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
-                    placeholder="Écris ta question sur la santé au naturel..."
+                    placeholder={`Ex: ${agentPrompts[selectedAgent] || 'Ta question sur la santé au naturel...'}`}
                     className="flex-1 bg-[#F8F5F0] border border-[#E6EDE9] rounded-2xl px-5 py-3 focus:outline-none focus:border-[#A8BDB5]"
                     disabled={isLoading}
                   />
@@ -966,9 +1074,39 @@ function EspaceContent() {
           <div className="max-w-md">
             <h2 className="text-3xl font-semibold tracking-tight mb-6">Mon compte</h2>
             <div className="card rounded-3xl p-8 space-y-4 text-sm">
-              <div><span className="text-[#5A6B62]">Statut :</span> <span className="font-medium">{isCoaching ? 'Coaching 4 semaines actif' : 'Accès Ebook + Communauté'}</span></div>
-              <div><span className="text-[#5A6B62]">Email :</span> demo@sagessevitale.fr (simulation)</div>
-              <div><span className="text-[#5A6B62]">Membre depuis :</span> Aujourd’hui</div>
+              <div>
+                <span className="text-[#5A6B62]">Statut :</span>{' '}
+                <span className="font-medium">{getAccessLabel(accessTier)}</span>
+              </div>
+              <div>
+                <span className="text-[#5A6B62]">Accès enregistré :</span>{' '}
+                <span className="font-medium">
+                  {accessSince
+                    ? new Date(accessSince).toLocaleDateString('fr-FR', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      })
+                    : isPremium
+                      ? "Aujourd'hui"
+                      : '—'}
+                </span>
+              </div>
+              {isPremium && (
+                <div className="text-[#5A6B62]">
+                  Ton accès reste actif sur cet appareil. Si tu changes de téléphone ou d&apos;ordinateur, réutilise le lien reçu après ton achat Beacons.
+                </div>
+              )}
+              {!isPremium && (
+                <a
+                  href={BEACONS_EBOOK_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block text-[var(--sage-600)] font-medium hover:underline"
+                >
+                  Passer à l&apos;accès illimité (9,99 €) →
+                </a>
+              )}
               {isCoaching && <div className="pt-2 text-[#C5A46E]">Chat privé avec la coach activé</div>}
             </div>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function BilanPage() {
@@ -14,12 +14,31 @@ export default function BilanPage() {
     duration: ''
   });
   const [results, setResults] = useState<any>(null);
+  const [suggestedArticles, setSuggestedArticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Restore previous bilan results so user can go back from articles
+    const savedResults = localStorage.getItem('natura_last_bilan_results');
+    const savedSuggestions = localStorage.getItem('natura_last_bilan_suggestions');
+    if (savedResults) {
+      const parsed = JSON.parse(savedResults);
+      setResults(parsed);
+      setCurrentStep(3);
+      setStep('results');
+      if (savedSuggestions) {
+        setSuggestedArticles(JSON.parse(savedSuggestions));
+      } else {
+        setSuggestedArticles(getDynamicSuggestions(parsed.mainConcerns || []));
+      }
+    }
+  }, []);
 
   const symptomsOptions = [
-    "Bouffées de chaleur", "Insomnies / Troubles du sommeil", "Fatigue chronique",
+    "Stress et anxiété", "Insomnies / Troubles du sommeil", "Fatigue chronique",
     "Anxiété / Stress / Charge mentale", "Irritabilité / Sautes d'humeur",
-    "Brouillard mental", "Douleurs articulaires", "Prise de poids",
-    "Baisse d'énergie ou de libido", "Troubles digestifs", "Cycle irrégulier ou SPM"
+    "Brouillard mental / Difficultés de concentration", "Problèmes de peau",
+    "Baisse d'énergie", "Troubles digestifs", "Baisse d'immunité",
+    "Douleurs articulaires ou musculaires", "Cycle irrégulier ou SPM", "Prise de poids"
   ];
 
   const agentRecommendations: Record<string, string> = {
@@ -36,26 +55,45 @@ export default function BilanPage() {
     "Cycle irrégulier ou SPM": "hormones"
   };
 
-  // Pool pour suggestions dynamiques dans les résultats du bilan
+  // Pool TRÈS LARGE et varié pour TOUT public (santé naturelle générale)
   const suggestionPool = [
-    { title: "Mieux dormir quand les hormones s'affolent", slug: "sommeil-hormones", teaser: "Protocoles pour nuits réparatrices" },
-    { title: "Alléger la charge mentale sans culpabilité", slug: "charge-mentale", teaser: "Poser des limites avec douceur" },
-    { title: "L'approche holistique", slug: "approche-holistique", teaser: "Harmoniser corps et esprit" },
-    { title: "La science valide les traditions", slug: "racines-traditionnelles", teaser: "Plantes validées par les études" },
+    { title: "Mieux dormir naturellement", slug: "sommeil-hormones", teaser: "Protocoles pour des nuits réparatrices." },
+    { title: "Alléger la charge mentale sans culpabilité", slug: "charge-mentale", teaser: "Poser des limites avec douceur et efficacité." },
+    { title: "L'approche holistique", slug: "approche-holistique", teaser: "Harmoniser corps et esprit." },
+    { title: "La science valide les traditions", slug: "racines-traditionnelles", teaser: "Plantes validées par les études." },
+    { title: "Huiles pour calmer l'anxiété", slug: "aromatherapie-bouffees", teaser: "Synergies douces pour apaiser le mental." },
+    { title: "Naturopathie pour l'énergie vitale", slug: "naturopathie-energie", teaser: "Remèdes pour retrouver vitalité et clarté." },
+    { title: "Respiration et nerf vague", slug: "respiration-nerf-vague", teaser: "Techniques pour calmer l'anxiété et l'inflammation." },
+    { title: "Alimentation pour l'énergie", slug: "alimentation-hormones", teaser: "Nutrition pour plus d'énergie et clarté." },
+    { title: "Huiles contre l'anxiété", slug: "aromatherapie-anxiete", teaser: "Synergies douces pour apaiser le mental." },
+    { title: "Points d'acupression MTC", slug: "mtc-bouffees", teaser: "Gestes simples pour l'énergie et la digestion." },
+    { title: "Nigelle et remèdes du Prophète", slug: "prophetique-nigelle", teaser: "Usages ancestraux puissants pour l'immunité." },
+    { title: "Alimentation anti-inflammatoire", slug: "alimentation-inflammatoire", teaser: "Ce qui calme vraiment l'inflammation." },
+    { title: "Soutien naturel de l'énergie", slug: "libido-hormones", teaser: "Plantes et habitudes pour plus de vitalité." },
+    { title: "Gérer le poids naturellement", slug: "poids-menopause", teaser: "Stratégies douces et réalistes." },
+    { title: "Magnésium et nutriments clés", slug: "magnesium-hormones", teaser: "Le minéral qui change beaucoup de choses." },
+    { title: "Respiration pour les émotions", slug: "respiration-emotions", teaser: "Calmer le stress et les émotions vite." },
+    { title: "Énergie et fatigue", slug: "thyroide-fatigue", teaser: "Solutions naturelles pour retrouver vitalité." },
+    { title: "Digestion et ballonnements", slug: "digestion-hormones", teaser: "Solutions pour un ventre plus léger." },
   ];
 
   function getDynamicSuggestions(concerns: string[]) {
-    // Priorise selon les réponses + variété
-    const relevant = suggestionPool.filter(a => 
-      concerns.some(c => a.title.toLowerCase().includes(c.toLowerCase().split(' ')[0]) || 
-                      (c.includes("Anxiété") && a.slug.includes("charge")) ||
-                      (c.includes("Insomnies") && a.slug.includes("sommeil"))
+    let filtered = suggestionPool.filter(a => 
+      concerns.some(c => 
+        a.title.toLowerCase().includes(c.toLowerCase().split(' ')[0]) || 
+        (c.includes("Anxiété") || c.includes("Charge mentale")) && a.slug.includes("charge") ||
+        (c.includes("Insomnies") || c.includes("Sommeil")) && a.slug.includes("sommeil") ||
+        (c.includes("Bouffées")) && a.slug.includes("bouffees") ||
+        (c.includes("Fatigue") || c.includes("Énergie")) && a.slug.includes("energie")
       )
     );
-    const base = relevant.length > 0 ? relevant : suggestionPool;
-    // Rotation pour la nouveauté
-    const day = new Date().getDate() % base.length;
-    return [base[day], base[(day + 1) % base.length]].filter(Boolean);
+    if (filtered.length === 0) filtered = suggestionPool;
+    // Full random shuffle for true variety (different solutions even for same subject)
+    for (let i = filtered.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+    }
+    return filtered.slice(0, 2);
   }
 
   const handleEmailSubmit = (e: React.FormEvent) => {
@@ -100,40 +138,71 @@ export default function BilanPage() {
       bilanForm.mainConcerns.map(c => agentRecommendations[c] || 'globale')
     )).slice(0, 3);
 
-    // Detailed, actionable summary
+    // Detailed, actionable summary - VARIÉ pour chaque sujet (plusieurs options par symptôme)
+    const adviceOptions = {
+      "Bouffées": [
+        "• **Bouffées de chaleur** : Sauge sclarée (2-3 gouttes sur le ventre matin et soir) + infusion de sauge + menthe. Évite les épices et l'alcool le soir.",
+        "• **Bouffées de chaleur** : Huile de cyprès + menthe poivrée en massage sur les poignets. Bois de l'eau fraîche et pratique la respiration du carré.",
+        '• **Bouffées de chaleur** : Maca (1/2 c.c le matin) + évite le café. Teste l\'acupression sur le point "Eau de la source" (entre le gros orteil et le 2e).',
+      ],
+      "Insomnies": [
+        "• **Sommeil** : Lavande + camomille romaine en diffusion + respiration 4-7-8 avant de dormir. Évite les écrans 1h avant.",
+        "• **Sommeil** : Roll-on valériane + lavande sur les tempes. Infusion de mélisse + magnésium 30 min avant lit.",
+        '• **Sommeil** : Technique du "corps scan" : détends chaque partie du corps de la tête aux pieds. Huile de marjolaine sur la plante des pieds.',
+      ],
+      "Fatigue": [
+        "• **Fatigue** : Maca (½ c. à café le matin) + magnésium + repas riches en protéines. Teste aussi le point d'acupression Rate 6.",
+        "• **Fatigue** : Ginseng ou éleuthérocoque le matin (si pas de tension). Marche dehors 10 min après le réveil.",
+        "• **Fatigue** : Huile de romarin + citron en inhalation le matin. Réduis les sucres rapides l'après-midi.",
+      ],
+      "Anxiété": [
+        "• **Anxiété / Charge mentale** : Mélange d'huiles (lavande + bergamote + ylang-ylang) en roll-on + pratique de la respiration du nerf vague 2x/jour.",
+        "• **Anxiété** : 5 min de cohérence cardiaque (respiration 5s inspire / 5s expire) 3 fois par jour. Huile de mandarine pour apaiser.",
+        '• **Anxiété** : "Brain dump" écrit le soir : vide tout sur papier. Point d\'acupression "Porte de l\'âme" (entre les sourcils).',
+      ],
+      "Irritabilité": [
+        "• **Irritabilité** : Huile de géranium + camomille romaine. Alimentation : augmente les oméga-3 et le magnésium. Évite le sucre raffiné.",
+        "• **Irritabilité** : Respiration 4-6 (inspire 4, expire 6) quand ça monte. Huile de bois de rose pour calmer les émotions.",
+        "• **Irritabilité** : Journal de gratitude 3 choses positives chaque soir. Infusion de verveine + réglisse.",
+      ],
+      "Brouillard": [
+        "• **Brouillard mental** : Romarin + menthe poivrée en inhalation. Alimentation : oméga-3 + curcuma + baies. Hydratation importante.",
+        "• **Brouillard** : Gingko ou bacopa le matin (plantes nootropiques). Éviter le multitasking, une tâche à la fois.",
+        '• **Brouillard** : Huile de citron + romarin en diffusion. Point "Bai Hui" (sommet du crâne) massé 1 min.',
+      ],
+      "Douleurs": [
+        "• **Douleurs** : Huile de gaulthérie + lavande en massage + gingembre et curcuma en infusion. Mouvements doux quotidiens.",
+        "• **Douleurs** : Magnésium + curcuma + poivre noir. Étirements yin yoga le soir.",
+        "• **Douleurs** : Huile de gaulthérie + menthe poivrée sur les zones. Bain chaud avec sel d'Epsom.",
+      ],
+      "Prise de poids": [
+        "• **Prise de poids** : Focus sur les protéines à chaque repas + marche après manger. Réduis les glucides raffinés le soir.",
+        "• **Prise de poids** : Maca + cannelle pour la glycémie. Éviter les grignotages sucrés, privilégie noix et avocat.",
+        "• **Prise de poids** : Respiration abdominale 5 min après repas. Thé vert ou matcha le matin.",
+      ],
+      "libido": [
+        "• **Énergie / Libido** : Maca + shatavari + ylang-ylang. Travaille aussi le nerf vague et la détente.",
+        "• **Libido** : Huile de bois de santal + ylang en massage. Gingembre frais dans les repas.",
+        "• **Libido** : Exercice doux comme la danse ou le yoga. Magnésium + zinc le soir.",
+      ],
+      "digestifs": [
+        "• **Digestion** : Menthe poivrée + gingembre + fenouil. Mange lentement et teste l'élimination des produits laitiers.",
+        "• **Digestion** : Huile de carvi ou cumin en massage sur le ventre. Probiotiques et fibres douces.",
+        "• **Digestion** : Infusion de fenouil + anis après repas. Éviter les repas copieux le soir.",
+      ],
+      "Cycle": [
+        "• **Cycle / SPM** : Huile d'onagre + sauge sclarée + magnésium. Suivi du cycle et réduction du stress.",
+        "• **Cycle** : Vitex (agnus castus) en teinture mère. Alimentation riche en fer et B6.",
+        "• **Cycle** : Huile de rose + lavande en massage sur le bas ventre. Journal du cycle pour repérer les patterns.",
+      ],
+    };
+
     const detailedAdvice = bilanForm.mainConcerns.map(concern => {
-      if (concern.includes("Bouffées")) {
-        return "• **Bouffées de chaleur** : Sauge sclarée (2-3 gouttes sur le ventre matin et soir) + infusion de sauge + menthe. Évite les épices et l'alcool le soir.";
-      }
-      if (concern.includes("Insomnies")) {
-        return "• **Sommeil** : Lavande + camomille romaine en diffusion + respiration 4-7-8 avant de dormir. Évite les écrans 1h avant.";
-      }
-      if (concern.includes("Fatigue")) {
-        return "• **Fatigue** : Maca (½ c. à café le matin) + magnésium + repas riches en protéines. Teste aussi le point d'acupression Rate 6.";
-      }
-      if (concern.includes("Anxiété") || concern.includes("Charge mentale")) {
-        return "• **Anxiété / Charge mentale** : Mélange d'huiles (lavande + bergamote + ylang-ylang) en roll-on + pratique de la respiration du nerf vague 2x/jour.";
-      }
-      if (concern.includes("Irritabilité")) {
-        return "• **Irritabilité** : Huile de géranium + camomille romaine. Alimentation : augmente les oméga-3 et le magnésium. Évite le sucre raffiné.";
-      }
-      if (concern.includes("Brouillard")) {
-        return "• **Brouillard mental** : Romarin + menthe poivrée en inhalation. Alimentation : oméga-3 + curcuma + baies. Hydratation importante.";
-      }
-      if (concern.includes("Douleurs")) {
-        return "• **Douleurs** : Huile de gaulthérie + lavande en massage + gingembre et curcuma en infusion. Mouvements doux quotidiens.";
-      }
-      if (concern.includes("Prise de poids")) {
-        return "• **Prise de poids** : Focus sur les protéines à chaque repas + marche après manger. Réduis les glucides raffinés le soir.";
-      }
-      if (concern.includes("libido")) {
-        return "• **Énergie / Libido** : Maca + shatavari + ylang-ylang. Travaille aussi le nerf vague et la détente.";
-      }
-      if (concern.includes("digestifs")) {
-        return "• **Digestion** : Menthe poivrée + gingembre + fenouil. Mange lentement et teste l'élimination des produits laitiers.";
-      }
-      if (concern.includes("Cycle")) {
-        return "• **Cycle / SPM** : Huile d'onagre + sauge sclarée + magnésium. Suivi du cycle et réduction du stress.";
+      // @ts-ignore
+      const key = Object.keys(adviceOptions).find(k => concern.includes(k) || (k === "Anxiété" && concern.includes("Charge")));
+      if (key && (adviceOptions as any)[key].length > 0) {
+        const options = (adviceOptions as any)[key];
+        return options[Math.floor(Math.random() * options.length)]; // Varié à chaque fois !
       }
       return "• Adapte tes protocoles avec l'agent correspondant.";
     });
@@ -147,7 +216,14 @@ export default function BilanPage() {
         : "Tu peux obtenir des résultats rapides en étant constante avec 2-3 outils naturels."
     };
 
-    setResults({ ...lead, personalized });
+    const newSuggestions = getDynamicSuggestions(bilanForm.mainConcerns);
+    setSuggestedArticles(newSuggestions);
+
+    const fullResults = { ...lead, personalized };
+    setResults(fullResults);
+    localStorage.setItem('natura_last_bilan_results', JSON.stringify(fullResults));
+    localStorage.setItem('natura_last_bilan_suggestions', JSON.stringify(newSuggestions));
+
     setCurrentStep(3);
     setStep('results');
   };
@@ -262,6 +338,8 @@ export default function BilanPage() {
                     required
                   >
                     <option value="">Choisir...</option>
+                    <option value="18-24">18-24 ans</option>
+                    <option value="25-34">25-34 ans</option>
                     <option value="35-44">35-44 ans</option>
                     <option value="45-54">45-54 ans</option>
                     <option value="55+">55 ans et +</option>
@@ -360,12 +438,18 @@ export default function BilanPage() {
                 <div className="font-semibold mb-2">Recommandations précises pour le chat IA</div>
                 <ul className="space-y-2 text-sm">
                   {results.personalized.recommendations.map((agent: string, i: number) => {
-                    const example = 
-                      agent === 'hormones' ? "Exemple : « Quelles huiles et plantes pour mes bouffées de chaleur en période de ménopause ? »" :
-                      agent === 'respiration' ? "Exemple : « Donne-moi un protocole respiration + nerf vague pour mieux dormir »" :
-                      agent === 'emotion' ? "Exemple : « Comment gérer la charge mentale et l'irritabilité avec des outils naturels ? »" :
-                      agent === 'alimentation' ? "Exemple : « Que manger pour réduire la fatigue et le brouillard mental ? »" :
-                      "Pose des questions très précises sur tes symptômes.";
+                    const examples: Record<string, string> = {
+                      globale: 'Comment combiner approches naturelles pour stress, sommeil et énergie ?',
+                      aromatherapie: 'Huiles essentielles pour anxiété, sommeil ou maux de tête ?',
+                      naturopathie: 'Remèdes naturels pour immunité, énergie ou digestion ?',
+                      respiration: 'Exercices respiration pour réduire stress et améliorer concentration ?',
+                      hormones: 'Soutenir naturellement l\'équilibre hormonal pour énergie et peau ?',
+                      mtc: 'Points d\'acupression et conseils diététique chinoise pour digestion/stress ?',
+                      prophetique: 'Nigelle, miel et remèdes ancestraux pour immunité et bien-être ?',
+                      alimentation: 'Aliments pour plus d\'énergie, concentration et peau éclatante ?',
+                      emotion: 'Gérer charge mentale, anxiété et équilibre émotionnel ?',
+                    };
+                    const example = examples[agent] ? `Exemple : « ${examples[agent]} »` : "Pose des questions précises sur tes symptômes.";
                     return <li key={i} className="text-[#5A6B62] hover:text-[var(--mint)] transition">→ <strong>Agent {agent}</strong><br /><span className="text-xs">{example}</span></li>;
                   })}
                 </ul>
@@ -381,8 +465,10 @@ export default function BilanPage() {
                   <div className="text-xs uppercase tracking-widest text-[var(--mint)]">ARTICLES QUI POURRAIENT T'INTÉRESSER AUJOURD'HUI</div>
                   <button 
                     onClick={() => {
-                      // Rafraîchir les suggestions pour plus de variété
-                      window.location.reload();
+                      // Reshuffle for more variety without losing the bilan
+                      const newSugs = getDynamicSuggestions(results.mainConcerns || []);
+                      setSuggestedArticles(newSugs);
+                      localStorage.setItem('natura_last_bilan_suggestions', JSON.stringify(newSugs));
                     }}
                     className="text-xs text-[var(--mint)] hover:underline"
                   >
@@ -390,7 +476,7 @@ export default function BilanPage() {
                   </button>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3 text-sm">
-                  {getDynamicSuggestions(results.mainConcerns).map((art, idx) => (
+                  {suggestedArticles.map((art, idx) => (
                     <a key={idx} href={`/blog#${art.slug}`} className="p-3 rounded-xl border border-[var(--border-soft)] hover:border-[var(--mint)] hover:bg-[#F4F7F5] transition block">
                       {art.title}<br />
                       <span className="text-xs text-[#5A6B62]">{art.teaser}</span>
