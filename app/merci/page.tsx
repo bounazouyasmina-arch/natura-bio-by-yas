@@ -69,7 +69,7 @@ function MerciContent() {
           <p className="text-[#5A6B62]">
             {isCoaching
               ? 'Ton accompagnement coaching est activé. Bienvenue dans l\'espace premium.'
-              : 'Ton ebook et ton accès illimité au chat IA sont activés.'}
+              : 'Ton ebook Hormones Sereine et ton accès illimité au chat IA sont activés.'}
           </p>
         </div>
 
@@ -92,8 +92,8 @@ function MerciContent() {
             <div className="flex items-start gap-3 p-4 rounded-2xl bg-[#F4F7F5]">
               <BookOpen className="h-5 w-5 text-[var(--sage-600)] mt-0.5 shrink-0" />
               <div>
-                <div className="font-medium">Ebook PDF</div>
-                <div className="text-sm text-[#5A6B62]">Téléchargeable depuis ton espace membres</div>
+                <div className="font-medium">Ebook Hormones Sereine (PDF)</div>
+                <div className="text-sm text-[#5A6B62]">Cycle, SOPK, thyroïde, ménopause… — téléchargeable dans ton espace</div>
               </div>
             </div>
           )}
@@ -114,7 +114,7 @@ function MerciContent() {
           Redirection automatique dans quelques secondes…
         </p>
         <p className="text-center text-xs text-[#5A6B62] mt-2">
-          Conserve cette page en favori — ton accès reste actif sur cet appareil.
+          Astuce : dans l&apos;espace, crée un compte (onglet Compte) pour retrouver ton accès sur tous tes appareils.
         </p>
       </div>
     </div>

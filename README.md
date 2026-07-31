@@ -3,9 +3,9 @@
 Site + application web pour la santé et le bien-être au naturel (aromathérapie, naturopathie, médecine prophétique, MTC, nerf vague, hormones, etc.).
 
 **Modèle** :
-- Ebook d’entrée « Ménopause au Naturel » → 9,99 €
+- Ebook d’entrée « Hormones Sereine » → 9,99 € (cycle, SOPK, endométriose, thyroïde, pré-ménopause, ménopause)
 - Accès immédiat à l’app (Chat IA multi-agents + Forum)
-- Upsell Coaching 4 semaines personnalisé (WhatsApp remplacé par chat privé dans l’app) → 299,99 €
+- Upsell Coaching 4 semaines personnalisé (WhatsApp remplacé par chat privé dans l’app) → 167 €
 
 ## Stack
 - Next.js 16 + TypeScript + Tailwind

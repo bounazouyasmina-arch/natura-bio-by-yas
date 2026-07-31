@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { 
   Leaf, MessageCircle, Users, FileText, User, 
   Send, ArrowLeft, Lock, BookOpen 
 } from 'lucide-react';
 import { toast } from 'sonner';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
+import AuthPanel from '@/components/AuthPanel';
 import {
   type AccessTier,
   getAccessLabel,
@@ -18,6 +20,15 @@ import {
   resolveAccessTier,
   saveAccessTier,
 } from '@/lib/member-access';
+import { tryCreateClient } from '@/lib/supabase/client';
+import { isSupabaseConfigured } from '@/lib/supabase/config';
+import {
+  type ForumPost,
+  type ForumReply,
+  type DbForumPost,
+  type DbForumReply,
+  mapDbPost,
+} from '@/lib/forum-types';
 
 // Lien du groupe WhatsApp que tu as mis sur ton offre Beacons (coaching)
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
@@ -25,15 +36,15 @@ const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
 // Liens Beacons (hardcodés pour l'instant - on les mettra en variables d'env plus tard)
 const BEACONS_EBOOK_LINK = "https://shop.beacons.ai/yas_digital/44ca0203-408c-489d-b6d3-0a5c0af4fee2";
 const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734-4b80-8243-479d6c1f0213";
-// Plus d'abonnement mensuel : l'ebook à 9.99€ donne l'accès illimité au chat + forum
+// Ebook Hormones Sereine (9,99 €) : accès illimité chat + forum + PDF
 // Le coaching est l'offre principale d'accompagnement
 
 // Agents disponibles - avec couleurs précises et visuels parlants (alignés landing)
 const agents = [
   { id: 'globale', name: 'La Sage Globale', emoji: '🌿', desc: 'Toutes les approches combinées', color: '#4F6B5F', iconBg: '#E8F0EC' },
-  { id: 'aromatherapie', name: 'Aromathérapeute', emoji: '🌸', desc: 'Huiles essentielles & synergies', color: '#7C6B9C', iconBg: '#F0E9F8' },
+  { id: 'aromatherapie', name: 'Aromathérapeute', emoji: '🌸', desc: 'Huiles essentielles & usages concrets', color: '#7C6B9C', iconBg: '#F0E9F8' },
   { id: 'naturopathie', name: 'Naturopathe', emoji: '🌱', desc: 'Terrain, vitalité & immunité', color: '#4A6B55', iconBg: '#E8F0E9' },
-  { id: 'respiration', name: 'Respiration & Nerf Vague', emoji: '💨', desc: 'Régulation nerveuse & stress', color: '#5A7E7E', iconBg: '#E6F0F0' },
+  { id: 'respiration', name: 'Respiration & Nerf Vague', emoji: '💨', desc: 'Calme nerveux et exercices concrets', color: '#5A7E7E', iconBg: '#E6F0F0' },
   { id: 'hormones', name: 'Équilibre Hormonal', emoji: '🌙', desc: 'Cycle, énergie et bien-être hormonal', color: '#B37E8F', iconBg: '#F8ECF1' },
   { id: 'mtc', name: 'Médecine Chinoise', emoji: '☯️', desc: 'Qi, méridiens, diététique', color: '#B36B5E', iconBg: '#F8EDE9' },
   { id: 'prophetique', name: 'Médecine Prophétique', emoji: '📖', desc: 'Remèdes du Prophète ﷺ', color: '#B38B5E', iconBg: '#F7F0E6' },
@@ -41,10 +52,46 @@ const agents = [
   { id: 'emotion', name: 'Santé Mentale & Charge Invisible', emoji: '🧠', desc: 'Émotions, burnout, charge mentale', color: '#6C6B9A', iconBg: '#F1EFF8' },
 ];
 
-// Forum mock (on branchera Supabase plus tard)
-const initialPosts = [
-  { id: 1, author: "Amina", title: "Huiles pour l'anxiété et le stress ?", content: "Quelles huiles sont les plus adaptées pour calmer l'anxiété au quotidien sans risque ?", replies: 4, agent: "aromatherapie" },
-  { id: 2, author: "Fatima", title: "Respiration pour calmer les insomnies", content: "Je cherche des exercices simples à faire le soir qui agissent vraiment sur le nerf vague.", replies: 7, agent: "respiration" },
+// Fallback si Supabase n'est pas encore configuré
+const seedPosts: ForumPost[] = [
+  {
+    id: 'local-1',
+    author: 'Amina',
+    title: "Huiles pour l'anxiété et le stress ?",
+    content:
+      "Quelles huiles sont les plus adaptées pour calmer l'anxiété au quotidien sans risque ? J'ai 32 ans, stress de travail, je veux quelque chose de simple.",
+    agent: 'aromatherapie',
+    date: '10 juil. 2026',
+    replies: [
+      {
+        id: 'local-11',
+        author: 'Sara',
+        content:
+          "Pour moi, un roll-on dilué avec de l’huile essentielle de lavande sur les poignets, associé à deux ou trois respirations lentes, a vraiment aidé.",
+        date: '10 juil. 2026',
+        isExample: true,
+      },
+    ],
+  },
+  {
+    id: 'local-2',
+    author: 'Fatima',
+    title: 'Respiration pour calmer les insomnies',
+    content:
+      'Je cherche des exercices simples à faire le soir qui agissent vraiment sur le nerf vague. Je me réveille souvent vers 3h.',
+    agent: 'respiration',
+    date: '12 juil. 2026',
+    replies: [
+      {
+        id: 'local-21',
+        author: 'Leila',
+        content:
+          "La 4-7-8 m'a aidée : inspire 4, retiens 7, expire 8, ×4. Dans le noir, sans regarder l'heure si je me réveille.",
+        date: '12 juil. 2026',
+        isExample: true,
+      },
+    ],
+  },
 ];
 
 function EspaceContent() {
@@ -52,11 +99,14 @@ function EspaceContent() {
   const unlockedParam = searchParams.get('unlocked');
   const fromBeacons = searchParams.get('from') === 'beacons';
   const showWelcome = searchParams.get('welcome') === '1';
+  const linkedParam = searchParams.get('linked') === '1';
+  const tabParam = searchParams.get('tab');
+  const agentParam = searchParams.get('agent');
 
   // Exemples variés et adaptés à TOUT public (jeunes, adultes, tous âges) - pas que hormones/ménopause
   const agentExamples: Record<string, string> = {
     globale: 'Comment combiner plusieurs approches naturelles pour mieux gérer le stress, le sommeil et l\'énergie au quotidien ?',
-    aromatherapie: 'Quelles huiles essentielles et synergies pour apaiser l\'anxiété, améliorer le sommeil ou soulager les maux de tête ?',
+    aromatherapie: 'Quelles huiles essentielles me conseilles-tu pour apaiser l\'anxiété, améliorer mon sommeil ou soulager des maux de tête, et comment les utiliser concrètement ?',
     naturopathie: 'Quels remèdes naturels et plantes pour booster l\'immunité, l\'énergie ou améliorer la digestion ?',
     respiration: 'Quels exercices de respiration et techniques du nerf vague pour réduire le stress et améliorer la concentration ?',
     hormones: 'Comment soutenir naturellement mon équilibre hormonal pour plus d\'énergie, une meilleure peau et un cycle régulier ?',
@@ -81,24 +131,175 @@ function EspaceContent() {
 
   const [activeTab, setActiveTab] = useState<'accueil' | 'chat' | 'forum' | 'protocoles' | 'compte'>('accueil');
   const [selectedAgent, setSelectedAgent] = useState('globale');
-  const [posts, setPosts] = useState(initialPosts);
+  const [posts, setPosts] = useState<ForumPost[]>(seedPosts);
+  const [openPostId, setOpenPostId] = useState<string | null>(null);
+  const [replyDrafts, setReplyDrafts] = useState<Record<string, string>>({});
   const [newPostTitle, setNewPostTitle] = useState('');
   const [newPostContent, setNewPostContent] = useState('');
   const [showNewPost, setShowNewPost] = useState(false);
+  const [forumLoading, setForumLoading] = useState(false);
+  const [forumOnline, setForumOnline] = useState(false);
+  const [authUser, setAuthUser] = useState<SupabaseUser | null>(null);
+  const [displayName, setDisplayName] = useState('Membre');
+  const [forumBusy, setForumBusy] = useState(false);
+
+  const refreshAuth = useCallback(async () => {
+    const supabase = tryCreateClient();
+    if (!supabase) {
+      setAuthUser(null);
+      setDisplayName('Membre');
+      return;
+    }
+    const { data: { user } } = await supabase.auth.getUser();
+    setAuthUser(user);
+    if (user) {
+      const fallback =
+        (user.user_metadata?.display_name as string | undefined) ||
+        user.email?.split('@')[0] ||
+        'Membre';
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name')
+        .eq('id', user.id)
+        .maybeSingle();
+      if (!profile) {
+        await supabase.from('profiles').upsert({
+          id: user.id,
+          display_name: fallback,
+        });
+        setDisplayName(fallback);
+      } else {
+        setDisplayName(profile.display_name || fallback);
+      }
+    } else {
+      setDisplayName('Membre');
+    }
+  }, []);
+
+  const loadForumFromSupabase = useCallback(async () => {
+    const supabase = tryCreateClient();
+    if (!supabase) {
+      setForumOnline(false);
+      setPosts(seedPosts);
+      return;
+    }
+    setForumLoading(true);
+    try {
+      const { data: dbPosts, error: postsError } = await supabase
+        .from('forum_posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (postsError) throw postsError;
+
+      const { data: dbReplies, error: repliesError } = await supabase
+        .from('forum_replies')
+        .select('*')
+        .order('created_at', { ascending: true });
+      if (repliesError) throw repliesError;
+
+      const mapped = (dbPosts as DbForumPost[]).map((p) =>
+        mapDbPost(p, (dbReplies as DbForumReply[]) || [])
+      );
+      setPosts(mapped.length > 0 ? mapped : seedPosts);
+      setForumOnline(true);
+    } catch (err) {
+      console.error('Forum Supabase:', err);
+      setForumOnline(false);
+      setPosts(seedPosts);
+      toast.error('Forum temporairement indisponible', {
+        description: 'Vérifie que le SQL supabase/schema.sql a bien été exécuté.',
+      });
+    } finally {
+      setForumLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshAuth();
+    void loadForumFromSupabase();
+    const supabase = tryCreateClient();
+    if (!supabase) return;
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+      void refreshAuth();
+    });
+    return () => subscription.unsubscribe();
+  }, [refreshAuth, loadForumFromSupabase]);
 
   const justPaid = searchParams.get('paid') === 'true';
 
-  // Limite gratuite : 10 questions. L'ebook à 9,99 € donne l'accès illimité.
+  // Limite gratuite : 10 questions. Hormones Sereine (9,99 €) donne l'accès illimité.
   const FREE_QUESTION_LIMIT = 10;
   const [freeQuestionsUsed, setFreeQuestionsUsed] = useState(0);
   const [accessTier, setAccessTier] = useState<AccessTier>('free');
   const [accessSince, setAccessSince] = useState<string | null>(null);
   const [accessCode, setAccessCode] = useState('');
   const [activatingCode, setActivatingCode] = useState(false);
+  const [accessOnAccount, setAccessOnAccount] = useState(false);
+  const [bindingAccess, setBindingAccess] = useState(false);
 
   const hasEbook = hasEbookAccess(accessTier);
   const isCoaching = hasCoachingAccess(accessTier);
   const isPremium = isPremiumAccess(accessTier);
+
+  const syncAccessFromProfile = useCallback(async () => {
+    try {
+      const res = await fetch('/api/access/me');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data.authenticated) {
+        setAccessOnAccount(false);
+        return;
+      }
+      const profileTier = data.tier as AccessTier;
+      if (profileTier && profileTier !== 'free') {
+        const saved = saveAccessTier(profileTier);
+        setAccessTier((prev) => resolveAccessTier(prev, saved));
+        setAccessSince(readAccessSince());
+        setAccessOnAccount(true);
+      } else {
+        setAccessOnAccount(false);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  /** Lie le premium (cookie / appareil) au compte connecté */
+  const bindAccessToAccount = useCallback(
+    async (plan?: AccessTier, opts?: { silent?: boolean }) => {
+      if (!isSupabaseConfigured()) return false;
+      setBindingAccess(true);
+      try {
+        const res = await fetch('/api/access/bind', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(plan && plan !== 'free' ? { plan } : {}),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          if (!opts?.silent && data.needsAuth) {
+            toast.message('Connecte-toi pour sauver ton accès sur ton compte', {
+              description: 'Onglet Compte → créer un compte ou se connecter.',
+            });
+          }
+          return false;
+        }
+        const saved = saveAccessTier(data.plan as AccessTier);
+        setAccessTier(saved);
+        setAccessSince(readAccessSince());
+        setAccessOnAccount(true);
+        if (!opts?.silent) {
+          toast.success(data.message || 'Accès lié à ton compte');
+        }
+        return true;
+      } catch {
+        return false;
+      } finally {
+        setBindingAccess(false);
+      }
+    },
+    []
+  );
 
   const activateWithCode = async () => {
     const raw = accessCode.trim();
@@ -137,7 +338,23 @@ function EspaceContent() {
       setAccessTier(saved);
       setAccessSince(readAccessSince());
       setAccessCode('');
-      toast.success(data.message || 'Accès activé');
+      if (data.linked) {
+        setAccessOnAccount(true);
+        toast.success(data.message || 'Accès activé sur ton compte');
+      } else if (authUser) {
+        const ok = await bindAccessToAccount(saved, { silent: false });
+        if (!ok) {
+          toast.message(data.message || 'Accès activé sur cet appareil', {
+            description:
+              'Pas encore sur le compte cloud. Vérifie que tu es bien connectée, puis réessaie.',
+          });
+        }
+      } else {
+        toast.success(data.message || 'Accès activé', {
+          description:
+            'Connecte-toi puis réactive le même lien pour l’enregistrer sur ton compte (sinon Supabase reste free).',
+        });
+      }
     } catch {
       toast.error('Impossible d’activer le code pour le moment');
     } finally {
@@ -167,14 +384,57 @@ function EspaceContent() {
           savedTier === 'coaching'
             ? 'Coaching activé — bienvenue dans ton espace !'
             : 'Accès illimité activé — bienvenue dans ton espace !',
-          { description: 'Ton accès est enregistré sur cet appareil.' }
+          {
+            description: linkedParam
+              ? 'Accès aussi enregistré sur ton compte connecté.'
+              : 'Connecte-toi (Compte) pour le retrouver sur tous tes appareils.',
+          }
         );
+      }
+
+      // Si déjà connectée mais pas encore lié côté serveur
+      if (!linkedParam) {
+        void bindAccessToAccount(savedTier, { silent: true }).then((ok) => {
+          if (ok) setAccessOnAccount(true);
+        });
+      } else {
+        setAccessOnAccount(true);
       }
     } else {
       setAccessTier(merged);
       setAccessSince(readAccessSince());
     }
-  }, [unlockedParam, fromBeacons, showWelcome, justPaid]);
+  }, [unlockedParam, fromBeacons, showWelcome, justPaid, linkedParam, bindAccessToAccount]);
+
+  // Au login : récupérer le premium du compte + lier l’accès local si besoin
+  useEffect(() => {
+    if (!authUser) {
+      setAccessOnAccount(false);
+      return;
+    }
+    void (async () => {
+      await syncAccessFromProfile();
+      const local = readStoredAccessTier();
+      if (local !== 'free') {
+        const ok = await bindAccessToAccount(local, { silent: true });
+        if (ok) setAccessOnAccount(true);
+      }
+    })();
+  }, [authUser, syncAccessFromProfile, bindAccessToAccount]);
+
+  // Liens depuis la landing : /espace?tab=chat&agent=aromatherapie
+  useEffect(() => {
+    const validTabs = ['accueil', 'chat', 'forum', 'protocoles', 'compte'] as const;
+    if (tabParam && (validTabs as readonly string[]).includes(tabParam)) {
+      setActiveTab(tabParam as (typeof validTabs)[number]);
+    } else if (agentParam) {
+      setActiveTab('chat');
+    }
+
+    if (agentParam && agents.some((a) => a.id === agentParam)) {
+      setSelectedAgent(agentParam);
+    }
+  }, [tabParam, agentParam]);
 
   // === NOUVEAUTÉS : Bilan initial, Tips, Articles, Suivi symptômes ===
   const [bilanInitial, setBilanInitial] = useState<any>(null);
@@ -211,25 +471,45 @@ function EspaceContent() {
   ];
 
   const dailyTips = [
-    "Astuce : 3 gouttes de lavande en diffusion ou inhalateur pour apaiser le stress et bien dormir.",
-    "Pour le nerf vague : 5 min de respiration 4-6 (4 sec inspire, 6 sec expire) avant de dormir.",
-    "Nutrition : Ajoute des graines de lin moulues à tes yaourts pour les oméga-3 et l'énergie.",
-    "Émotionnel : Note 3 choses positives de ta journée avant de te coucher – ça réduit la charge mentale.",
-    "Huile essentielle : Mélange lavande + ylang-ylang dans un roll-on pour les nuits agitées.",
-    "Mouvement doux : 10 min de marche consciente après manger aide la digestion et l'énergie.",
-    "Plante : Le maca en poudre (1/2 c à c) dans un smoothie pour soutenir l'énergie générale.",
-    "Astuce MTC : Masse le point « Eau de la source » (gros orteil) 1 min pour booster l'énergie.",
-    "Prophétique : Une cuillère de nigelle + miel le matin pour l'immunité et le bien-être.",
-    "Respiration : 4-7-8 avant de dormir améliore la qualité du sommeil en quelques jours.",
-    "Alimentation : 1 avocat par jour + noix pour les bons gras et la clarté mentale.",
-    "Astuce : Infusion de menthe + gingembre l'après-midi pour la digestion et l'énergie."
+    "Diffuse trois gouttes d’huile essentielle de lavande en fin de journée pour favoriser le calme avant le sommeil.",
+    "Avant de dormir, pratique cinq minutes de respiration lente : inspire pendant quatre secondes, expire pendant six secondes.",
+    "Ajoute une cuillère de graines de lin moulues à ton yaourt ou ta salade pour soutenir tes apports en oméga-3.",
+    "Chaque soir, note trois points positifs de ta journée : ce simple rituel allège souvent la charge mentale.",
+    "Pour les nuits agitées, prépare un roll-on dilué avec de la lavande (huile végétale + quelques gouttes) et applique-le sur les poignets.",
+    "Après le repas, marche calmement dix minutes : cela soutient la digestion et l’énergie de l’après-midi.",
+    "Si ton terrain le permet, une demi-cuillère à café de maca dans un smoothie peut soutenir l’énergie du matin.",
+    "Masse une minute le point situé entre le gros orteil et le second orteil pour relancer une sensation de vitalité.",
+    "Le matin, une petite cuillère de nigelle avec un peu de miel peut accompagner ton rituel d’immunité et de bien-être.",
+    "La respiration 4-7-8 avant le coucher (quatre cycles) aide souvent à s’endormir plus sereinement en quelques soirs.",
+    "Intègre des bons lipides (avocat, noix, huile d’olive) pour soutenir la satiété et la clarté mentale.",
+    "L’après-midi, une infusion de menthe et de gingembre peut alléger la digestion et le coup de barre.",
   ];
 
   const miniArticles = [
-    { id: 1, title: "Les 5 huiles essentielles essentielles", cat: "Aromathérapie", text: "La lavande apaise, la sauge sclarée équilibre, le géranium régule. Découvre les synergies sûres pour tous." },
-    { id: 2, title: "Pourquoi le nerf vague est ton meilleur ami", cat: "Régulation nerveuse", text: "80% des signaux corps-cerveau passent par lui. Une respiration lente = moins de stress et meilleur sommeil." },
-    { id: 3, title: "Alimentation anti-inflammatoire : les bases", cat: "Alimentation", text: "Protéines à chaque repas, oméga-3, fibres et magnésium. Pour plus d'énergie et clarté." },
-    { id: 4, title: "Comment poser des limites sans culpabilité", cat: "Charge mentale", text: "La charge invisible commence par des micro-décisions. Commence par une phrase simple : « Je ne peux pas ce jour-là »." }
+    {
+      id: 1,
+      title: "Cinq huiles essentielles à connaître",
+      cat: "Aromathérapie",
+      text: "La lavande apaise, la sauge sclarée soutient l’équilibre, le géranium harmonise, les agrumes recentrent et les notes boisées préparent au repos. Demande au chat un protocole d’usage adapté à ta situation.",
+    },
+    {
+      id: 2,
+      title: "Pourquoi le nerf vague compte tant",
+      cat: "Régulation nerveuse",
+      text: "Une grande partie des échanges entre le corps et le cerveau passe par le nerf vague. Une respiration lente et régulière aide souvent à apaiser le stress et à préparer un sommeil plus réparateur.",
+    },
+    {
+      id: 3,
+      title: "Alimentation anti-inflammatoire : les bases",
+      cat: "Alimentation",
+      text: "Privilégie des protéines à chaque repas, des oméga-3, des fibres et des aliments riches en magnésium pour soutenir ton énergie et ta clarté mentale.",
+    },
+    {
+      id: 4,
+      title: "Poser des limites sans culpabilité",
+      cat: "Charge mentale",
+      text: "La charge invisible se nourrit de micro-décisions. Commence par une phrase simple et claire : « Je ne peux pas ce jour-là. »",
+    },
   ];
 
   useEffect(() => {
@@ -364,7 +644,7 @@ function EspaceContent() {
 
     if (freeQuestionsUsed >= FREE_QUESTION_LIMIT && !isPremium) {
       toast.error("Limite de 10 questions gratuites atteinte", {
-        description: "Passe à l'ebook pour avoir un accès illimité au chat IA (9,99 € une fois).",
+        description: "Passe à Hormones Sereine pour le chat illimité + l'ebook (9,99 € une fois).",
       });
       return;
     }
@@ -396,7 +676,7 @@ function EspaceContent() {
         }
       }
 
-      const aiMessage = fullText.trim() || `[Mode démo] Merci pour ta question ! En conditions réelles (avec clé XAI_API_KEY), l'agent ${agents.find(a => a.id === selectedAgent)?.name} analyserait précisément ta demande et te proposerait des conseils adaptés. Voici une réponse de démonstration : les approches naturelles (huiles, respiration, plantes, etc.) peuvent t'aider selon ton besoin. N'oublie pas : ceci n'est pas un avis médical.`;
+      const aiMessage = fullText.trim() || `[Mode démo] Merci pour ta question. En conditions réelles, ${agents.find(a => a.id === selectedAgent)?.name} te proposerait un protocole naturel détaillé et actionnable.`;
       setMessages([...newMessages, { role: 'assistant' as const, content: aiMessage }]);
 
       // Incrémente le compteur gratuit seulement si pas premium
@@ -409,34 +689,120 @@ function EspaceContent() {
       // Fallback démo silencieux (pas d'erreur bloquante si pas de clé)
       setMessages([...newMessages, { 
         role: 'assistant', 
-        content: `[Mode démo] Merci pour ta question ! En conditions réelles avec XAI_API_KEY, l'agent ${agents.find(a => a.id === selectedAgent)?.name} te donnerait une réponse personnalisée et adaptée. Pour l'instant : utilise les approches naturelles (aromathérapie, respiration, plantes...) selon ton besoin. N'oublie pas : ceci n'est pas un avis médical.` 
+        content: `[Mode démo] Merci pour ta question. En conditions réelles, ${agents.find(a => a.id === selectedAgent)?.name} te donnerait une réponse personnalisée, en français soigné, avec des démarches concrètes.` 
       }]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Simulation d'ajout de post forum
-  const handleCreatePost = () => {
+  const handleCreatePost = async () => {
     if (!newPostTitle.trim() || !newPostContent.trim()) return;
-    
-    const newPost = {
-      id: Date.now(),
-      author: "Vous",
-      title: newPostTitle,
-      content: newPostContent,
-      replies: 0,
-      agent: selectedAgent,
-    };
-    
-    setPosts([newPost, ...posts]);
-    setNewPostTitle('');
-    setNewPostContent('');
-    setShowNewPost(false);
-    
-    toast.success("Question publiée !", {
-      description: "L'IA et la communauté pourront y répondre.",
-    });
+
+    if (!isSupabaseConfigured() || !forumOnline) {
+      toast.error('Forum en ligne non disponible', {
+        description: 'Configure Supabase pour publier dans la communauté.',
+      });
+      setActiveTab('compte');
+      return;
+    }
+    if (!authUser) {
+      toast.error('Connecte-toi pour publier', {
+        description: 'Crée un compte gratuit dans l’onglet Compte.',
+      });
+      setActiveTab('compte');
+      return;
+    }
+
+    const supabase = tryCreateClient();
+    if (!supabase) return;
+    setForumBusy(true);
+    try {
+      const { data, error } = await supabase
+        .from('forum_posts')
+        .insert({
+          user_id: authUser.id,
+          author_name: displayName,
+          title: newPostTitle.trim(),
+          content: newPostContent.trim(),
+          agent: selectedAgent,
+        })
+        .select('*')
+        .single();
+      if (error) throw error;
+
+      const mapped = mapDbPost(data as DbForumPost, []);
+      setPosts((prev) => [mapped, ...prev.filter((p) => !p.id.startsWith('local-'))]);
+      setNewPostTitle('');
+      setNewPostContent('');
+      setShowNewPost(false);
+      setOpenPostId(mapped.id);
+      toast.success('Question publiée pour toute la communauté !');
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Impossible de publier');
+    } finally {
+      setForumBusy(false);
+    }
+  };
+
+  const handleAddReply = async (postId: string) => {
+    const text = (replyDrafts[postId] || '').trim();
+    if (!text) return;
+
+    if (!isSupabaseConfigured() || !forumOnline) {
+      toast.error('Forum en ligne non disponible');
+      setActiveTab('compte');
+      return;
+    }
+    if (!authUser) {
+      toast.error('Connecte-toi pour répondre', {
+        description: 'Crée un compte gratuit dans l’onglet Compte.',
+      });
+      setActiveTab('compte');
+      return;
+    }
+
+    const supabase = tryCreateClient();
+    if (!supabase) return;
+    setForumBusy(true);
+    try {
+      const { data, error } = await supabase
+        .from('forum_replies')
+        .insert({
+          post_id: postId,
+          user_id: authUser.id,
+          author_name: displayName,
+          content: text,
+        })
+        .select('*')
+        .single();
+      if (error) throw error;
+
+      const r = data as DbForumReply;
+      const reply: ForumReply = {
+        id: r.id,
+        author: r.author_name,
+        content: r.content,
+        date: new Date(r.created_at).toLocaleDateString('fr-FR', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        }),
+        userId: r.user_id,
+      };
+
+      setPosts((prev) =>
+        prev.map((p) =>
+          p.id === postId ? { ...p, replies: [...p.replies, reply] } : p
+        )
+      );
+      setReplyDrafts((d) => ({ ...d, [postId]: '' }));
+      toast.success('Réponse publiée');
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Impossible de répondre');
+    } finally {
+      setForumBusy(false);
+    }
   };
 
   // Note : 10 questions gratuites + forum.
@@ -513,7 +879,7 @@ function EspaceContent() {
           <div className="mb-6 rounded-2xl bg-[#5B7B6E] text-white p-4 text-center text-sm font-medium">
             {isCoaching
               ? 'Bienvenue ! Ton coaching est actif — protocoles, chat illimité et groupe WhatsApp t\'attendent.'
-              : 'Bienvenue ! Ton accès illimité est actif — chat IA, forum et ebook te sont ouverts.'}
+              : 'Bienvenue ! Ton accès illimité est actif — chat IA, forum et ebook Hormones Sereine te sont ouverts.'}
           </div>
         )}
 
@@ -522,7 +888,7 @@ function EspaceContent() {
           <div className="max-w-4xl">
             <h1 className="text-4xl font-semibold tracking-tight mb-3">Bienvenue dans l&apos;Espace Membres</h1>
             <p className="text-xl text-[#5A6B62] mb-4">
-              10 questions gratuites + forum. L&apos;ebook à 9,99 € donne l&apos;accès illimité au chat. Le coaching est l&apos;accompagnement complet.
+              10 questions gratuites + forum. L&apos;ebook Hormones Sereine (9,99 €) donne le chat illimité + le PDF (cycle, SOPK, thyroïde, ménopause…). Le coaching est l&apos;accompagnement complet.
             </p>
 
             {/* Lien vers le bilan public (email collection) + perso */}
@@ -734,23 +1100,25 @@ function EspaceContent() {
                   <div className="mb-4 text-[var(--sage-600)]">
                     <BookOpen className="h-7 w-7" />
                   </div>
-                  <div className="font-semibold text-xl">Télécharger mon ebook</div>
-                  <p className="mt-2 text-[#5A6B62] text-sm">Menopause au Naturel – PDF complet</p>
+                  <div className="font-semibold text-xl">Télécharger Hormones Sereine</div>
+                  <p className="mt-2 text-[#5A6B62] text-sm">PDF complet — cycle, SOPK, thyroïde, ménopause…</p>
                   <div className="mt-auto pt-3 text-xs text-[#C5A46E]">Clique pour télécharger →</div>
                 </a>
               )}
 
-              <a 
-                href={WHATSAPP_GROUP_LINK} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="card rounded-3xl p-7 flex flex-col hover:border-[#5B7B6E] border-2 border-[#5B7B6E]/30"
-              >
-                <div className="mb-4 text-[var(--sage-600)] text-3xl">💬</div>
-                <div className="font-semibold text-xl">Groupe WhatsApp</div>
-                <p className="mt-2 text-[#5A6B62] text-sm">Le groupe inclus avec l&apos;offre coaching sur Beacons.</p>
-                <div className="mt-auto pt-3 text-xs text-[#C5A46E]">Ouvrir le groupe →</div>
-              </a>
+              {isCoaching && (
+                <a 
+                  href={WHATSAPP_GROUP_LINK} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="card rounded-3xl p-7 flex flex-col hover:border-[#5B7B6E] border-2 border-[#5B7B6E]/30"
+                >
+                  <div className="mb-4 text-[var(--sage-600)] text-3xl">💬</div>
+                  <div className="font-semibold text-xl">Groupe WhatsApp</div>
+                  <p className="mt-2 text-[#5A6B62] text-sm">Réservé à ton coaching — échanges et suivi avec la communauté.</p>
+                  <div className="mt-auto pt-3 text-xs text-[#C5A46E]">Ouvrir le groupe →</div>
+                </a>
+              )}
             </div>
 
             {/* SUIVI SYMPTÔMES */}
@@ -883,9 +1251,12 @@ function EspaceContent() {
             </div>
 
             {/* OFFRES - Ebook pour illimité, Coaching pour l'accompagnement profond */}
-            <div className="mb-4">
-              <h2 className="text-2xl font-semibold tracking-tight mb-2">Passe à l&apos;illimité ou au coaching</h2>
-              <p className="text-[#5A6B62] mb-6">L&apos;ebook te donne l&apos;accès illimité. Le coaching est l&apos;accompagnement complet et transformateur.</p>
+            <div className="mb-4 px-0.5">
+              <h2 className="text-xl sm:text-2xl font-semibold tracking-tight mb-2 leading-snug">Passe à l&apos;illimité ou au coaching</h2>
+              <p className="text-[#5A6B62] mb-6 text-sm sm:text-base leading-relaxed">
+                Hormones Sereine te donne l&apos;illimité + le PDF pour toutes les étapes hormonales.
+                Le coaching est l&apos;accompagnement complet.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -893,27 +1264,36 @@ function EspaceContent() {
                 href={BEACONS_EBOOK_LINK} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="card rounded-3xl p-7 hover:border-[#5B7B6E] border border-[#5B7B6E]/30 flex flex-col"
+                className="card rounded-3xl p-5 sm:p-7 hover:border-[#5B7B6E] border border-[#5B7B6E]/30 flex flex-col"
               >
-                <div className="uppercase tracking-[2px] text-xs text-[var(--sage-600)] mb-1">ACCÈS ILLIMITÉ</div>
-                <div className="font-semibold text-xl mb-1">Ebook + Chat Illimité</div>
-                <div className="text-3xl font-semibold tabular-nums mb-3">9,99 € <span className="text-base font-normal">une fois</span></div>
-                <p className="text-[#5A6B62] mb-4">Accès illimité au chat IA + forum + l'ebook complet "Ménopause au Naturel &amp; Régulation Hormonale". Idéal pour avancer à ton rythme.</p>
-                <div className="mt-auto text-[var(--sage-600)] font-semibold">Accéder à l&apos;illimité →</div>
+                <div className="uppercase tracking-[1.2px] sm:tracking-[2px] text-[10px] sm:text-xs text-[var(--sage-600)] mb-1">Accès illimité</div>
+                <div className="font-semibold text-lg sm:text-xl mb-1 leading-snug">Hormones Sereine + chat illimité</div>
+                <div className="flex flex-wrap items-baseline gap-x-2 mb-3">
+                  <span className="text-3xl font-semibold tabular-nums">9,99 €</span>
+                  <span className="text-sm font-normal text-[#5A6B62]">une fois</span>
+                </div>
+                <p className="text-[#5A6B62] mb-4 text-sm leading-relaxed">
+                  PDF + chat IA illimité + forum. Cycle, SOPK, endométriose, thyroïde, pré-ménopause et ménopause — pour toutes les femmes.
+                </p>
+                <div className="mt-auto text-[var(--sage-600)] font-semibold text-sm sm:text-base">Accéder à l&apos;illimité →</div>
               </a>
 
               <a 
                 href={BEACONS_COACHING_LINK} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="card rounded-3xl p-7 hover:border-[#C5A46E] border-2 border-[#C5A46E] flex flex-col relative"
+                className="card rounded-3xl p-5 sm:p-7 hover:border-[#C5A46E] border-2 border-[#C5A46E] flex flex-col relative"
               >
-                <div className="absolute -top-3 right-8 bg-[#C5A46E] text-white text-xs font-semibold px-4 py-1 rounded-full tracking-widest">LE PLUS TRANSFORMATEUR</div>
-                <div className="uppercase tracking-[2px] text-xs text-[#C5A46E] mb-1">ACCOMPAGNEMENT PERSONNALISÉ</div>
-                <div className="font-semibold text-xl mb-1">Coaching 4 semaines sur mesure</div>
-                <div className="text-3xl font-semibold tabular-nums mb-3">299,99 €</div>
-                <p className="text-[#5A6B62] mb-4">Protocole complet + visio + suivi 4 semaines + groupe WhatsApp + chat privé avec moi.</p>
-                <div className="mt-auto text-[#C5A46E] font-semibold">Réserver le coaching →</div>
+                <div className="absolute -top-3 right-4 sm:right-8 bg-[#C5A46E] text-white text-[10px] sm:text-xs font-semibold px-3 sm:px-4 py-1 rounded-full tracking-wide">
+                  Transformateur
+                </div>
+                <div className="uppercase tracking-[1.2px] sm:tracking-[2px] text-[10px] sm:text-xs text-[#C5A46E] mb-1 pr-16 sm:pr-0">Accompagnement</div>
+                <div className="font-semibold text-lg sm:text-xl mb-1 leading-snug">Coaching 4 semaines</div>
+                <div className="text-3xl font-semibold tabular-nums mb-3">167 €</div>
+                <p className="text-[#5A6B62] mb-4 text-sm leading-relaxed">
+                  Protocole + visio + suivi 4 semaines + WhatsApp + chat privé avec moi.
+                </p>
+                <div className="mt-auto text-[#C5A46E] font-semibold text-sm sm:text-base">Réserver le coaching →</div>
               </a>
             </div>
 
@@ -1010,9 +1390,9 @@ function EspaceContent() {
                     rel="noopener noreferrer"
                     className="btn-primary inline-block px-8 py-3 rounded-2xl font-semibold"
                   >
-                    Accéder à l&apos;illimité avec l&apos;ebook à 9,99 €
+                    Accéder à l&apos;illimité avec Hormones Sereine (9,99 €)
                   </a>
-                  <p className="text-xs text-[#5A6B62] mt-3">Accès illimité au chat IA + forum + l'ebook complet.</p>
+                  <p className="text-xs text-[#5A6B62] mt-3">Chat illimité + forum + ebook Hormones Sereine (tous âges).</p>
                 </div>
               ) : (
                 <form onSubmit={sendMessage} className="border-t p-4 bg-white flex gap-3">
@@ -1034,7 +1414,7 @@ function EspaceContent() {
               )}
 
               <div className="px-6 py-2 text-[10px] text-center text-[#5A6B62] bg-white border-t">
-                Ceci n’est pas un avis médical. Les réponses de l’IA sont éducatives. Consultez toujours un praticien qualifié.
+                Conseils naturels éducatifs — en cas de symptômes graves ou de traitement en cours, un professionnel de santé reste le bon interlocuteur.
               </div>
             </div>
           </div>
@@ -1043,48 +1423,191 @@ function EspaceContent() {
         {/* FORUM */}
         {activeTab === 'forum' && (
           <div className="max-w-3xl">
-            <div className="flex justify-between items-end mb-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-6">
               <div>
                 <h2 className="text-3xl font-semibold tracking-tight">Forum de la communauté</h2>
-                <p className="text-[#5A6B62]">Partage, pose tes questions, bénéficie de l&apos;expérience collective + réponses IA.</p>
+                <p className="text-[#5A6B62] mt-1">
+                  Clique sur une discussion pour lire les réponses et répondre.
+                </p>
               </div>
-              <button onClick={() => setShowNewPost(!showNewPost)} className="btn-primary px-5 py-2 rounded-2xl text-sm font-medium">
+              <button
+                onClick={() => setShowNewPost(!showNewPost)}
+                className="btn-primary px-5 py-2 rounded-2xl text-sm font-medium shrink-0"
+              >
                 Poser une question
               </button>
             </div>
 
+            <div className="mb-6 rounded-2xl border border-[#E6EDE9] bg-[#F8F5F0] px-4 py-3 text-sm text-[#5A6B62]">
+              {forumOnline ? (
+                <>
+                  <strong className="text-[#2A3A32]">Communauté en ligne :</strong> tout le monde
+                  voit les discussions. {authUser ? (
+                    <>Tu es connectée en tant que <strong>{displayName}</strong>.</>
+                  ) : (
+                    <>
+                      {' '}
+                      <button
+                        type="button"
+                        className="underline text-[var(--sage-600)] font-medium"
+                        onClick={() => setActiveTab('compte')}
+                      >
+                        Connecte-toi
+                      </button>{' '}
+                      pour publier ou répondre.
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <strong className="text-[#2A3A32]">Mode démo :</strong> Supabase n&apos;est pas
+                  encore branché. Configure-le (voir Compte) pour la vraie communauté multi-membres.
+                </>
+              )}
+            </div>
+
+            {forumLoading && (
+              <p className="text-sm text-[#5A6B62] mb-4">Chargement des discussions…</p>
+            )}
+
             {showNewPost && (
               <div className="card rounded-3xl p-6 mb-8">
-                <input 
-                  value={newPostTitle} 
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPostTitle(e.target.value)} 
-                  placeholder="Titre de ta question" 
-                  className="w-full mb-3 rounded-xl border px-4 py-3" 
+                {!authUser && forumOnline && (
+                  <p className="text-sm text-amber-800 bg-amber-50 rounded-xl px-3 py-2 mb-3">
+                    Connecte-toi dans l&apos;onglet Compte pour publier.
+                  </p>
+                )}
+                <input
+                  value={newPostTitle}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setNewPostTitle(e.target.value)
+                  }
+                  placeholder="Titre de ta question"
+                  className="w-full mb-3 rounded-xl border px-4 py-3"
                 />
-                <textarea 
-                  value={newPostContent} 
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewPostContent(e.target.value)} 
-                  placeholder="Décris ta situation ou ta question en détail..." 
-                  className="w-full h-28 rounded-xl border p-4 mb-3 resize-y" 
+                <textarea
+                  value={newPostContent}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                    setNewPostContent(e.target.value)
+                  }
+                  placeholder="Décris ta situation ou ta question en détail..."
+                  className="w-full h-28 rounded-xl border p-4 mb-3 resize-y"
                 />
                 <div className="flex gap-3">
-                  <button onClick={handleCreatePost} className="btn-primary px-6 py-2 rounded-2xl text-sm">Publier</button>
-                  <button onClick={() => setShowNewPost(false)} className="btn-secondary px-6 py-2 rounded-2xl text-sm">Annuler</button>
+                  <button
+                    onClick={() => void handleCreatePost()}
+                    disabled={forumBusy}
+                    className="btn-primary px-6 py-2 rounded-2xl text-sm disabled:opacity-60"
+                  >
+                    {forumBusy ? 'Publication…' : 'Publier'}
+                  </button>
+                  <button
+                    onClick={() => setShowNewPost(false)}
+                    className="btn-secondary px-6 py-2 rounded-2xl text-sm"
+                  >
+                    Annuler
+                  </button>
                 </div>
               </div>
             )}
 
             <div className="space-y-4">
-              {posts.map(post => (
-                <div key={post.id} className="forum-post card rounded-3xl p-6 border border-[#E6EDE9]">
-                  <div className="font-semibold text-lg mb-1">{post.title}</div>
-                  <div className="text-sm text-[#5A6B62] mb-3">Par {post.author} • {post.replies} réponses</div>
-                  <p className="text-[15px]">{post.content}</p>
-                  <div className="mt-4 text-xs px-3 py-1 inline-block rounded bg-[#E6EDE9] text-[var(--sage-600)]">
-                    {agents.find(a => a.id === post.agent)?.name || 'Discussion'}
+              {posts.map((post) => {
+                const isOpen = openPostId === post.id;
+                const replyCount = post.replies?.length || 0;
+                return (
+                  <div
+                    key={post.id}
+                    className="forum-post card rounded-3xl border border-[#E6EDE9] overflow-hidden"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setOpenPostId(isOpen ? null : post.id)}
+                      className="w-full text-left p-6 hover:bg-[#F8F5F0]/60 transition"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="font-semibold text-lg mb-1">{post.title}</div>
+                          <div className="text-sm text-[#5A6B62] mb-3">
+                            Par {post.author}
+                            {post.date ? ` • ${post.date}` : ''} • {replyCount} réponse
+                            {replyCount !== 1 ? 's' : ''}
+                          </div>
+                          <p className="text-[15px] text-[#2A3A32] line-clamp-2">{post.content}</p>
+                          <div className="mt-4 text-xs px-3 py-1 inline-block rounded bg-[#E6EDE9] text-[var(--sage-600)]">
+                            {agents.find((a) => a.id === post.agent)?.name || 'Discussion'}
+                          </div>
+                        </div>
+                        <span className="text-[var(--sage-600)] text-sm shrink-0 mt-1">
+                          {isOpen ? '▲' : '▼'} Voir
+                        </span>
+                      </div>
+                    </button>
+
+                    {isOpen && (
+                      <div className="border-t border-[#E6EDE9] bg-[#FCFBF9] px-6 py-5 space-y-4">
+                        <p className="text-[15px] leading-relaxed whitespace-pre-wrap">
+                          {post.content}
+                        </p>
+
+                        <div>
+                          <div className="text-xs uppercase tracking-widest text-[var(--mint)] mb-3">
+                            Réponses ({replyCount})
+                          </div>
+                          {replyCount === 0 ? (
+                            <p className="text-sm text-[#5A6B62] mb-4">
+                              Pas encore de réponse — sois la première à aider 🌿
+                            </p>
+                          ) : (
+                            <ul className="space-y-3 mb-4">
+                              {post.replies.map((r) => (
+                                <li
+                                  key={r.id}
+                                  className="rounded-2xl border border-[#E6EDE9] bg-white p-4"
+                                >
+                                  <div className="text-xs text-[#5A6B62] mb-1">
+                                    <strong className="text-[#2A3A32]">{r.author}</strong>
+                                    {r.isExample ? ' · exemple' : ''}
+                                    {r.date ? ` · ${r.date}` : ''}
+                                  </div>
+                                  <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                                    {r.content}
+                                  </p>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+
+                          <div className="rounded-2xl border border-[#E6EDE9] bg-white p-4">
+                            <label className="block text-sm font-medium mb-2">
+                              Ta réponse
+                            </label>
+                            <textarea
+                              value={replyDrafts[post.id] || ''}
+                              onChange={(e) =>
+                                setReplyDrafts((d) => ({
+                                  ...d,
+                                  [post.id]: e.target.value,
+                                }))
+                              }
+                              placeholder="Partage ton expérience ou une piste bienveillante..."
+                              className="w-full h-24 rounded-xl border p-3 text-sm resize-y mb-3"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => void handleAddReply(post.id)}
+                              disabled={forumBusy}
+                              className="btn-primary px-5 py-2 rounded-2xl text-sm disabled:opacity-60"
+                            >
+                              {forumBusy ? '…' : 'Publier la réponse'}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -1101,11 +1624,11 @@ function EspaceContent() {
             ) : (
               <div>
                 <div className="card rounded-3xl p-8 mb-6">
-                  <div className="font-semibold mb-2 text-lg">Ton protocole 4 semaines — Ménopause &amp; Énergie</div>
+                  <div className="font-semibold mb-2 text-lg">Ton protocole 4 semaines — Équilibre hormonal &amp; énergie</div>
                   <div className="text-sm text-[#5A6B62] mb-4">Créé le 12 juin 2026 • À revoir lors du prochain point</div>
                   <ul className="space-y-2 text-[15px] list-disc pl-5">
-                    <li>Matin : Tisane fenouil + gingembre + 2 gouttes d’huile essentielle de sauge sclarée (diffusion)</li>
-                    <li>Exercice nerf vague : 3 × 5 min de respiration 4-7-8 avant les repas</li>
+                    <li>Matin : tisane fenouil-gingembre, et diffusion de sauge sclarée si le terrain le permet</li>
+                    <li>Exercice nerf vague : trois fois cinq minutes de respiration 4-7-8 avant les repas</li>
                     <li>Alimentation : Réduction des sucres rapides + graines de nigelle 1 c. à café le matin</li>
                     <li>Point d’acupression : Rate 6 (SP6) 2 min matin et soir</li>
                   </ul>
@@ -1118,15 +1641,38 @@ function EspaceContent() {
 
         {/* COMPTE */}
         {activeTab === 'compte' && (
-          <div className="max-w-lg">
-            <h2 className="text-3xl font-semibold tracking-tight mb-6">Mon compte</h2>
-            <div className="card rounded-3xl p-6 sm:p-8 space-y-4 text-sm mb-6">
+          <div className="max-w-lg space-y-6">
+            <h2 className="text-3xl font-semibold tracking-tight mb-2">Mon compte</h2>
+
+            <AuthPanel
+              user={authUser}
+              displayName={displayName}
+              onAuthChange={() => {
+                void refreshAuth();
+                void loadForumFromSupabase();
+              }}
+              onDisplayNameChange={setDisplayName}
+            />
+
+            <div className="card rounded-3xl p-6 sm:p-8 space-y-4 text-sm">
               <div>
                 <span className="text-[#5A6B62]">Statut :</span>{' '}
                 <span className="font-medium">{getAccessLabel(accessTier)}</span>
               </div>
               <div>
-                <span className="text-[#5A6B62]">Accès enregistré :</span>{' '}
+                <span className="text-[#5A6B62]">Sur le compte :</span>{' '}
+                <span className="font-medium">
+                  {!authUser
+                    ? 'Non connectée'
+                    : accessOnAccount && isPremium
+                      ? 'Premium enregistré ✓'
+                      : isPremium
+                        ? 'Premium sur cet appareil seulement'
+                        : 'Accès gratuit'}
+                </span>
+              </div>
+              <div>
+                <span className="text-[#5A6B62]">Depuis :</span>{' '}
                 <span className="font-medium">
                   {accessSince
                     ? new Date(accessSince).toLocaleDateString('fr-FR', {
@@ -1139,9 +1685,29 @@ function EspaceContent() {
                       : '—'}
                 </span>
               </div>
-              {isPremium && (
+              {isPremium && accessOnAccount && authUser && (
                 <div className="text-[#5A6B62]">
-                  Ton accès reste actif sur cet appareil. Si tu changes de téléphone ou d&apos;ordinateur, utilise le lien de ton email Beacons, ou le formulaire ci-dessous.
+                  Ton accès est lié à ton compte : il te suit sur téléphone, ordi, etc. dès que tu es connectée.
+                </div>
+              )}
+              {isPremium && authUser && !accessOnAccount && (
+                <div className="space-y-2">
+                  <p className="text-[#5A6B62]">
+                    Premium actif sur cet appareil, pas encore sur le compte cloud.
+                  </p>
+                  <button
+                    type="button"
+                    disabled={bindingAccess}
+                    onClick={() => void bindAccessToAccount(accessTier)}
+                    className="btn-primary px-4 py-2 rounded-xl text-sm disabled:opacity-60"
+                  >
+                    {bindingAccess ? 'Liaison…' : 'Enregistrer sur mon compte'}
+                  </button>
+                </div>
+              )}
+              {isPremium && !authUser && (
+                <div className="text-[#5A6B62]">
+                  Crée un compte (ci-dessus) pour retrouver ton accès sur tous tes appareils après un achat Beacons.
                 </div>
               )}
               {hasEbook && (
@@ -1150,7 +1716,7 @@ function EspaceContent() {
                   className="inline-flex items-center gap-2 text-[var(--sage-600)] font-medium hover:underline"
                   download
                 >
-                  <BookOpen className="h-4 w-4" /> Télécharger mon ebook PDF
+                  <BookOpen className="h-4 w-4" /> Télécharger Hormones Sereine (PDF)
                 </a>
               )}
               {!isPremium && (
@@ -1160,17 +1726,23 @@ function EspaceContent() {
                   rel="noopener noreferrer"
                   className="inline-block text-[var(--sage-600)] font-medium hover:underline"
                 >
-                  Passer à l&apos;accès illimité (9,99 €) →
+                  Hormones Sereine + chat illimité (9,99 €) →
                 </a>
               )}
               {isCoaching && <div className="pt-2 text-[#C5A46E]">Chat privé avec la coach activé</div>}
             </div>
 
             <div className="card rounded-3xl p-6 sm:p-8 space-y-3">
-              <h3 className="font-semibold text-lg">Activer mon accès</h3>
+              <h3 className="font-semibold text-lg">Activer mon accès Beacons</h3>
               <p className="text-sm text-[#5A6B62]">
-                Tu as déjà acheté sur Beacons ? Colle ici le <strong>lien</strong> de ton email, ou ton <strong>code d&apos;accès</strong>, pour débloquer cet appareil.
+                Après ton achat, colle ici le <strong>lien</strong> de ton email ou ton{' '}
+                <strong>code</strong>. Si tu es connectée, l&apos;accès est aussi sauvé sur ton compte.
               </p>
+              {!authUser && (
+                <p className="text-xs text-amber-800 bg-amber-50 rounded-xl px-3 py-2">
+                  Conseil : connecte-toi d&apos;abord, puis active le code — comme ça le premium te suit partout.
+                </p>
+              )}
               <input
                 type="text"
                 value={accessCode}

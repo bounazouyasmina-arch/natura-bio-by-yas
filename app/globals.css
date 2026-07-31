@@ -120,6 +120,12 @@ p {
   color: var(--deep-forest);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
+  /* Évite les boutons coupés / collés sur petits écrans */
+  box-sizing: border-box;
+  max-width: 100%;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: anywhere;
 }
 
 .btn-primary:hover {

@@ -35,16 +35,16 @@ export default function BlogPage() {
             <p>L’approche holistique consiste à traiter la personne dans sa globalité plutôt que de masquer un symptôme. Chez natura’bio, nous combinons :</p>
             
             <ul>
-              <li><strong>Aromathérapie</strong> : synergies d’huiles essentielles ciblées (lavande, sauge sclarée, géranium)</li>
+              <li><strong>Aromathérapie</strong> : huiles essentielles ciblées (lavande, sauge sclarée, géranium…) avec des usages concrets</li>
               <li><strong>Régulation du nerf vague</strong> : exercices de respiration et techniques de recentrage</li>
-              <li><strong>Alimentation thérapeutique</strong> : alimentation anti-inflammatoire, adaptogènes et micronutrition</li>
+              <li><strong>Alimentation thérapeutique</strong> : assiette anti-inflammatoire, adaptogènes et micronutrition</li>
               <li><strong>Médecine traditionnelle chinoise et prophétique</strong> : points d’acupression, plantes et rituels ancestraux</li>
             </ul>
 
-            <p>Cette vision intégrative permet d’obtenir des résultats durables, car elle agit sur les causes profondes plutôt que sur les manifestations.</p>
+            <p>Cette vision intégrative favorise des résultats plus durables, car elle agit sur les causes profondes plutôt que sur les seules manifestations.</p>
 
             <p className="mt-4 font-medium text-[#2A3A32]">Exemple concret :</p>
-            <p>Une personne stressée qui souffre d’anxiété et de troubles du sommeil peut bénéficier d’une synergie huile essentielle de lavande + respiration 4-6 + infusion de mélisse le soir. Les résultats sont souvent visibles en 2 à 3 semaines.</p>
+            <p>Une personne stressée, anxieuse et mal dormante peut associer la diffusion d’huile essentielle de lavande le soir, une respiration lente (inspiration quatre secondes, expiration six secondes) et une infusion de mélisse. En pratiquant régulièrement, beaucoup de personnes ressentent un mieux-être en deux à trois semaines.</p>
           </div>
 
           <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
@@ -64,14 +64,14 @@ export default function BlogPage() {
             
             <ul>
               <li><strong>Nigelle (cumin noir)</strong> : études montrent son action sur l’immunité, la réduction de l’inflammation et le soutien général de l’énergie.</li>
-              <li><strong>Sauge sclarée et lavande</strong> : des recherches ont démontré leurs effets sur l’anxiété, le stress et la qualité du sommeil.</li>
-              <li><strong>Maca et adaptogènes</strong> : plusieurs essais cliniques confirment leur action sur l’énergie, la résistance au stress et l’humeur.</li>
-              <li><strong>Huiles essentielles</strong> : la lavande et le géranium ont des effets prouvés sur le système nerveux et la qualité du sommeil.</li>
+              <li><strong>Sauge sclarée et lavande</strong> : des recherches ont exploré leurs effets sur l’anxiété, le stress et la qualité du sommeil.</li>
+              <li><strong>Maca et adaptogènes</strong> : plusieurs essais cliniques ont étudié leur rôle sur l’énergie, la résistance au stress et l’humeur.</li>
+              <li><strong>Huiles essentielles</strong> : la lavande et le géranium, entre autres, sont souvent utilisés pour accompagner le système nerveux et le repos.</li>
             </ul>
 
-            <p>C’est précisément cette alliance entre traditions ancestrales et données scientifiques qui rend notre approche si puissante et sécuritaire.</p>
+            <p>C’est précisément cette alliance entre traditions ancestrales et connaissances actuelles qui rend notre approche à la fois exigeante et rassurante.</p>
 
-            <p className="mt-4">Chez natura’bio, nous ne proposons jamais une plante ou une huile sans avoir croisé les savoirs anciens et les preuves actuelles.</p>
+            <p className="mt-4">Chez natura’bio, nous croisons toujours les savoirs anciens et les précautions d’usage modernes avant de proposer une plante ou une huile.</p>
           </div>
 
           <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
@@ -117,13 +117,13 @@ export default function BlogPage() {
             <p>Plutôt que de lutter contre le sommeil, on peut accompagner le corps avec des outils naturels ciblés :</p>
             
             <ul>
-              <li>Huile essentielle de lavande vraie + camomille romaine en diffusion 30 min avant le coucher.</li>
-              <li>Respiration 4-7-8 (4s inspire, 7s retenir, 8s expire) répétée 4 fois.</li>
-              <li>Magnésium bisglycinate 300-400mg + infusion de mélisse ou valériane.</li>
-              <li>Éviter les écrans bleus et les repas lourds après 20h.</li>
+              <li>Diffuse de l’huile essentielle de lavande pendant environ trente minutes avant le coucher (quelques gouttes dans le diffuseur).</li>
+              <li>Pratique quatre cycles de respiration 4-7-8 : inspire quatre secondes, retiens sept secondes, expire huit secondes.</li>
+              <li>Si ton professionnel de santé est d’accord, un magnésium bien toléré le soir peut s’associer à une infusion de mélisse.</li>
+              <li>Évite les écrans et les repas lourds en fin de soirée pour laisser le corps descendre en régime de repos.</li>
             </ul>
 
-            <p className="mt-4">Beaucoup de personnes remarquent une amélioration notable en combinant 2-3 de ces outils de façon régulière.</p>
+            <p className="mt-4">Beaucoup de personnes remarquent une amélioration en combinant deux ou trois de ces leviers de façon régulière, plutôt qu’en essayant tout d’un coup.</p>
           </div>
 
           <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
@@ -143,7 +143,7 @@ export default function BlogPage() {
             
             <ul>
               <li>Pratiquer le "non" avec douceur : "Je ne peux pas cette semaine, je priorise mon repos."</li>
-              <li>Utiliser l'huile essentielle de bergamote ou d'ylang-ylang pour apaiser le mental avant les prises de décision.</li>
+              <li>Diffuser ou inhaler une huile apaisante (lavande ou agrumes doux) avant une décision importante, pour recentrer le mental.</li>
               <li>Faire un "brain dump" écrit chaque soir : vider tout ce qui tourne dans la tête sur papier.</li>
               <li>Revaloriser ce qui est déjà fait au lieu de se focaliser sur ce qui reste à faire.</li>
             </ul>
@@ -162,17 +162,17 @@ export default function BlogPage() {
           <h2 className="text-3xl font-semibold tracking-tight mb-4">Aromathérapie pour le sommeil et la détente</h2>
           
           <div className="prose prose-sm max-w-none text-[#5A6B62]">
-            <p>Les huiles essentielles peuvent grandement aider à apaiser le système nerveux et favoriser un sommeil réparateur ou une meilleure détente, que ce soit face au stress du quotidien, aux examens ou à une vie bien remplie.</p>
+            <p>Les huiles essentielles peuvent accompagner l’apaisement du système nerveux et un endormissement plus serein, face au stress du quotidien, aux examens ou à une vie bien remplie.</p>
 
-            <p>Recette simple pour la nuit :</p>
+            <p>Rituel simple pour la nuit :</p>
             
             <ul>
-              <li>2 gouttes de lavande vraie + 1 goutte de camomille romaine sur un mouchoir près de l'oreiller.</li>
-              <li>Ou un roll-on : 5ml d'huile végétale + 10 gouttes lavande + 5 gouttes marjolaine.</li>
-              <li>Masser les poignets et le plexus avant de dormir.</li>
+              <li>Place deux gouttes de lavande sur un mouchoir près de l’oreiller, ou diffuse la lavande le soir pendant 20 à 30 minutes.</li>
+              <li>Prépare un roll-on : cinq millilitres d’huile végétale et une dizaine de gouttes de lavande ; masse les poignets avant de dormir.</li>
+              <li>Ajoute quatre cycles de respiration lente (inspire 4 secondes, expire 6 secondes) en même temps.</li>
             </ul>
 
-            <p className="mt-4">Évitez les huiles stimulantes comme le romarin le soir. Testez et notez ce qui fonctionne pour vous.</p>
+            <p className="mt-4">Le soir, privilégie les notes apaisantes plutôt que les notes très toniques. Observe ce qui te convient et ajuste en douceur.</p>
           </div>
 
           <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
