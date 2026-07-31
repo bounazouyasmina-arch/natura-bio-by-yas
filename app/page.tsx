@@ -457,38 +457,76 @@ export default function NaturaBioByYasLanding() {
               <p className="text-[#5A6B62] text-lg mb-6">
                 Le corps parle quand l’esprit se tait. Ici on ne « gère » pas seulement le stress : on cartographie la vraie charge mentale, l’épuisement invisible et on pose des outils concrets pour reprendre de l’espace.
               </p>
-              <a 
-                href="/espace?tab=chat&agent=emotion" 
-                className="inline-flex items-center gap-2 rounded-full px-8 py-3 font-semibold text-white"
-                style={{ backgroundColor: '#6C6B9A' }}
-              >
-                Explorer la section Émotionnelle <ArrowRight className="h-4 w-4" />
-              </a>
+              <p className="text-[#4A455F] text-[15px] leading-relaxed mb-6 rounded-2xl px-4 py-3 border border-[#E6E1F5] bg-white/60">
+                <strong className="font-semibold">Ce que l’IA ouvre, le coaching l’ancre.</strong>{' '}
+                En 4 semaines avec Yas, on transforme cette cartographie en plan de vie réel : limites posées, tête qui se calme, énergie qui te revient — avec un suivi humain quand tu ne veux plus porter seule.
+              </p>
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+                <a 
+                  href="/espace?tab=chat&agent=emotion" 
+                  className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 font-semibold text-white"
+                  style={{ backgroundColor: '#6C6B9A' }}
+                >
+                  Explorer gratuitement <ArrowRight className="h-4 w-4" />
+                </a>
+                <a 
+                  href={BEACONS_COACHING_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 font-semibold border-2 border-[#C5A46E] text-[#8A6E3A] bg-white hover:bg-[#FBF6EC] transition-colors"
+                >
+                  Coaching 4 semaines — 167 € <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
             </div>
 
             <div className="space-y-4 text-[#5A6B62]">
               <div className="flex gap-3">
-                <span className="text-2xl">🧠</span>
-                <p><strong>Cartographie précise</strong> de ta charge mentale (tâches, émotions, décisions, culpabilité)</p>
+                <span className="text-2xl shrink-0">🧠</span>
+                <p>
+                  <strong className="text-[#4A455F]">Cartographie précise</strong> de ta charge mentale (tâches, émotions, décisions, culpabilité).
+                  <span className="block text-sm mt-1 text-[#6C6B9A]">En coaching : on la fait ensemble, sur ta vraie vie — pas sur un modèle générique.</span>
+                </p>
               </div>
               <div className="flex gap-3">
-                <span className="text-2xl">🔄</span>
-                <p><strong>Protocoles concrets</strong> sur 3 à 6 semaines pour poser des limites et alléger durablement</p>
+                <span className="text-2xl shrink-0">🔄</span>
+                <p>
+                  <strong className="text-[#4A455F]">Protocoles concrets</strong> sur 3 à 6 semaines pour poser des limites et alléger durablement.
+                  <span className="block text-sm mt-1 text-[#6C6B9A]">En coaching : un protocole écrit à ton nom, ajusté chaque semaine avec Yas.</span>
+                </p>
               </div>
               <div className="flex gap-3">
-                <span className="text-2xl">💬</span>
-                <p><strong>Outils émotionnels concrets</strong>, régulation nerveuse et, si besoin, soutien par les huiles essentielles</p>
+                <span className="text-2xl shrink-0">💬</span>
+                <p>
+                  <strong className="text-[#4A455F]">Outils émotionnels concrets</strong>, régulation nerveuse et, si besoin, soutien par les huiles essentielles.
+                  <span className="block text-sm mt-1 text-[#6C6B9A]">En coaching : les bons outils au bon moment — WhatsApp + chat privé quand ça déborde.</span>
+                </p>
               </div>
               <div className="flex gap-3">
-                <span className="text-2xl">🪞</span>
-                <p><strong>Travail intérieur</strong> : reparentage, deuil de la femme parfaite, réappropriation de ton énergie</p>
+                <span className="text-2xl shrink-0">🪞</span>
+                <p>
+                  <strong className="text-[#4A455F]">Travail intérieur</strong> : reparentage, deuil de la femme parfaite, réappropriation de ton énergie.
+                  <span className="block text-sm mt-1 text-[#6C6B9A]">En coaching : un espace sûr pour oser ce que tu n’arrives plus à porter seule.</span>
+                </p>
               </div>
             </div>
           </div>
 
-          <p className="text-center text-sm text-[#5A6B62] mt-8">
-            Cette section est accessible gratuitement (dans la limite des 10 questions). Pour un accompagnement vraiment personnalisé et un suivi sur plusieurs semaines, le coaching est souvent le choix le plus transformateur.
-          </p>
+          <div className="mt-8 rounded-2xl border border-[#D9D4EC] bg-white/70 px-5 py-5 sm:px-8 sm:py-6 text-center">
+            <p className="text-sm sm:text-[15px] text-[#4A455F] leading-relaxed max-w-2xl mx-auto">
+              L’agent IA t’écoute déjà avec justesse (dans la limite des 10 questions gratuites).
+              {' '}<strong className="font-semibold">Si tu sens que « comprendre » ne suffit plus — que tu veux être tenue, guidée et relue chaque semaine —</strong>{' '}
+              le coaching 4 semaines est l’endroit où la charge s’allège vraiment, pas seulement le temps d’une réponse.
+            </p>
+            <a
+              href={BEACONS_COACHING_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-[#8A6E3A] hover:underline"
+            >
+              Réserver mon accompagnement avec Yas <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
         </div>
       </section>
 

@@ -1087,8 +1087,11 @@ function EspaceContent() {
                   🧠
                 </div>
                 <div className="font-semibold text-xl">Santé Mentale &amp; Charge Invisible</div>
-                <p className="mt-2 text-[#5A6B62]">Inventaires concrets, protocoles pour poser des limites, travail émotionnel et régulation nerveuse. Section dédiée.</p>
-                <div className="mt-3 text-sm font-medium" style={{ color: '#6C6B9A' }}>Accéder à l&apos;agent dédié →</div>
+                <p className="mt-2 text-[#5A6B62]">
+                  Cartographie, protocoles, outils émotionnels et travail intérieur.
+                  L’IA t’ouvre la voie — le coaching 4 semaines l’ancre avec Yas, semaine après semaine.
+                </p>
+                <div className="mt-3 text-sm font-medium" style={{ color: '#6C6B9A' }}>Parler à l&apos;agent dédié →</div>
               </div>
 
               {hasEbook && (
