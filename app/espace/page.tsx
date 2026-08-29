@@ -22,6 +22,7 @@ import {
 } from '@/lib/member-access';
 import { tryCreateClient } from '@/lib/supabase/client';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
+import { toFriendlyNetworkError } from '@/lib/auth-errors';
 import {
   type ForumPost,
   type ForumReply,
@@ -207,7 +208,8 @@ function EspaceContent() {
       setForumOnline(false);
       setPosts(seedPosts);
       toast.error('Forum temporairement indisponible', {
-        description: 'Vérifie que le SQL supabase/schema.sql a bien été exécuté.',
+        description:
+          'Réessaie dans une minute. Si ça continue, le service est peut‑être en pause.',
       });
     } finally {
       setForumLoading(false);
@@ -356,7 +358,9 @@ function EspaceContent() {
         });
       }
     } catch {
-      toast.error('Impossible d’activer le code pour le moment');
+      toast.error(
+        'Impossible d’activer le code pour le moment. Vérifie ta connexion et réessaie.'
+      );
     } finally {
       setActivatingCode(false);
     }
@@ -685,12 +689,19 @@ function EspaceContent() {
         setFreeQuestionsUsed(newCount);
         localStorage.setItem('sv_free_questions', newCount.toString());
       }
-    } catch (err: any) {
-      // Fallback démo silencieux (pas d'erreur bloquante si pas de clé)
-      setMessages([...newMessages, { 
-        role: 'assistant', 
-        content: `[Mode démo] Merci pour ta question. En conditions réelles, ${agents.find(a => a.id === selectedAgent)?.name} te donnerait une réponse personnalisée, en français soigné, avec des démarches concrètes.` 
-      }]);
+    } catch (err: unknown) {
+      const friendly = toFriendlyNetworkError(
+        err,
+        'La réponse n’a pas pu être chargée. Réessaie dans un instant.'
+      );
+      setMessages([
+        ...newMessages,
+        {
+          role: 'assistant',
+          content: `Désolée, un souci technique est survenu.\n\n${friendly}\n\n— La Sage de natura'bio by yas`,
+        },
+      ]);
+      toast.error(friendly);
     } finally {
       setIsLoading(false);
     }
@@ -739,7 +750,7 @@ function EspaceContent() {
       setOpenPostId(mapped.id);
       toast.success('Question publiée pour toute la communauté !');
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : 'Impossible de publier');
+      toast.error(toFriendlyNetworkError(err, 'Impossible de publier pour le moment.'));
     } finally {
       setForumBusy(false);
     }
@@ -799,7 +810,7 @@ function EspaceContent() {
       setReplyDrafts((d) => ({ ...d, [postId]: '' }));
       toast.success('Réponse publiée');
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : 'Impossible de répondre');
+      toast.error(toFriendlyNetworkError(err, 'Impossible de répondre pour le moment.'));
     } finally {
       setForumBusy(false);
     }
