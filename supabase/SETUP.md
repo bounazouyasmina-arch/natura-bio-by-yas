@@ -87,6 +87,17 @@ Sans cette clé, la liaison compte fonctionne souvent quand même (session user)
 3. Ouvre en navigation privée avec un 2ᵉ compte → tu dois voir le post
 4. Connectée + activer un code Beacons → Table Editor → `profiles` → `access_tier` = ebook ou coaching
 
+## 8. Anti-pause (plan gratuit)
+
+Le gratuit met le projet en pause après ~7 jours sans activité DB → « Failed to fetch » sur le site.
+
+Le site appelle chaque jour `GET /api/cron/keep-alive` (voir `vercel.json`) pour « pinguer » Supabase.
+
+1. Vercel → **Settings → Environment Variables**
+2. Ajoute `CRON_SECRET` = une longue chaîne secrète (ex. générateur de mots de passe)
+3. **Redeploy**
+4. Vercel → **Settings → Cron Jobs** : tu dois voir `/api/cron/keep-alive` (tous les jours ~9h UTC)
+
 ## Dépannage
 | Problème | Cause fréquente |
 |----------|-----------------|
@@ -94,3 +105,4 @@ Sans cette clé, la liaison compte fonctionne souvent quand même (session user)
 | Impossible de publier | Pas connectée / Confirm email encore ON |
 | Mode démo | Variables Supabase absentes sur Vercel |
 | Premium pas sur le compte | Pas connectée au moment de l’activation / service role absente |
+| « Failed to fetch » soudain | Projet Supabase **en pause** → Reprendre ; vérifier le cron keep-alive |

@@ -1819,22 +1819,71 @@ function EspaceContent() {
               {isCoaching && <div className="pt-2 text-[#C5A46E]">Chat privé avec la coach activé</div>}
             </div>
 
-            <div className="card rounded-3xl p-6 sm:p-8 space-y-3">
+            <div className="card rounded-3xl p-6 sm:p-8 space-y-4">
               <h3 className="font-semibold text-lg">Activer mon accès Beacons</h3>
               <p className="text-sm text-[#5A6B62]">
-                Après ton achat, colle ici le <strong>lien</strong> de ton email ou ton{' '}
-                <strong>code</strong>. Si tu es connectée, l&apos;accès est aussi sauvé sur ton compte.
+                Tu as acheté sur Beacons ? Suis ces 4 étapes pour débloquer ton accès ici.
               </p>
+
+              <ol className="space-y-3 text-sm text-[#5A6B62]">
+                <li className="flex gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--sage-600)] text-white text-xs font-semibold">
+                    1
+                  </span>
+                  <span>
+                    <strong className="text-[#2A3A32]">Achète</strong> l&apos;ebook ou le coaching sur Beacons
+                    (paiement sécurisé).
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--sage-600)] text-white text-xs font-semibold">
+                    2
+                  </span>
+                  <span>
+                    <strong className="text-[#2A3A32]">Reçois</strong> ton lien ou ton code par email
+                    (regarde aussi les spams).
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--sage-600)] text-white text-xs font-semibold">
+                    3
+                  </span>
+                  <span>
+                    <strong className="text-[#2A3A32]">Connecte-toi</strong> sur cette page (compte ci-dessus)
+                    pour que le premium te suive sur tous tes appareils.
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--sage-600)] text-white text-xs font-semibold">
+                    4
+                  </span>
+                  <span>
+                    <strong className="text-[#2A3A32]">Colle</strong> le lien ou le code ci-dessous, puis
+                    appuie sur Activer.
+                  </span>
+                </li>
+              </ol>
+
               {!authUser && (
                 <p className="text-xs text-amber-800 bg-amber-50 rounded-xl px-3 py-2">
-                  Conseil : connecte-toi d&apos;abord, puis active le code — comme ça le premium te suit partout.
+                  Conseil : fais l&apos;étape 3 avant l&apos;étape 4 — sinon l&apos;accès reste seulement sur
+                  cet appareil.
                 </p>
               )}
+
+              <div className="rounded-2xl bg-[#F7FAF8] border border-[#E6EDE9] px-3 py-2.5 text-xs text-[#5A6B62]">
+                <span className="font-medium text-[#2A3A32]">Exemple :</span> un code ressemble à{' '}
+                <code className="bg-white px-1.5 py-0.5 rounded border border-[#E6EDE9]">
+                  nb-ebook-····
+                </code>{' '}
+                ou un lien vers naturabioyas.fr/acces/…
+              </div>
+
               <input
                 type="text"
                 value={accessCode}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAccessCode(e.target.value)}
-                placeholder="Lien ou code (ex: nb-ebook-...)"
+                placeholder="Colle ici ton lien ou ton code"
                 className="w-full border border-[#E6EDE9] rounded-xl px-4 py-3 text-sm"
               />
               <button
@@ -1845,6 +1894,17 @@ function EspaceContent() {
               >
                 {activatingCode ? 'Activation…' : 'Activer mon accès'}
               </button>
+
+              <p className="text-xs text-[#5A6B62] leading-relaxed">
+                Tu n&apos;as pas reçu ton accès ?{' '}
+                <a
+                  href="mailto:contact@naturabioyas.fr?subject=Acc%C3%A8s%20Beacons%20non%20re%C3%A7u"
+                  className="text-[var(--sage-600)] font-medium hover:underline"
+                >
+                  Écris-moi à contact@naturabioyas.fr
+                </a>
+                {' '}avec l&apos;email utilisé sur Beacons — je t&apos;aide.
+              </p>
             </div>
           </div>
         )}
