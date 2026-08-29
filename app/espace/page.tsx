@@ -1370,10 +1370,30 @@ function EspaceContent() {
                 )}
 
                 {messages.map((m, idx) => (
-                  <div key={idx} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div key={idx} className={`flex flex-col ${m.role === 'user' ? 'items-end' : 'items-start'} gap-2`}>
                     <div className={`max-w-[80%] px-5 py-3 text-[15px] leading-relaxed whitespace-pre-wrap ${m.role === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai'}`}>
                       {m.content}
                     </div>
+                    {m.role === 'assistant' &&
+                      !isCoaching &&
+                      !isLoading &&
+                      idx === messages.length - 1 && (
+                        <div className="max-w-[90%] sm:max-w-[80%] rounded-2xl border border-[#E8D9B8] bg-[#FBF7F0] px-4 py-3 text-sm text-[#5A6B62]">
+                          <p className="leading-relaxed">
+                            <strong className="text-[#2A3A32]">Envie d&apos;aller plus loin avec Yas ?</strong>
+                            {' '}
+                            Le coaching 4 semaines : protocole sur-mesure, suivi humain, charge mentale et rythme de vie — pas seulement une réponse.
+                          </p>
+                          <a
+                            href={BEACONS_COACHING_LINK}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 mt-2.5 font-semibold text-[#8A6E3A] hover:underline"
+                          >
+                            Coaching 4 semaines — 167 € →
+                          </a>
+                        </div>
+                      )}
                   </div>
                 ))}
 
@@ -1385,17 +1405,29 @@ function EspaceContent() {
               </div>
 
               {freeQuestionsUsed >= FREE_QUESTION_LIMIT && !isPremium ? (
-                <div className="border-t p-6 bg-white text-center">
-                  <p className="font-medium mb-3">Tu as utilisé tes 10 questions gratuites.</p>
-                  <a 
-                    href={BEACONS_EBOOK_LINK} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="btn-primary inline-block px-8 py-3 rounded-2xl font-semibold"
-                  >
-                    Accéder à l&apos;illimité avec Hormones Sereine (9,99 €)
-                  </a>
-                  <p className="text-xs text-[#5A6B62] mt-3">Chat illimité + forum + ebook Hormones Sereine (tous âges).</p>
+                <div className="border-t p-6 bg-white text-center space-y-4">
+                  <p className="font-medium">Tu as utilisé tes 10 questions gratuites.</p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center items-stretch sm:items-center">
+                    <a 
+                      href={BEACONS_EBOOK_LINK} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="btn-primary inline-block px-6 py-3 rounded-2xl font-semibold text-sm"
+                    >
+                      Illimité — Hormones Sereine 9,99 €
+                    </a>
+                    <a
+                      href={BEACONS_COACHING_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block px-6 py-3 rounded-2xl font-semibold text-sm border-2 border-[#C5A46E] text-[#8A6E3A] bg-[#FBF7F0]"
+                    >
+                      Coaching 4 semaines — 167 €
+                    </a>
+                  </div>
+                  <p className="text-xs text-[#5A6B62]">
+                    Ebook + chat illimité, ou accompagnement humain avec Yas (protocole + suivi).
+                  </p>
                 </div>
               ) : (
                 <form onSubmit={sendMessage} className="border-t p-4 bg-white flex gap-3">
