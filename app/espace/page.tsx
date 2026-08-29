@@ -1646,6 +1646,11 @@ function EspaceContent() {
         {activeTab === 'compte' && (
           <div className="max-w-lg space-y-6">
             <h2 className="text-3xl font-semibold tracking-tight mb-2">Mon compte</h2>
+            <p className="text-sm text-[#5A6B62] -mt-1 mb-1">
+              {authUser
+                ? 'Ton espace personnel : profil, accès et raccourcis.'
+                : 'Connecte-toi pour le forum et pour sauver ton accès premium partout.'}
+            </p>
 
             <AuthPanel
               user={authUser}
@@ -1656,6 +1661,85 @@ function EspaceContent() {
               }}
               onDisplayNameChange={setDisplayName}
             />
+
+            {authUser && (
+              <div className="card rounded-3xl p-6 sm:p-8 space-y-4 border border-[#E6EDE9]">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold text-white ${
+                      isCoaching
+                        ? 'bg-[#C5A46E]'
+                        : isPremium
+                          ? 'bg-[var(--sage-600)]'
+                          : 'bg-[#8A9A92]'
+                    }`}
+                  >
+                    {isCoaching ? 'COACHING' : isPremium ? 'ILLIMITÉ' : 'GRATUIT'}
+                  </span>
+                  <span className="text-sm font-medium text-[#2A3A32]">
+                    {getAccessLabel(accessTier)}
+                  </span>
+                </div>
+                <ul className="space-y-2 text-sm text-[#5A6B62]">
+                  {isCoaching ? (
+                    <>
+                      <li>• Chat IA illimité + ebook Hormones Sereine</li>
+                      <li>• Suivi coaching 4 semaines avec Yas</li>
+                      <li>• Forum, protocoles et chat privé</li>
+                    </>
+                  ) : isPremium ? (
+                    <>
+                      <li>• Chat IA illimité (9 expertes)</li>
+                      <li>• Ebook Hormones Sereine à télécharger</li>
+                      <li>• Forum communauté</li>
+                    </>
+                  ) : (
+                    <>
+                      <li>• 10 questions au chat IA</li>
+                      <li>• Forum (lecture + publication une fois connectée)</li>
+                      <li>• Bilan & tip du jour</li>
+                    </>
+                  )}
+                </ul>
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('chat')}
+                    className="btn-primary px-4 py-2.5 rounded-xl text-sm font-semibold"
+                  >
+                    Aller au chat
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('forum')}
+                    className="btn-secondary px-4 py-2.5 rounded-xl text-sm font-semibold"
+                  >
+                    Forum
+                  </button>
+                  {hasEbook && (
+                    <a
+                      href="/api/download/ebook?paid=true"
+                      download
+                      className="btn-secondary px-4 py-2.5 rounded-xl text-sm font-semibold text-center"
+                    >
+                      Télécharger l&apos;ebook
+                    </a>
+                  )}
+                </div>
+                {!isCoaching && (
+                  <a
+                    href={BEACONS_COACHING_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-sm text-[#8A6E3A] font-medium hover:underline pt-1"
+                  >
+                    {isPremium
+                      ? 'Passer au coaching 4 semaines (167 €) →'
+                      : 'Accompagnement humain 4 semaines — 167 € →'}
+                  </a>
+                )}
+              </div>
+            )}
 
             <div className="card rounded-3xl p-6 sm:p-8 space-y-4 text-sm">
               <div>

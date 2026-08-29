@@ -158,12 +158,20 @@ export default function AuthPanel({
   };
 
   if (user) {
+    const helloName = (editName || displayName || user.email?.split('@')[0] || '').trim();
     return (
       <div className="card rounded-3xl p-6 sm:p-8 space-y-4">
-        <h3 className="font-semibold text-lg">Compte communauté</h3>
-        <p className="text-sm text-[#5A6B62]">
-          Connectée en tant que <strong className="text-[#2A3A32]">{user.email}</strong>
-        </p>
+        <div>
+          <p className="text-xs uppercase tracking-[2px] text-[var(--sage-600)] font-medium mb-1">
+            Mon profil
+          </p>
+          <h3 className="font-semibold text-xl sm:text-2xl tracking-tight text-[#2A3A32]">
+            Bonjour{helloName ? ` ${helloName}` : ''}
+          </h3>
+          <p className="text-sm text-[#5A6B62] mt-1">
+            Connectée avec <strong className="text-[#2A3A32]">{user.email}</strong>
+          </p>
+        </div>
         <div>
           <label className="block text-sm font-medium mb-1">Pseudo sur le forum</label>
           <div className="flex gap-2">
@@ -200,8 +208,8 @@ export default function AuthPanel({
         {mode === 'login' ? 'Se connecter' : 'Créer un compte'}
       </h3>
       <p className="text-sm text-[#5A6B62]">
-        Un compte gratuit pour publier et répondre sur le forum. Un email de confirmation te sera
-        envoyé à l&apos;inscription.
+        Compte gratuit pour publier sur le forum et retrouver ton accès premium sur tous tes
+        appareils. Tu es connectée tout de suite après l&apos;inscription.
       </p>
 
       {pendingConfirmEmail && (
