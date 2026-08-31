@@ -15,6 +15,7 @@ import {
   hasCoachingAccess,
   hasEbookAccess,
   isPremiumAccess,
+  clearStoredAccess,
   readAccessSince,
   readStoredAccessTier,
   resolveAccessTier,
@@ -259,23 +260,32 @@ function EspaceContent() {
         setAccessSince(readAccessSince());
         setAccessOnAccount(true);
       } else {
+        // Compte gratuit : ne pas garder un ancien illimité de test sur cet appareil
+        clearStoredAccess();
+        setAccessTier('free');
+        setAccessSince(null);
         setAccessOnAccount(false);
+        try {
+          await fetch('/api/access/clear', { method: 'POST' });
+        } catch {
+          /* ignore */
+        }
       }
     } catch {
       /* ignore */
     }
   }, []);
 
-  /** Lie le premium (cookie / appareil) au compte connecté */
+  /** Lie le premium (cookie httpOnly validé Beacons) au compte connecté */
   const bindAccessToAccount = useCallback(
-    async (plan?: AccessTier, opts?: { silent?: boolean }) => {
+    async (opts?: { silent?: boolean }) => {
       if (!isSupabaseConfigured()) return false;
       setBindingAccess(true);
       try {
         const res = await fetch('/api/access/bind', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(plan && plan !== 'free' ? { plan } : {}),
+          body: '{}',
         });
         const data = await res.json();
         if (!res.ok) {
@@ -344,7 +354,7 @@ function EspaceContent() {
         setAccessOnAccount(true);
         toast.success(data.message || 'Accès activé sur ton compte');
       } else if (authUser) {
-        const ok = await bindAccessToAccount(saved, { silent: false });
+        const ok = await bindAccessToAccount({ silent: false });
         if (!ok) {
           toast.message(data.message || 'Accès activé sur cet appareil', {
             description:
@@ -370,47 +380,59 @@ function EspaceContent() {
     const saved = localStorage.getItem('sv_free_questions') || '0';
     setFreeQuestionsUsed(parseInt(saved, 10));
 
-    const urlTier =
-      unlockedParam === 'ebook' || unlockedParam === 'coaching' || unlockedParam === 'premium'
-        ? (unlockedParam === 'premium' ? 'ebook' : unlockedParam)
-        : null;
+    const showWelcomeToast = Boolean(showWelcome || fromBeacons || justPaid);
 
-    const storedTier = readStoredAccessTier();
-    const merged = resolveAccessTier(storedTier, urlTier);
-
-    if (urlTier) {
-      const savedTier = saveAccessTier(urlTier);
-      setAccessTier(savedTier);
-      setAccessSince(readAccessSince());
-
-      if (showWelcome || fromBeacons || justPaid) {
-        toast.success(
-          savedTier === 'coaching'
-            ? 'Coaching activé — bienvenue dans ton espace !'
-            : 'Accès illimité activé — bienvenue dans ton espace !',
-          {
-            description: linkedParam
-              ? 'Accès aussi enregistré sur ton compte connecté.'
-              : 'Connecte-toi (Compte) pour le retrouver sur tous tes appareils.',
+    void (async () => {
+      // Source de vérité appareil = cookie httpOnly (posé seulement après vrai lien/code)
+      let deviceTier: AccessTier = 'free';
+      try {
+        const res = await fetch('/api/access/status');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.tier === 'ebook' || data.tier === 'coaching') {
+            deviceTier = data.tier;
           }
-        );
+        }
+      } catch {
+        /* ignore */
       }
 
-      // Si déjà connectée mais pas encore lié côté serveur
-      if (!linkedParam) {
-        void bindAccessToAccount(savedTier, { silent: true }).then((ok) => {
-          if (ok) setAccessOnAccount(true);
-        });
-      } else {
-        setAccessOnAccount(true);
+      if (deviceTier !== 'free') {
+        const savedTier = saveAccessTier(deviceTier);
+        setAccessTier(savedTier);
+        setAccessSince(readAccessSince());
+
+        if (showWelcomeToast || unlockedParam === deviceTier || unlockedParam === 'premium') {
+          toast.success(
+            savedTier === 'coaching'
+              ? 'Coaching activé — bienvenue dans ton espace !'
+              : 'Accès illimité activé — bienvenue dans ton espace !',
+            {
+              description: linkedParam
+                ? 'Accès aussi enregistré sur ton compte connecté.'
+                : 'Connecte-toi (Compte) pour le retrouver sur tous tes appareils.',
+            }
+          );
+        }
+
+        if (linkedParam) {
+          setAccessOnAccount(true);
+        } else {
+          void bindAccessToAccount({ silent: true }).then((ok) => {
+            if (ok) setAccessOnAccount(true);
+          });
+        }
+        return;
       }
-    } else {
-      setAccessTier(merged);
+
+      // Pas de cookie premium : on garde seulement le localStorage (sans croire l’URL ?unlocked=)
+      const storedTier = readStoredAccessTier();
+      setAccessTier(storedTier);
       setAccessSince(readAccessSince());
-    }
+    })();
   }, [unlockedParam, fromBeacons, showWelcome, justPaid, linkedParam, bindAccessToAccount]);
 
-  // Au login : récupérer le premium du compte + lier l’accès local si besoin
+  // Au login : le profil Supabase prime ; on ne « s’auto-offre » plus l’illimité via localStorage
   useEffect(() => {
     if (!authUser) {
       setAccessOnAccount(false);
@@ -418,11 +440,9 @@ function EspaceContent() {
     }
     void (async () => {
       await syncAccessFromProfile();
-      const local = readStoredAccessTier();
-      if (local !== 'free') {
-        const ok = await bindAccessToAccount(local, { silent: true });
-        if (ok) setAccessOnAccount(true);
-      }
+      // Lie uniquement si un cookie Beacons valide existe (pas le localStorage seul)
+      const ok = await bindAccessToAccount({ silent: true });
+      if (ok) setAccessOnAccount(true);
     })();
   }, [authUser, syncAccessFromProfile, bindAccessToAccount]);
 
@@ -1828,7 +1848,7 @@ function EspaceContent() {
                   <button
                     type="button"
                     disabled={bindingAccess}
-                    onClick={() => void bindAccessToAccount(accessTier)}
+                    onClick={() => void bindAccessToAccount()}
                     className="btn-primary px-4 py-2 rounded-xl text-sm disabled:opacity-60"
                   >
                     {bindingAccess ? 'Liaison…' : 'Enregistrer sur mon compte'}

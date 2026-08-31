@@ -10,10 +10,10 @@ import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { cookies } from 'next/headers';
 
 /**
- * Lie le plan déjà validé (cookie / body) au compte Supabase connecté.
- * POST { plan?: 'ebook' | 'coaching' }
+ * Lie le plan déjà validé (cookie httpOnly) au compte Supabase connecté.
+ * Ne fait PAS confiance au body client (sinon n’importe qui pourrait s’offrir l’illimité).
  */
-export async function POST(request: Request) {
+export async function POST(_request: Request) {
   if (!isSupabaseConfigured()) {
     return NextResponse.json(
       { error: 'Supabase non configuré', linked: false },
@@ -21,19 +21,10 @@ export async function POST(request: Request) {
     );
   }
 
-  let bodyPlan: string | undefined;
-  try {
-    const body = await request.json();
-    bodyPlan = body?.plan;
-  } catch {
-    bodyPlan = undefined;
-  }
-
   const cookieStore = await cookies();
   const cookiePlan = cookieStore.get(ACCESS_COOKIE)?.value;
 
-  const planRaw = bodyPlan || cookiePlan;
-  if (!isAccessTier(planRaw) || planRaw === 'free') {
+  if (!isAccessTier(cookiePlan) || cookiePlan === 'free') {
     return NextResponse.json(
       {
         error:
@@ -44,7 +35,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const plan = planRaw as AccessTier;
+  const plan = cookiePlan as AccessTier;
 
   try {
     const supabase = await createClient();
