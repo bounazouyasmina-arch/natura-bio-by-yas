@@ -1880,6 +1880,33 @@ function EspaceContent() {
                 </a>
               )}
               {isCoaching && <div className="pt-2 text-[#C5A46E]">Chat privé avec la coach activé</div>}
+
+              {isPremium && (
+                <div className="pt-3 border-t border-[#E6EDE9] space-y-2">
+                  <p className="text-xs text-[#5A6B62]">
+                    Tu vois « Illimité » alors que tu n&apos;as pas acheté ? (souvent un reste de test)
+                  </p>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      try {
+                        const res = await fetch('/api/access/reset-to-free', { method: 'POST' });
+                        const data = await res.json();
+                        clearStoredAccess();
+                        setAccessTier('free');
+                        setAccessSince(null);
+                        setAccessOnAccount(false);
+                        toast.success(data.message || 'Accès remis en gratuit');
+                      } catch {
+                        toast.error('Impossible de réinitialiser pour le moment');
+                      }
+                    }}
+                    className="text-sm font-medium text-[#8A6E3A] underline hover:text-[#2A3A32]"
+                  >
+                    Repasser en accès gratuit
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="card rounded-3xl p-6 sm:p-8 space-y-4">
