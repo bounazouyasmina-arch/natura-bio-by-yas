@@ -60,10 +60,11 @@ Tu peux utiliser le même lien pour le coaching (`?unlocked=coaching`).
 - Espace coaching : http://localhost:3000/espace?unlocked=coaching
 
 ### Téléchargement de l'ebook
-Le bouton de téléchargement apparaît dans l'espace quand l'utilisateur est débloqué. Place ton PDF ici si tu veux proposer le téléchargement direct depuis le site :
-`ebooks/menopause-au-naturel.pdf`
+Le bouton de téléchargement apparaît dans l'espace quand l'utilisateur est débloqué. Place ton PDF ici :
+`ebooks/hormones-sereine.pdf`
 
-Sinon, tu peux simplement livrer le PDF depuis Beacons comme tu le fais déjà.
+(Le nom de fichier téléchargé côté cliente : `Hormones-Sereine-natura-bio-by-yas.pdf`.)
+Sinon, tu peux aussi livrer le PDF depuis Beacons.
 
 ## Prochaines étapes (ce qu'il reste à faire pour du vrai)
 
