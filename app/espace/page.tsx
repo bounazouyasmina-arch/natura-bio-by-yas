@@ -2000,8 +2000,22 @@ function EspaceContent() {
             <p className="text-sm text-[#5A6B62] -mt-1 mb-1">
               {authUser
                 ? 'Ton espace personnel : profil, accès et raccourcis.'
-                : 'Connecte-toi pour le forum et pour sauver ton accès premium partout.'}
+                : isPremium
+                  ? 'Compte déconnecté — ton accès payant peut rester actif sur cet appareil.'
+                  : 'Connecte-toi pour le forum et pour sauver ton accès premium partout.'}
             </p>
+
+            {!authUser && isPremium && (
+              <div className="rounded-2xl border border-[#E8D9B8] bg-[#FBF7F0] px-4 py-3 text-sm text-[#5A6B62] leading-relaxed">
+                <strong className="text-[#2A3A32]">
+                  {isCoaching ? 'Coaching actif sur cet appareil' : 'Accès illimité actif sur cet appareil'}
+                </strong>
+                {' '}
+                · tu n&apos;es pas connectée au compte.
+                Te déconnecter n&apos;enlève pas ton achat ici. Reconnecte-toi pour le forum et pour
+                retrouver le même accès sur un autre téléphone / ordi.
+              </div>
+            )}
 
             <AuthPanel
               user={authUser}
@@ -2013,110 +2027,113 @@ function EspaceContent() {
               onDisplayNameChange={setDisplayName}
             />
 
-            {authUser && (
-              <div className="card rounded-3xl p-6 sm:p-8 space-y-4 border border-[#E6EDE9]">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span
-                    className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold text-white ${
-                      isCoaching
-                        ? 'bg-[#C5A46E]'
-                        : isPremium
-                          ? 'bg-[var(--sage-600)]'
-                          : 'bg-[#8A9A92]'
-                    }`}
+            <div className="card rounded-3xl p-6 sm:p-8 space-y-4 border border-[#E6EDE9]">
+              <div className="flex flex-wrap items-center gap-2">
+                <span
+                  className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold text-white ${
+                    isCoaching
+                      ? 'bg-[#C5A46E]'
+                      : isPremium
+                        ? 'bg-[var(--sage-600)]'
+                        : 'bg-[#8A9A92]'
+                  }`}
+                >
+                  {isCoaching ? 'COACHING' : isPremium ? 'ILLIMITÉ' : 'GRATUIT'}
+                </span>
+                <span className="text-sm font-medium text-[#2A3A32]">
+                  {getAccessLabel(accessTier)}
+                </span>
+              </div>
+              {!authUser && isPremium && (
+                <p className="text-xs text-[#8A6E3A] font-medium">
+                  Affiché sur cet appareil · compte déconnecté
+                </p>
+              )}
+              <ul className="space-y-2 text-sm text-[#5A6B62]">
+                {isCoaching ? (
+                  <>
+                    <li>• Chat IA illimité + ebook Hormones Sereine</li>
+                    <li>• Suivi coaching 4 semaines avec Yas</li>
+                    <li>• Forum (publication) si tu es connectée</li>
+                  </>
+                ) : isPremium ? (
+                  <>
+                    <li>• Chat IA illimité (9 expertes)</li>
+                    <li>• Ebook Hormones Sereine à télécharger</li>
+                    <li>• Forum (publication) si tu es connectée</li>
+                  </>
+                ) : (
+                  <>
+                    <li>• 10 questions au chat IA</li>
+                    <li>• Forum (lecture + publication une fois connectée)</li>
+                    <li>• Bilan & tip du jour</li>
+                  </>
+                )}
+              </ul>
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('chat')}
+                  className="btn-primary px-4 py-2.5 rounded-xl text-sm font-semibold"
+                >
+                  Aller au chat
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('forum')}
+                  className="btn-secondary px-4 py-2.5 rounded-xl text-sm font-semibold"
+                >
+                  Forum
+                </button>
+                {hasEbook && (
+                  <a
+                    href="/api/download/ebook?paid=true"
+                    download
+                    className="btn-secondary px-4 py-2.5 rounded-xl text-sm font-semibold text-center"
                   >
-                    {isCoaching ? 'COACHING' : isPremium ? 'ILLIMITÉ' : 'GRATUIT'}
-                  </span>
-                  <span className="text-sm font-medium text-[#2A3A32]">
-                    {getAccessLabel(accessTier)}
-                  </span>
-                </div>
-                <ul className="space-y-2 text-sm text-[#5A6B62]">
-                  {isCoaching ? (
-                    <>
-                      <li>• Chat IA illimité + ebook Hormones Sereine</li>
-                      <li>• Suivi coaching 4 semaines avec Yas</li>
-                      <li>• Forum, protocoles et chat privé</li>
-                    </>
-                  ) : isPremium ? (
-                    <>
-                      <li>• Chat IA illimité (9 expertes)</li>
-                      <li>• Ebook Hormones Sereine à télécharger</li>
-                      <li>• Forum communauté</li>
-                    </>
-                  ) : (
-                    <>
-                      <li>• 10 questions au chat IA</li>
-                      <li>• Forum (lecture + publication une fois connectée)</li>
-                      <li>• Bilan & tip du jour</li>
-                    </>
-                  )}
-                </ul>
-                <div className="flex flex-col sm:flex-row flex-wrap gap-2 pt-1">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('chat')}
-                    className="btn-primary px-4 py-2.5 rounded-xl text-sm font-semibold"
-                  >
-                    Aller au chat
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('forum')}
-                    className="btn-secondary px-4 py-2.5 rounded-xl text-sm font-semibold"
-                  >
-                    Forum
-                  </button>
-                  {hasEbook && (
-                    <a
-                      href="/api/download/ebook?paid=true"
-                      download
-                      className="btn-secondary px-4 py-2.5 rounded-xl text-sm font-semibold text-center"
-                    >
-                      Télécharger l&apos;ebook
-                    </a>
-                  )}
-                </div>
-                {!isCoaching && (
-                  <div className="pt-1 space-y-1.5">
-                    <a
-                      href={BEACONS_DISCOVERY_CALL_LINK}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block text-sm text-[#6C6B9A] font-medium hover:underline"
-                    >
-                      Appel découverte gratuit avec Yas →
-                    </a>
-                    <a
-                      href={BEACONS_COACHING_LINK}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block text-sm text-[#8A6E3A] font-medium hover:underline"
-                    >
-                      {isPremium
-                        ? 'Passer au coaching 4 semaines (167 €) →'
-                        : 'Accompagnement humain 4 semaines — 167 € →'}
-                    </a>
-                  </div>
+                    Télécharger l&apos;ebook
+                  </a>
                 )}
               </div>
-            )}
+              {!isCoaching && (
+                <div className="pt-1 space-y-1.5">
+                  <a
+                    href={BEACONS_DISCOVERY_CALL_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-sm text-[#6C6B9A] font-medium hover:underline"
+                  >
+                    Appel découverte gratuit avec Yas →
+                  </a>
+                  <a
+                    href={BEACONS_COACHING_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-sm text-[#8A6E3A] font-medium hover:underline"
+                  >
+                    {isPremium
+                      ? 'Passer au coaching 4 semaines (167 €) →'
+                      : 'Accompagnement humain 4 semaines — 167 € →'}
+                  </a>
+                </div>
+              )}
+            </div>
 
             <div className="card rounded-3xl p-6 sm:p-8 space-y-4 text-sm">
               <div>
-                <span className="text-[#5A6B62]">Statut :</span>{' '}
+                <span className="text-[#5A6B62]">Accès sur cet appareil :</span>{' '}
                 <span className="font-medium">{getAccessLabel(accessTier)}</span>
               </div>
               <div>
-                <span className="text-[#5A6B62]">Sur le compte :</span>{' '}
+                <span className="text-[#5A6B62]">Compte :</span>{' '}
                 <span className="font-medium">
                   {!authUser
-                    ? 'Non connectée'
+                    ? 'Déconnectée'
                     : accessOnAccount && isPremium
-                      ? 'Premium enregistré ✓'
+                      ? 'Connectée · premium enregistré ✓'
                       : isPremium
-                        ? 'Premium sur cet appareil seulement'
-                        : 'Accès gratuit'}
+                        ? 'Connectée · premium pas encore lié au cloud'
+                        : 'Connectée · accès gratuit'}
                 </span>
               </div>
               <div>
@@ -2154,8 +2171,10 @@ function EspaceContent() {
                 </div>
               )}
               {isPremium && !authUser && (
-                <div className="text-[#5A6B62]">
-                  Crée un compte (ci-dessus) pour retrouver ton accès sur tous tes appareils après un achat Beacons.
+                <div className="rounded-xl bg-[#F8F5F0] px-3 py-2.5 text-[#5A6B62] leading-relaxed">
+                  <strong className="text-[#2A3A32]">Normal :</strong> te déconnecter n&apos;enlève pas
+                  l&apos;accès sur <em>cet</em> appareil. Reconnecte-toi (ci-dessus) pour le forum et pour
+                  le retrouver ailleurs.
                 </div>
               )}
               {hasEbook && (
