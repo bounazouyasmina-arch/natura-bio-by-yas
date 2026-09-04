@@ -2182,7 +2182,8 @@ function EspaceContent() {
               {isPremium && (
                 <div className="pt-3 border-t border-[#E6EDE9] space-y-2">
                   <p className="text-xs text-[#5A6B62]">
-                    Tu vois « Illimité » alors que tu n&apos;as pas acheté ? (souvent un reste de test)
+                    Accès de test ou à réinitialiser ? Tu peux repasser en gratuit sur cet appareil
+                    et sur ton compte (n&apos;utilise pas ça si tu as vraiment acheté).
                   </p>
                   <button
                     type="button"
@@ -2191,6 +2192,8 @@ function EspaceContent() {
                         const res = await fetch('/api/access/reset-to-free', { method: 'POST' });
                         const data = await res.json();
                         clearStoredAccess();
+                        localStorage.removeItem(COACHING_START_KEY);
+                        setCoachingStartedAt(null);
                         setAccessTier('free');
                         setAccessSince(null);
                         setAccessOnAccount(false);
