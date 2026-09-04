@@ -40,6 +40,67 @@ const BEACONS_EBOOK_LINK = "https://shop.beacons.ai/yas_digital/44ca0203-408c-48
 const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734-4b80-8243-479d6c1f0213";
 const BEACONS_DISCOVERY_CALL_LINK =
   "https://shop.beacons.ai/yas_digital/bd259c7a-68ac-41c9-b9e4-6cb05237713c";
+
+const COACHING_START_KEY = 'natura_coaching_started_at';
+const COACHING_NOTES_KEY = 'natura_coaching_notes';
+const COACHING_CHECKS_KEY = 'natura_coaching_checks';
+
+const COACHING_WEEKS: Array<{ week: number; title: string; focus: string; items: string[] }> = [
+  {
+    week: 1,
+    title: 'Semaine 1 — Poser le cadre',
+    focus: 'Bilan, limites douces, une micro-habitude',
+    items: [
+      'Noter ta charge mentale (tâches / émotions / décisions / culpabilité)',
+      'Choisir 1 limite à poser cette semaine (une phrase simple)',
+      'Ancrage soir : 5 min respiration ou décharge mentale écrite',
+      'Partager à Yas ce qui pèse le plus en ce moment',
+    ],
+  },
+  {
+    week: 2,
+    title: 'Semaine 2 — Rythme & tête qui tourne',
+    focus: 'Sommeil, rumination, organisation du quotidien',
+    items: [
+      'Rituel du soir fixe (même heure ±30 min, 3 soirs test)',
+      'Sortir 3 décisions de ta tête (liste / batching)',
+      'Une pause réelle de 10 min sans téléphone',
+      'Ajuster avec Yas selon ton énergie et ton sommeil',
+    ],
+  },
+  {
+    week: 3,
+    title: 'Semaine 3 — Corps & outils naturels',
+    focus: 'Soutenir le terrain sans te surcharger',
+    items: [
+      'Appliquer 1–2 outils du protocole (plantes, souffle, huiles si adaptés)',
+      'Observer ton corps : tension, digestion, cycle, fatigue',
+      'Alléger une charge relationnelle (ce qui n’est pas ton job)',
+      'Point d’étape avec Yas : ce qui marche / ce qui coince',
+    ],
+  },
+  {
+    week: 4,
+    title: 'Semaine 4 — Ancrer & continuer',
+    focus: 'Autonomie, rituels durables, suite éventuelle',
+    items: [
+      'Garder tes 2–3 rituels non négociables',
+      'Écrire ce que tu ne veux plus reporter seule',
+      'Préparer la suite (autonomie, ebook, ou prolongement si besoin)',
+      'Célébrer ce qui a changé — même petit',
+    ],
+  },
+];
+
+function getCoachingWeekNumber(startedAt: string | null): number {
+  if (!startedAt) return 0;
+  const start = new Date(startedAt).getTime();
+  if (Number.isNaN(start)) return 0;
+  const days = Math.floor((Date.now() - start) / (1000 * 60 * 60 * 24));
+  if (days < 0) return 1;
+  return Math.min(4, Math.floor(days / 7) + 1);
+}
+
 // Ebook Hormones Sereine (9,99 €) : accès illimité chat + forum + PDF
 // Le coaching est l'offre principale d'accompagnement
 
@@ -241,6 +302,10 @@ function EspaceContent() {
   const [activatingCode, setActivatingCode] = useState(false);
   const [accessOnAccount, setAccessOnAccount] = useState(false);
   const [bindingAccess, setBindingAccess] = useState(false);
+  const [coachingStartedAt, setCoachingStartedAt] = useState<string | null>(null);
+  const [coachingNotes, setCoachingNotes] = useState('');
+  const [coachingChecks, setCoachingChecks] = useState<Record<string, boolean>>({});
+  const [openCoachingWeek, setOpenCoachingWeek] = useState<number | null>(1);
 
   const hasEbook = hasEbookAccess(accessTier);
   const isCoaching = hasCoachingAccess(accessTier);
@@ -381,6 +446,14 @@ function EspaceContent() {
   useEffect(() => {
     const saved = localStorage.getItem('sv_free_questions') || '0';
     setFreeQuestionsUsed(parseInt(saved, 10));
+    setCoachingStartedAt(localStorage.getItem(COACHING_START_KEY));
+    setCoachingNotes(localStorage.getItem(COACHING_NOTES_KEY) || '');
+    try {
+      const raw = localStorage.getItem(COACHING_CHECKS_KEY);
+      if (raw) setCoachingChecks(JSON.parse(raw) as Record<string, boolean>);
+    } catch {
+      /* ignore */
+    }
 
     const showWelcomeToast = Boolean(showWelcome || fromBeacons || justPaid);
 
@@ -887,7 +960,7 @@ function EspaceContent() {
               { id: 'accueil', label: 'Accueil', icon: Leaf },
               { id: 'chat', label: 'Chat IA', icon: MessageCircle },
               { id: 'forum', label: 'Forum', icon: Users },
-              { id: 'protocoles', label: 'Protocoles', icon: FileText },
+              { id: 'protocoles', label: isCoaching ? 'Coaching' : 'Coaching', icon: FileText },
               { id: 'compte', label: 'Compte', icon: User },
             ].map(tab => {
               const Icon = tab.icon;
@@ -911,7 +984,7 @@ function EspaceContent() {
         {(justPaid || (showWelcome && isPremium)) && (
           <div className="mb-6 rounded-2xl bg-[#5B7B6E] text-white p-4 text-center text-sm font-medium">
             {isCoaching
-              ? 'Bienvenue ! Ton coaching est actif — protocoles, chat illimité et groupe WhatsApp t\'attendent.'
+              ? 'Bienvenue ! Ton coaching est actif — ouvre l’onglet Coaching pour ton parcours 4 semaines, WhatsApp et notes de protocole.'
               : 'Bienvenue ! Ton accès illimité est actif — chat IA, forum et ebook Hormones Sereine te sont ouverts.'}
           </div>
         )}
@@ -1140,6 +1213,20 @@ function EspaceContent() {
                   <p className="mt-2 text-[#5A6B62] text-sm">PDF complet — cycle, SOPK, thyroïde, ménopause…</p>
                   <div className="mt-auto pt-3 text-xs text-[#C5A46E]">Clique pour télécharger →</div>
                 </a>
+              )}
+
+              {isCoaching && (
+                <div
+                  className="card rounded-3xl p-7 flex flex-col cursor-pointer hover:border-[#C5A46E] border-2 border-[#C5A46E]/40"
+                  onClick={() => setActiveTab('protocoles')}
+                >
+                  <div className="mb-4 text-[#C5A46E] text-3xl">✨</div>
+                  <div className="font-semibold text-xl">Mon coaching</div>
+                  <p className="mt-2 text-[#5A6B62] text-sm">
+                    Semaines 1–4, notes de protocole, WhatsApp et contact Yas.
+                  </p>
+                  <div className="mt-auto pt-3 text-xs text-[#C5A46E]">Ouvrir mon espace coaching →</div>
+                </div>
               )}
 
               {isCoaching && (
@@ -1708,29 +1795,200 @@ function EspaceContent() {
           </div>
         )}
 
-        {/* PROTOCOLES */}
+        {/* COACHING / PROTOCOLES */}
         {activeTab === 'protocoles' && (
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-semibold tracking-tight mb-2">Mes protocoles</h2>
+          <div className="max-w-2xl space-y-6">
+            <div>
+              <h2 className="text-3xl font-semibold tracking-tight mb-2">Mon coaching 4 semaines</h2>
+              <p className="text-sm text-[#5A6B62]">
+                Ton espace d&apos;accompagnement avec Yas — WhatsApp, notes de protocole et parcours semaine par semaine.
+              </p>
+            </div>
+
             {!isCoaching ? (
-              <div className="card rounded-3xl p-8 mt-4 text-[#5A6B62]">
-                Les protocoles personnalisés sont réservés aux femmes en coaching 4 semaines.<br /><br />
-                Tu peux déjà utiliser le Chat IA pour obtenir des pistes et les noter ici manuellement.
+              <div className="card rounded-3xl p-6 sm:p-8 space-y-4">
+                <p className="text-[#5A6B62] text-sm leading-relaxed">
+                  Cet espace est réservé aux femmes en <strong className="text-[#2A3A32]">coaching 4 semaines</strong>.
+                  Tu peux déjà utiliser le chat IA, puis passer à un suivi humain quand tu es prête.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={BEACONS_DISCOVERY_CALL_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary px-5 py-3 rounded-2xl text-sm font-semibold text-center"
+                  >
+                    Appel découverte gratuit
+                  </a>
+                  <a
+                    href={BEACONS_COACHING_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-5 py-3 rounded-2xl text-sm font-semibold text-center bg-[#C5A46E] hover:bg-[#B38C55] text-white transition"
+                  >
+                    Coaching 167 €
+                  </a>
+                </div>
               </div>
             ) : (
-              <div>
-                <div className="card rounded-3xl p-8 mb-6">
-                  <div className="font-semibold mb-2 text-lg">Ton protocole 4 semaines — Équilibre hormonal &amp; énergie</div>
-                  <div className="text-sm text-[#5A6B62] mb-4">Créé le 12 juin 2026 • À revoir lors du prochain point</div>
-                  <ul className="space-y-2 text-[15px] list-disc pl-5">
-                    <li>Matin : tisane fenouil-gingembre, et diffusion de sauge sclarée si le terrain le permet</li>
-                    <li>Exercice nerf vague : trois fois cinq minutes de respiration 4-7-8 avant les repas</li>
-                    <li>Alimentation : Réduction des sucres rapides + graines de nigelle 1 c. à café le matin</li>
-                    <li>Point d’acupression : Rate 6 (SP6) 2 min matin et soir</li>
-                  </ul>
+              <>
+                <div className="card rounded-3xl p-6 sm:p-8 border-2 border-[#C5A46E]/50 space-y-4">
+                  <div className="inline-flex rounded-full bg-[#C5A46E] text-white text-[10px] font-semibold px-3 py-1 tracking-wide">
+                    COACHING ACTIF
+                  </div>
+                  <h3 className="font-semibold text-xl text-[#2A3A32]">Bienvenue dans ton accompagnement avec Yas</h3>
+                  {(() => {
+                    const weekNum = getCoachingWeekNumber(coachingStartedAt);
+                    return (
+                      <p className="text-sm text-[#5A6B62] leading-relaxed">
+                        {weekNum === 0
+                          ? 'Quand tu es prête (idéalement après ton appel), démarre le suivi pour afficher ta semaine en cours.'
+                          : (
+                            <>
+                              Tu es en <strong className="text-[#2A3A32]">semaine {weekNum} sur 4</strong>
+                              {coachingStartedAt
+                                ? ` · démarré le ${new Date(coachingStartedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`
+                                : ''}
+                              .
+                            </>
+                          )}
+                      </p>
+                    );
+                  })()}
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+                    {!coachingStartedAt ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const now = new Date().toISOString();
+                          localStorage.setItem(COACHING_START_KEY, now);
+                          setCoachingStartedAt(now);
+                          setOpenCoachingWeek(1);
+                          toast.success('Suivi démarré — semaine 1');
+                        }}
+                        className="btn-primary px-4 py-2.5 rounded-xl text-sm font-semibold"
+                      >
+                        Démarrer mon suivi 4 semaines
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          localStorage.removeItem(COACHING_START_KEY);
+                          setCoachingStartedAt(null);
+                          toast.message('Suivi réinitialisé');
+                        }}
+                        className="text-xs text-[#5A6B62] underline px-1 py-2"
+                      >
+                        Réinitialiser la date de début
+                      </button>
+                    )}
+                    <a
+                      href={WHATSAPP_GROUP_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-secondary px-4 py-2.5 rounded-xl text-sm font-semibold text-center"
+                    >
+                      Groupe WhatsApp
+                    </a>
+                    <a
+                      href="mailto:contact@naturabioyas.fr?subject=Coaching%204%20semaines"
+                      className="btn-secondary px-4 py-2.5 rounded-xl text-sm font-semibold text-center"
+                    >
+                      Contacter Yas
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('chat')}
+                      className="btn-secondary px-4 py-2.5 rounded-xl text-sm font-semibold"
+                    >
+                      Chat IA
+                    </button>
+                  </div>
                 </div>
-                <p className="text-xs text-[#5A6B62]">Ce protocole a été établi lors de notre appel. Il sera ajusté selon tes retours dans le chat privé.</p>
-              </div>
+
+                <div className="card rounded-3xl p-6 sm:p-8 space-y-3">
+                  <h3 className="font-semibold text-lg">Ton protocole personnalisé</h3>
+                  <p className="text-sm text-[#5A6B62] leading-relaxed">
+                    Ton protocole est établi et ajusté avec Yas (appel + suivi). Colle ici ce qu&apos;elle
+                    t&apos;envoie (WhatsApp / mail) pour le retrouver facilement.
+                  </p>
+                  <textarea
+                    value={coachingNotes}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      setCoachingNotes(v);
+                      localStorage.setItem(COACHING_NOTES_KEY, v);
+                    }}
+                    placeholder="Ex. : matin… soir… limites… huiles / plantes… points d’étape…"
+                    className="w-full min-h-[140px] rounded-2xl border border-[#E6EDE9] bg-[#FCFBF9] p-4 text-sm leading-relaxed resize-y"
+                  />
+                  <p className="text-[11px] text-[#5A6B62]">Sauvegardé automatiquement sur cet appareil.</p>
+                </div>
+
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-lg">Parcours des 4 semaines</h3>
+                  <p className="text-sm text-[#5A6B62]">
+                    Cadre type — Yas l&apos;adapte à toi. Coche ce que tu as avancé.
+                  </p>
+                  {COACHING_WEEKS.map((w) => {
+                    const isOpen = openCoachingWeek === w.week;
+                    const current = getCoachingWeekNumber(coachingStartedAt) === w.week;
+                    return (
+                      <div
+                        key={w.week}
+                        className={`card rounded-3xl overflow-hidden border ${
+                          current ? 'border-[#C5A46E] border-2' : 'border-[#E6EDE9]'
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setOpenCoachingWeek(isOpen ? null : w.week)}
+                          className="w-full text-left px-5 py-4 flex items-start justify-between gap-3 hover:bg-[#F8F5F0]/80"
+                        >
+                          <div>
+                            <div className="font-semibold text-[#2A3A32]">
+                              {w.title}
+                              {current && (
+                                <span className="ml-2 text-[10px] font-semibold uppercase tracking-wide text-[#C5A46E]">
+                                  En cours
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-xs text-[#5A6B62] mt-0.5">{w.focus}</div>
+                          </div>
+                          <span className="text-[var(--sage-600)] text-sm shrink-0">{isOpen ? '▲' : '▼'}</span>
+                        </button>
+                        {isOpen && (
+                          <ul className="px-5 pb-5 space-y-2.5 border-t border-[#E6EDE9] pt-4">
+                            {w.items.map((item, idx) => {
+                              const key = `w${w.week}-${idx}`;
+                              const done = Boolean(coachingChecks[key]);
+                              return (
+                                <li key={key}>
+                                  <label className="flex items-start gap-3 text-sm text-[#2A3A32] cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      checked={done}
+                                      onChange={() => {
+                                        const next = { ...coachingChecks, [key]: !done };
+                                        setCoachingChecks(next);
+                                        localStorage.setItem(COACHING_CHECKS_KEY, JSON.stringify(next));
+                                      }}
+                                      className="mt-1 rounded border-[#C5A46E] text-[#C5A46E] focus:ring-[#C5A46E]"
+                                    />
+                                    <span className={done ? 'line-through text-[#5A6B62]' : ''}>{item}</span>
+                                  </label>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
             )}
           </div>
         )}
