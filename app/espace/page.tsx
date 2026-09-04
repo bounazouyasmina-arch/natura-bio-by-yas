@@ -38,6 +38,8 @@ const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
 // Liens Beacons (hardcodés pour l'instant - on les mettra en variables d'env plus tard)
 const BEACONS_EBOOK_LINK = "https://shop.beacons.ai/yas_digital/44ca0203-408c-489d-b6d3-0a5c0af4fee2";
 const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734-4b80-8243-479d6c1f0213";
+const BEACONS_DISCOVERY_CALL_LINK =
+  "https://shop.beacons.ai/yas_digital/bd259c7a-68ac-41c9-b9e4-6cb05237713c";
 // Ebook Hormones Sereine (9,99 €) : accès illimité chat + forum + PDF
 // Le coaching est l'offre principale d'accompagnement
 
@@ -1331,6 +1333,24 @@ function EspaceContent() {
               </a>
             </div>
 
+            {!isCoaching && (
+              <a
+                href={BEACONS_DISCOVERY_CALL_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 block card rounded-3xl p-5 border border-[#E8D9B8] bg-[#FBF7F0] hover:border-[#C5A46E] transition"
+              >
+                <div className="text-[10px] sm:text-xs font-semibold tracking-[1.5px] text-[#8A6E3A] uppercase mb-1">
+                  Gratuit · sans engagement
+                </div>
+                <div className="font-semibold text-lg text-[#2A3A32]">Appel découverte avec Yas</div>
+                <p className="text-sm text-[#5A6B62] mt-1 leading-relaxed">
+                  On fait le point ensemble : est-ce que le coaching 4 semaines est fait pour toi ?
+                </p>
+                <div className="mt-3 text-sm font-semibold text-[#8A6E3A]">Réserver mon appel gratuit →</div>
+              </a>
+            )}
+
             {isCoaching && (
               <div className="mt-8 p-6 rounded-3xl bg-[#2C3F36] text-white">
                 <div className="font-semibold mb-1">Coaching actif</div>
@@ -1415,14 +1435,24 @@ function EspaceContent() {
                             {' '}
                             Le coaching 4 semaines : protocole sur-mesure, suivi humain, charge mentale et rythme de vie — pas seulement une réponse.
                           </p>
-                          <a
-                            href={BEACONS_COACHING_LINK}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 mt-2.5 font-semibold text-[#8A6E3A] hover:underline"
-                          >
-                            Coaching 4 semaines — 167 € →
-                          </a>
+                          <div className="mt-2.5 flex flex-col sm:flex-row sm:flex-wrap gap-x-4 gap-y-1">
+                            <a
+                              href={BEACONS_DISCOVERY_CALL_LINK}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-semibold text-[#6C6B9A] hover:underline"
+                            >
+                              Appel découverte gratuit →
+                            </a>
+                            <a
+                              href={BEACONS_COACHING_LINK}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-semibold text-[#8A6E3A] hover:underline"
+                            >
+                              Coaching 4 semaines — 167 € →
+                            </a>
+                          </div>
                         </div>
                       )}
                   </div>
@@ -1790,16 +1820,26 @@ function EspaceContent() {
                   )}
                 </div>
                 {!isCoaching && (
-                  <a
-                    href={BEACONS_COACHING_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-sm text-[#8A6E3A] font-medium hover:underline pt-1"
-                  >
-                    {isPremium
-                      ? 'Passer au coaching 4 semaines (167 €) →'
-                      : 'Accompagnement humain 4 semaines — 167 € →'}
-                  </a>
+                  <div className="pt-1 space-y-1.5">
+                    <a
+                      href={BEACONS_DISCOVERY_CALL_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-sm text-[#6C6B9A] font-medium hover:underline"
+                    >
+                      Appel découverte gratuit avec Yas →
+                    </a>
+                    <a
+                      href={BEACONS_COACHING_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-sm text-[#8A6E3A] font-medium hover:underline"
+                    >
+                      {isPremium
+                        ? 'Passer au coaching 4 semaines (167 €) →'
+                        : 'Accompagnement humain 4 semaines — 167 € →'}
+                    </a>
+                  </div>
                 )}
               </div>
             )}

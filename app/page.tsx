@@ -12,6 +12,9 @@ import {
 // - Coaching 167 € : accompagnement personnalisé 4 semaines
 const BEACONS_EBOOK_LINK = "https://shop.beacons.ai/yas_digital/44ca0203-408c-489d-b6d3-0a5c0af4fee2";
 const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734-4b80-8243-479d6c1f0213";
+// Appel découverte gratuit (promotion réseaux → même lien partout)
+const BEACONS_DISCOVERY_CALL_LINK =
+  "https://shop.beacons.ai/yas_digital/bd259c7a-68ac-41c9-b9e4-6cb05237713c";
 
 // Lien du groupe WhatsApp que tu as mis sur ton offre Beacons (pour le coaching)
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/IdGLaitmNJFFBtoduhDMdi";
@@ -518,14 +521,25 @@ export default function NaturaBioByYasLanding() {
               {' '}<strong className="font-semibold">Si tu sens que « comprendre » ne suffit plus — que tu veux être tenue, guidée et relue chaque semaine —</strong>{' '}
               le coaching 4 semaines est l’endroit où la charge s’allège vraiment, pas seulement le temps d’une réponse.
             </p>
-            <a
-              href={BEACONS_COACHING_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-[#8A6E3A] hover:underline"
-            >
-              Réserver mon accompagnement avec Yas <ArrowRight className="h-4 w-4" />
-            </a>
+            <div className="mt-4 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
+              <a
+                href={BEACONS_DISCOVERY_CALL_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#6C6B9A] hover:underline"
+              >
+                Appel découverte gratuit <ArrowRight className="h-4 w-4" />
+              </a>
+              <span className="hidden sm:inline text-[#D9D4EC]">·</span>
+              <a
+                href={BEACONS_COACHING_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#8A6E3A] hover:underline"
+              >
+                Coaching 4 semaines — 167 € <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -595,6 +609,14 @@ export default function NaturaBioByYasLanding() {
                 className="w-full rounded-2xl py-3 px-3 font-semibold flex items-center justify-center gap-2 text-sm leading-snug text-center bg-[#C5A46E] hover:bg-[#B38C55] text-white transition"
               >
                 Réserver le coaching <ArrowRight className="h-4 w-4 shrink-0" />
+              </a>
+              <a
+                href={BEACONS_DISCOVERY_CALL_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 text-center text-[11px] sm:text-xs font-medium text-[#8A6E3A] hover:underline"
+              >
+                Pas sûre ? Appel découverte gratuit →
               </a>
               <p className="text-center text-[11px] mt-2 text-[#5A6B62]">Places limitées chaque mois</p>
             </div>
@@ -730,6 +752,14 @@ export default function NaturaBioByYasLanding() {
               <span>Je réserve le coaching</span>
               <span className="font-semibold">à 167 €</span>
             </a>
+            <a
+              href={BEACONS_DISCOVERY_CALL_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 block text-center text-sm font-semibold text-[#8A6E3A] hover:underline"
+            >
+              Ou réserve un appel découverte gratuit →
+            </a>
             <p className="text-center text-[11px] sm:text-xs mt-3 text-[#5A6B62] leading-relaxed">
               Peu de places · Suivi de qualité garanti
             </p>
@@ -738,12 +768,21 @@ export default function NaturaBioByYasLanding() {
 
         <p className="text-center text-sm text-[#5A6B62] mt-8 px-4 leading-relaxed">
           Pas encore sûre ?{' '}
+          <a
+            href={BEACONS_DISCOVERY_CALL_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#8A6E3A] font-medium underline underline-offset-2"
+          >
+            Appel découverte gratuit
+          </a>
+          {', '}
           <a href="/espace" className="text-[var(--sage-600)] font-medium underline underline-offset-2">
-            Teste d&apos;abord 10 questions gratuites
+            10 questions gratuites
           </a>
           {' '}ou{' '}
           <a href="/bilan" className="text-[var(--sage-600)] font-medium underline underline-offset-2">
-            fais ton bilan
+            ton bilan
           </a>
           .
         </p>
