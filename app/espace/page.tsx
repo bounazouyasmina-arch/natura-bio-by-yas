@@ -1596,7 +1596,7 @@ function EspaceContent() {
                       rel="noopener noreferrer"
                       className="btn-primary inline-block px-6 py-3.5 rounded-2xl font-semibold text-sm text-center"
                     >
-                      Débloquer l&apos;illimité — 9,99 €
+                      Débloquer l&apos;accès illimité · 9,99&nbsp;€
                     </a>
                     <a
                       href={BEACONS_DISCOVERY_CALL_LINK}

@@ -590,7 +590,7 @@ export default function NaturaBioByYasLanding() {
                 rel="noopener noreferrer"
                 className="btn-primary w-full rounded-2xl py-3 px-3 font-semibold flex items-center justify-center gap-2 text-sm leading-snug text-center"
               >
-                Débloquer l&apos;illimité — 9,99 € <ArrowRight className="h-4 w-4 shrink-0" />
+                Débloquer l&apos;accès illimité{' · '}9,99&nbsp;€ <ArrowRight className="h-4 w-4 shrink-0" />
               </a>
               <p className="text-center text-[11px] mt-2 text-[#5A6B62]">Paiement sécurisé sur Beacons</p>
             </div>
@@ -709,8 +709,8 @@ export default function NaturaBioByYasLanding() {
               rel="noopener noreferrer"
               className="btn-primary w-full rounded-2xl font-semibold text-sm sm:text-base text-center px-4 py-3.5 sm:py-4 leading-snug flex flex-col sm:block items-center justify-center gap-0.5"
             >
-              <span>Je débloque l&apos;illimité</span>
-              <span className="font-semibold">Hormones Sereine · 9,99 €</span>
+              <span>Je débloque l&apos;accès illimité</span>
+              <span className="font-semibold">Hormones Sereine · 9,99&nbsp;€</span>
             </a>
             <p className="text-center text-[11px] sm:text-xs mt-3 text-[#5A6B62] leading-relaxed px-1">
               Paiement sur Beacons · Lien d&apos;accès par email
