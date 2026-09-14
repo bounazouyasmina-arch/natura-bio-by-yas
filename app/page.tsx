@@ -707,7 +707,7 @@ export default function NaturaBioByYasLanding() {
               href={BEACONS_EBOOK_LINK} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="btn-primary w-full rounded-2xl font-semibold text-sm sm:text-base text-center px-4 py-3.5 sm:py-4 leading-snug flex flex-col sm:block items-center justify-center gap-0.5"
+              className="btn-primary w-full rounded-2xl font-semibold text-sm sm:text-base text-center px-4 py-3.5 sm:py-4 leading-snug flex flex-col items-center justify-center gap-1"
             >
               <span>Je débloque l&apos;accès illimité</span>
               <span className="font-semibold">Hormones Sereine · 9,99&nbsp;€</span>
