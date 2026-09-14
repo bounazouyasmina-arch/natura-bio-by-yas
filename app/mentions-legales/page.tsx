@@ -1,10 +1,56 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { LegalPageShell } from '@/components/SimpleSiteChrome';
+
+export const metadata: Metadata = {
+  title: "Mentions légales | natura'bio by yas",
+  description: 'Mentions légales du site naturabioyas.fr',
+};
+
 export default function MentionsLegales() {
   return (
-    <div className="max-w-3xl mx-auto px-6 py-16 prose prose-stone">
-      <h1>Mentions légales</h1>
-      <p>natura'bio by yas est un projet personnel proposant des ressources éducatives sur la santé au naturel.</p>
-      <p>Éditrice : [Ton nom complet] — [Adresse] — [Email de contact]</p>
-      <p>Ce site ne constitue pas un exercice de la médecine. Voir l&apos;avertissement santé.</p>
-    </div>
+    <LegalPageShell title="Mentions légales">
+      <p>
+        <strong className="text-[#2A3A32]">Éditrice :</strong> Yasmine Bounazou — projet{' '}
+        <em>natura&apos;bio by yas</em>
+      </p>
+      <p>
+        <strong className="text-[#2A3A32]">Site :</strong>{' '}
+        <a href="https://naturabioyas.fr" className="underline text-[var(--sage-600)]">
+          https://naturabioyas.fr
+        </a>
+      </p>
+      <p>
+        <strong className="text-[#2A3A32]">Contact :</strong>{' '}
+        <a href="mailto:contact@naturabioyas.fr" className="underline text-[var(--sage-600)]">
+          contact@naturabioyas.fr
+        </a>
+      </p>
+      <p>
+        <strong className="text-[#2A3A32]">Hébergement :</strong> Vercel Inc. — vercel.com
+      </p>
+      <p className="text-xs text-[#8A9A92]">
+        Adresse postale de l&apos;éditrice : à compléter si requise pour ta situation (auto-entreprise /
+        association). Tu peux me demander de l&apos;ajouter ici.
+      </p>
+      <p>
+        Ce site propose des <strong className="text-[#2A3A32]">ressources éducatives</strong> sur la
+        santé au naturel (chat IA, ebook, coaching). Il ne constitue pas un exercice de la médecine.
+        Voir l&apos;
+        <Link href="/avertissement-sante" className="underline text-[var(--sage-600)]">
+          avertissement santé
+        </Link>
+        .
+      </p>
+      <p>
+        <Link href="/confidentialite" className="underline text-[var(--sage-600)]">
+          Politique de confidentialité
+        </Link>
+        {' · '}
+        <Link href="/cgv" className="underline text-[var(--sage-600)]">
+          CGV
+        </Link>
+      </p>
+    </LegalPageShell>
   );
 }

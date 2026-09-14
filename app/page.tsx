@@ -25,7 +25,7 @@ const articlePool = [
   { title: "La science valide les traditions", slug: "racines-traditionnelles", teaser: "Plantes et remèdes ancestraux validés par les études." },
   { title: "Tu n'es pas seule", slug: "tu-nes-pas-seule", teaser: "La force du soutien émotionnel et collectif." },
   { title: "Mieux dormir naturellement", slug: "sommeil-hormones", teaser: "Protocoles pour des nuits réparatrices à tout âge." },
-  { title: "Alléger la charge mentale sans culpabilité", slug: "charge-mentale", teaser: "Poser des limites avec douceur et efficacité." },
+  { title: "Alléger la charge mentale sans culpabilité", slug: "charge-mentale-sans-culpabilite", teaser: "Poser des limites avec douceur et efficacité." },
   { title: "Aromathérapie pour le sommeil", slug: "aromatherapie-sommeil", teaser: "Huiles essentielles pour des nuits paisibles." },
   { title: "Huiles pour calmer l'anxiété", slug: "aromatherapie-bouffees", teaser: "Synergies douces pour apaiser le mental." },
   { title: "Naturopathie pour l'énergie vitale", slug: "naturopathie-energie", teaser: "Remèdes pour retrouver vitalité et clarté." },
@@ -72,7 +72,11 @@ function DynamicArticleSuggestions() {
         {articles.map((art, idx) => (
           <a 
             key={idx} 
-            href={`/blog#${art.slug}`} 
+            href={
+              art.slug === 'charge-mentale-sans-culpabilite'
+                ? `/blog/${art.slug}`
+                : `/blog#${art.slug}`
+            } 
             className="card p-5 hover:border-[var(--mint)] transition group"
           >
             <div className="text-xs text-[var(--mint)] mb-1">À LIRE</div>
@@ -395,11 +399,15 @@ export default function NaturaBioByYasLanding() {
             { icon: "🔬", title: "Racines traditionnelles et science", desc: "La sagesse ancestrale croisée avec les connaissances modernes sur les plantes, le nerf vague et l’équilibre hormonal." },
             { icon: "🤝", title: "Tu n'es pas seule", desc: "Communauté, IA expertes et accompagnement humain quand tu en as besoin." }
           ].map((item, i) => {
-            const slugs = ['approche-holistique', 'racines-traditionnelles', 'tu-nes-pas-seule'];
+            const hrefs = [
+              '/blog#approche-holistique',
+              '/blog',
+              '/blog/charge-mentale-sans-culpabilite',
+            ];
             return (
               <a 
                 key={i} 
-                href={`/blog#${slugs[i]}`} 
+                href={hrefs[i]} 
                 className="feature-card card p-6 flex flex-col items-center text-center border-l-4 no-underline hover:no-underline" 
                 style={{ borderColor: i === 1 ? 'var(--blush)' : 'var(--mint)' }}
               >

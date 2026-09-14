@@ -1,199 +1,189 @@
-"use client";
-
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import {
+  ArticleCtaBand,
+  SimpleSiteFooter,
+  SimpleSiteNav,
+} from '@/components/SimpleSiteChrome';
+
+export const metadata: Metadata = {
+  title: "Blog santé au naturel | natura'bio by yas",
+  description:
+    'Articles sur la charge mentale, le sommeil, les hormones et les approches naturelles. Pistes concrètes + chat IA et coaching.',
+};
+
+const articles = [
+  {
+    id: 'charge-mentale',
+    href: '/blog/charge-mentale-sans-culpabilite',
+    tag: 'Charge mentale',
+    title: 'Alléger la charge mentale sans culpabilité',
+    teaser:
+      'Organisation, émotions, relationnel : nommer ta charge et 5 pistes concrètes pour cette semaine.',
+    featured: true,
+  },
+  {
+    id: 'sommeil-hormones',
+    href: '/blog#sommeil-hormones',
+    tag: 'Sommeil',
+    title: 'Mieux dormir naturellement',
+    teaser: 'Lavande, respiration, rythme du soir : des leviers simples à combiner.',
+  },
+  {
+    id: 'aromatherapie-sommeil',
+    href: '/blog#aromatherapie-sommeil',
+    tag: 'Aromathérapie',
+    title: 'Aromathérapie pour le sommeil et la détente',
+    teaser: 'Rituel roll-on + diffusion + souffle pour descendre en régime de repos.',
+  },
+  {
+    id: 'approche-holistique',
+    href: '/blog#approche-holistique',
+    tag: 'Holistique',
+    title: "L'approche holistique : corps, émotions et énergie",
+    teaser: 'Pourquoi traiter un seul symptôme ne suffit souvent pas.',
+  },
+];
 
 export default function BlogPage() {
   return (
     <div className="min-h-screen bg-[#F9F6F0] text-[#2A3A32]">
-      {/* Navbar simple */}
-      <nav className="sticky top-0 z-50 border-b border-[#E6EDE9] bg-[#F9F6F0]/95 backdrop-blur-md">
-        <div className="mx-auto max-w-5xl px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <img src="/natura-bio-logo.jpg" alt="natura'bio" className="h-8 w-auto" />
-            <span className="font-semibold">natura'bio by yas</span>
-          </Link>
-          <Link href="/" className="text-sm hover:text-[#4A9B8C]">← Retour à l'accueil</Link>
-          <Link href="/bilan" className="text-sm hover:text-[#4A9B8C] ml-4">← Retour à mon bilan</Link>
-        </div>
-      </nav>
+      <SimpleSiteNav />
 
-      <div className="mx-auto max-w-4xl px-6 py-12">
-        <div className="text-center mb-12">
-          <div className="text-[#4A9B8C] text-sm tracking-[2px] font-medium mb-2">RESSOURCES &amp; ARTICLES</div>
-          <h1 className="text-4xl font-semibold tracking-tight mb-3">Le blog de natura'bio by yas</h1>
-          <p className="text-lg text-[#5A6B62]">Des articles approfondis pour mieux comprendre et prendre soin de vous au naturel.</p>
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 py-10 sm:py-12">
+        <div className="text-center mb-10 sm:mb-12">
+          <div className="text-[#4A9B8C] text-sm tracking-[2px] font-medium mb-2">
+            RESSOURCES &amp; ARTICLES
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
+            Le blog de natura&apos;bio by yas
+          </h1>
+          <p className="text-base sm:text-lg text-[#5A6B62] max-w-xl mx-auto leading-relaxed">
+            Des articles concrets pour mieux comprendre ton corps, ta tête et ton rythme — puis passer
+            à l&apos;action.
+          </p>
         </div>
 
-        {/* Article 1 */}
-        <article id="approche-holistique" className="card rounded-3xl p-8 mb-10 scroll-mt-20">
+        {/* Article à la une (SEO) */}
+        <Link
+          href="/blog/charge-mentale-sans-culpabilite"
+          className="block card rounded-3xl p-6 sm:p-8 mb-8 bg-white border-2 border-[var(--sage-600)]/25 hover:border-[var(--sage-600)] transition"
+        >
+          <div className="text-[10px] sm:text-xs font-semibold tracking-[1.5px] text-[var(--sage-600)] uppercase mb-2">
+            À la une
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-2 leading-snug">
+            Alléger la charge mentale sans culpabilité
+          </h2>
+          <p className="text-sm sm:text-[15px] text-[#5A6B62] leading-relaxed mb-4">
+            Comprendre les 3 types de charge invisible et 5 pistes à tester cette semaine — sans te
+            juger.
+          </p>
+          <span className="text-sm font-semibold text-[var(--sage-600)]">Lire l&apos;article →</span>
+        </Link>
+
+        <div className="grid sm:grid-cols-2 gap-4 mb-12">
+          {articles
+            .filter((a) => !a.featured)
+            .map((a) => (
+              <Link
+                key={a.id}
+                href={a.href}
+                className="card rounded-3xl p-5 bg-white hover:border-[var(--sage-600)] border border-transparent transition"
+              >
+                <div className="text-[10px] font-semibold tracking-[1.5px] text-[#4A9B8C] uppercase mb-1">
+                  {a.tag}
+                </div>
+                <div className="font-semibold text-[#2A3A32] mb-1 leading-snug">{a.title}</div>
+                <p className="text-sm text-[#5A6B62] leading-relaxed">{a.teaser}</p>
+              </Link>
+            ))}
+        </div>
+
+        {/* Articles longs existants (ancres) */}
+        <article id="approche-holistique" className="card rounded-3xl p-6 sm:p-8 mb-8 scroll-mt-24 bg-white">
           <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">APPROCHE HOLISTIQUE</div>
-          <h2 className="text-3xl font-semibold tracking-tight mb-4">L'approche holistique : harmoniser corps, émotions et énergie</h2>
-          
-          <div className="prose prose-sm max-w-none text-[#5A6B62]">
-            <p>Qu’on soit étudiant stressé, parent débordé, ou en période de transition, il est rare qu’un seul symptôme se manifeste isolément. Anxiété, insomnies, fatigue, brouillard mental et troubles digestifs sont souvent interconnectés.</p>
-            
-            <p>L’approche holistique consiste à traiter la personne dans sa globalité plutôt que de masquer un symptôme. Chez natura’bio, nous combinons :</p>
-            
-            <ul>
-              <li><strong>Aromathérapie</strong> : huiles essentielles ciblées (lavande, sauge sclarée, géranium…) avec des usages concrets</li>
-              <li><strong>Régulation du nerf vague</strong> : exercices de respiration et techniques de recentrage</li>
-              <li><strong>Alimentation thérapeutique</strong> : assiette anti-inflammatoire, adaptogènes et micronutrition</li>
-              <li><strong>Médecine traditionnelle chinoise et prophétique</strong> : points d’acupression, plantes et rituels ancestraux</li>
-            </ul>
-
-            <p>Cette vision intégrative favorise des résultats plus durables, car elle agit sur les causes profondes plutôt que sur les seules manifestations.</p>
-
-            <p className="mt-4 font-medium text-[#2A3A32]">Exemple concret :</p>
-            <p>Une personne stressée, anxieuse et mal dormante peut associer la diffusion d’huile essentielle de lavande le soir, une respiration lente (inspiration quatre secondes, expiration six secondes) et une infusion de mélisse. En pratiquant régulièrement, beaucoup de personnes ressentent un mieux-être en deux à trois semaines.</p>
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-4">
+            L&apos;approche holistique : harmoniser corps, émotions et énergie
+          </h2>
+          <div className="space-y-3 text-sm sm:text-[15px] text-[#5A6B62] leading-relaxed">
+            <p>
+              Anxiété, insomnies, fatigue et troubles digestifs sont souvent interconnectés. L&apos;approche
+              holistique agit sur le terrain plutôt que sur un seul symptôme : aromathérapie,
+              respiration / nerf vague, alimentation, traditions chinoise et prophétique.
+            </p>
+            <p>
+              Exemple : lavande le soir + respiration lente + infusion de mélisse, pratiqués
+              régulièrement, aident souvent en 2–3 semaines.
+            </p>
           </div>
-
-          <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
-            <Link href="/espace" className="text-sm text-[#4A9B8C] hover:underline">→ Poser vos questions dans le chat IA</Link>
-          </div>
-        </article>
-
-        {/* Article 2 */}
-        <article id="racines-traditionnelles" className="card rounded-3xl p-8 mb-10 scroll-mt-20">
-          <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">RACINES TRADITIONNELLES + SCIENCE</div>
-          <h2 className="text-3xl font-semibold tracking-tight mb-4">La science valide les traditions : plantes et remèdes naturels</h2>
-          
-          <div className="prose prose-sm max-w-none text-[#5A6B62]">
-            <p>Les médecines ancestrales n’étaient pas des « remèdes de grand-mère » sans fondement. De nombreuses études modernes confirment aujourd’hui l’efficacité de plantes utilisées depuis des millénaires.</p>
-
-            <h3 className="text-lg font-semibold mt-6 mb-2 text-[#2A3A32]">Quelques exemples validés par la science :</h3>
-            
-            <ul>
-              <li><strong>Nigelle (cumin noir)</strong> : études montrent son action sur l’immunité, la réduction de l’inflammation et le soutien général de l’énergie.</li>
-              <li><strong>Sauge sclarée et lavande</strong> : des recherches ont exploré leurs effets sur l’anxiété, le stress et la qualité du sommeil.</li>
-              <li><strong>Maca et adaptogènes</strong> : plusieurs essais cliniques ont étudié leur rôle sur l’énergie, la résistance au stress et l’humeur.</li>
-              <li><strong>Huiles essentielles</strong> : la lavande et le géranium, entre autres, sont souvent utilisés pour accompagner le système nerveux et le repos.</li>
-            </ul>
-
-            <p>C’est précisément cette alliance entre traditions ancestrales et connaissances actuelles qui rend notre approche à la fois exigeante et rassurante.</p>
-
-            <p className="mt-4">Chez natura’bio, nous croisons toujours les savoirs anciens et les précautions d’usage modernes avant de proposer une plante ou une huile.</p>
-          </div>
-
-          <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
-            <Link href="/espace" className="text-sm text-[#4A9B8C] hover:underline">→ Explorer les agents IA spécialisés</Link>
+          <div className="mt-5">
+            <Link
+              href="/espace?tab=chat&agent=globale"
+              className="text-sm font-semibold text-[#4A9B8C] hover:underline"
+            >
+              → Poser ma question au chat IA
+            </Link>
           </div>
         </article>
 
-        {/* Article 3 */}
-        <article id="tu-nes-pas-seule" className="card rounded-3xl p-8 mb-10 scroll-mt-20">
-          <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">TU N'ES PAS SEULE</div>
-          <h2 className="text-3xl font-semibold tracking-tight mb-4">La force du collectif et du soutien émotionnel</h2>
-          
-          <div className="prose prose-sm max-w-none text-[#5A6B62]">
-            <p>La charge mentale, l’isolement et le manque de reconnaissance sont souvent les symptômes les plus invisibles du stress moderne, du burnout ou des périodes de transition.</p>
-
-            <p>Pourtant, des études montrent que le soutien social et émotionnel joue un rôle majeur dans l’amélioration du bien-être physique et de la qualité de vie à tout âge.</p>
-
-            <h3 className="text-lg font-semibold mt-6 mb-2 text-[#2A3A32]">Ce que nous proposons concrètement :</h3>
-            
-            <ul>
-              <li>Un <strong>forum bienveillant</strong> où vous pouvez poser vos questions sans jugement</li>
-              <li>Des <strong>agents IA spécialisés</strong> (dont un dédié à la charge mentale et aux émotions)</li>
-              <li>La possibilité d’accéder au <strong>coaching humain</strong> pour un accompagnement profond</li>
-              <li>Des protocoles qui intègrent le travail intérieur et la revalorisation de soi</li>
-            </ul>
-
-            <p className="mt-4">Vous n’avez pas à porter seul(e) vos questionnements. Des centaines de personnes trouvent du réconfort et des solutions dans la communauté.</p>
-          </div>
-
-          <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
-            <Link href="/espace" className="text-sm text-[#4A9B8C] hover:underline">→ Rejoindre le forum et la communauté</Link>
-          </div>
-        </article>
-
-        {/* Article 4 - Nouveauté pour variété */}
-        <article id="sommeil-hormones" className="card rounded-3xl p-8 mb-10 scroll-mt-20">
+        <article id="sommeil-hormones" className="card rounded-3xl p-6 sm:p-8 mb-8 scroll-mt-24 bg-white">
           <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">SOMMEIL NATUREL</div>
-          <h2 className="text-3xl font-semibold tracking-tight mb-4">Mieux dormir naturellement</h2>
-          
-          <div className="prose prose-sm max-w-none text-[#5A6B62]">
-            <p>Les insomnies sont souvent liées au stress, aux écrans, à l'alimentation tardive ou à un rythme de vie intense. Elles touchent les étudiants, les actifs et les parents à tout âge.</p>
-
-            <p>Plutôt que de lutter contre le sommeil, on peut accompagner le corps avec des outils naturels ciblés :</p>
-            
-            <ul>
-              <li>Diffuse de l’huile essentielle de lavande pendant environ trente minutes avant le coucher (quelques gouttes dans le diffuseur).</li>
-              <li>Pratique quatre cycles de respiration 4-7-8 : inspire quatre secondes, retiens sept secondes, expire huit secondes.</li>
-              <li>Si ton professionnel de santé est d’accord, un magnésium bien toléré le soir peut s’associer à une infusion de mélisse.</li>
-              <li>Évite les écrans et les repas lourds en fin de soirée pour laisser le corps descendre en régime de repos.</li>
-            </ul>
-
-            <p className="mt-4">Beaucoup de personnes remarquent une amélioration en combinant deux ou trois de ces leviers de façon régulière, plutôt qu’en essayant tout d’un coup.</p>
-          </div>
-
-          <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
-            <Link href="/espace" className="text-sm text-[#4A9B8C] hover:underline">→ Demander un protocole sommeil à l'agent Respiration</Link>
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-4">
+            Mieux dormir naturellement
+          </h2>
+          <ul className="space-y-2 text-sm sm:text-[15px] text-[#5A6B62] leading-relaxed list-disc pl-5">
+            <li>Diffusion de lavande 20–30 min avant le coucher</li>
+            <li>Respiration 4-7-8 (quelques cycles)</li>
+            <li>Écrans et repas lourds en moins en fin de soirée</li>
+          </ul>
+          <div className="mt-5">
+            <Link
+              href="/espace?tab=chat&agent=respiration"
+              className="text-sm font-semibold text-[#4A9B8C] hover:underline"
+            >
+              → Demander un protocole sommeil
+            </Link>
           </div>
         </article>
 
-        {/* Article 5 */}
-        <article id="charge-mentale" className="card rounded-3xl p-8 mb-10 scroll-mt-20">
-          <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">CHARGE MENTALE &amp; ÉMOTIONS</div>
-          <h2 className="text-3xl font-semibold tracking-tight mb-4">Alléger la charge mentale sans culpabilité</h2>
-          
-          <div className="prose prose-sm max-w-none text-[#5A6B62]">
-            <p>La charge mentale n'est pas qu'une question d'organisation : c'est aussi une charge émotionnelle et identitaire, que l'on soit étudiant, parent, ou professionnel. Elle touche tout le monde à différents moments de la vie.</p>
-
-            <p>Quelques pistes puissantes et douces :</p>
-            
-            <ul>
-              <li>Pratiquer le "non" avec douceur : "Je ne peux pas cette semaine, je priorise mon repos."</li>
-              <li>Diffuser ou inhaler une huile apaisante (lavande ou agrumes doux) avant une décision importante, pour recentrer le mental.</li>
-              <li>Faire un "brain dump" écrit chaque soir : vider tout ce qui tourne dans la tête sur papier.</li>
-              <li>Revaloriser ce qui est déjà fait au lieu de se focaliser sur ce qui reste à faire.</li>
-            </ul>
-
-            <p className="mt-4">Le travail sur les limites et la déculpabilisation est souvent celui qui apporte le plus de soulagement profond et durable.</p>
-          </div>
-
-          <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
-            <Link href="/espace" className="text-sm text-[#4A9B8C] hover:underline">→ Explorer l'agent Émotion &amp; Charge mentale</Link>
-          </div>
-        </article>
-
-        {/* Article 6 - for variety in suggestions */}
-        <article id="aromatherapie-sommeil" className="card rounded-3xl p-8 mb-10 scroll-mt-20">
+        <article id="aromatherapie-sommeil" className="card rounded-3xl p-6 sm:p-8 mb-8 scroll-mt-24 bg-white">
           <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">AROMATHÉRAPIE</div>
-          <h2 className="text-3xl font-semibold tracking-tight mb-4">Aromathérapie pour le sommeil et la détente</h2>
-          
-          <div className="prose prose-sm max-w-none text-[#5A6B62]">
-            <p>Les huiles essentielles peuvent accompagner l’apaisement du système nerveux et un endormissement plus serein, face au stress du quotidien, aux examens ou à une vie bien remplie.</p>
-
-            <p>Rituel simple pour la nuit :</p>
-            
-            <ul>
-              <li>Place deux gouttes de lavande sur un mouchoir près de l’oreiller, ou diffuse la lavande le soir pendant 20 à 30 minutes.</li>
-              <li>Prépare un roll-on : cinq millilitres d’huile végétale et une dizaine de gouttes de lavande ; masse les poignets avant de dormir.</li>
-              <li>Ajoute quatre cycles de respiration lente (inspire 4 secondes, expire 6 secondes) en même temps.</li>
-            </ul>
-
-            <p className="mt-4">Le soir, privilégie les notes apaisantes plutôt que les notes très toniques. Observe ce qui te convient et ajuste en douceur.</p>
-          </div>
-
-          <div className="mt-6 pt-6 border-t border-[#E6EDE9]">
-            <Link href="/espace" className="text-sm text-[#4A9B8C] hover:underline">→ Demander un mélange personnalisé à l'agent Aromathérapie</Link>
-          </div>
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-4">
+            Aromathérapie pour le sommeil et la détente
+          </h2>
+          <p className="text-sm sm:text-[15px] text-[#5A6B62] leading-relaxed mb-3">
+            Roll-on dilué (huile végétale + lavande), diffusion le soir, et respiration lente en même
+            temps. Privilégie les notes apaisantes plutôt que toniques la nuit.
+          </p>
+          <Link
+            href="/espace?tab=chat&agent=aromatherapie"
+            className="text-sm font-semibold text-[#4A9B8C] hover:underline"
+          >
+            → Demander un mélange à l&apos;agent Aromathérapie
+          </Link>
         </article>
 
-        <div className="text-center mt-12">
-          <p className="text-[#5A6B62] mb-4">Vous voulez aller plus loin sur ces thématiques ?</p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/espace" className="btn-primary px-6 py-3 rounded-2xl font-semibold">Accéder à l'espace membres</Link>
-            <Link href="/bilan" className="px-6 py-3 rounded-2xl font-semibold border border-[#4A9B8C] hover:bg-[#F4F7F5]">Retour à mon bilan (pour voir d'autres articles)</Link>
-          </div>
-        </div>
+        <article id="charge-mentale" className="card rounded-3xl p-6 sm:p-8 mb-8 scroll-mt-24 bg-white">
+          <div className="uppercase tracking-[2px] text-xs text-[#4A9B8C] mb-2">CHARGE MENTALE</div>
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-3">
+            Alléger la charge mentale sans culpabilité
+          </h2>
+          <p className="text-sm sm:text-[15px] text-[#5A6B62] leading-relaxed mb-4">
+            Version longue avec les 3 types de charge et 5 pistes détaillées.
+          </p>
+          <Link
+            href="/blog/charge-mentale-sans-culpabilite"
+            className="text-sm font-semibold text-[#4A9B8C] hover:underline"
+          >
+            → Lire l&apos;article complet
+          </Link>
+        </article>
+
+        <ArticleCtaBand />
       </div>
 
-      <footer className="border-t border-[#E6EDE9] bg-white py-8 mt-12">
-        <div className="mx-auto max-w-5xl px-6 text-center text-xs text-[#5A6B62]">
-          © {new Date().getFullYear()} natura'bio by yas — Tous droits réservés
-        </div>
-      </footer>
+      <SimpleSiteFooter />
     </div>
   );
 }
