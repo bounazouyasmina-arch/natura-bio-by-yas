@@ -44,7 +44,7 @@ export function isPremiumAccess(tier: AccessTier): boolean {
 export function getAccessLabel(tier: AccessTier): string {
   if (tier === 'coaching') return 'Coaching 4 semaines actif';
   if (tier === 'ebook') return 'Hormones Sereine + Chat illimité';
-  return 'Accès gratuit (10 questions)';
+  return 'Accès gratuit (5 questions)';
 }
 
 export function saveAccessTier(tier: AccessTier): AccessTier {

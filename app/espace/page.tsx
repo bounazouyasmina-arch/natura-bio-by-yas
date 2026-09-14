@@ -293,8 +293,8 @@ function EspaceContent() {
 
   const justPaid = searchParams.get('paid') === 'true';
 
-  // Limite gratuite : 10 questions. Hormones Sereine (9,99 €) donne l'accès illimité.
-  const FREE_QUESTION_LIMIT = 10;
+  // Limite gratuite : 5 questions. Hormones Sereine (9,99 €) donne l'accès illimité.
+  const FREE_QUESTION_LIMIT = 5;
   const [freeQuestionsUsed, setFreeQuestionsUsed] = useState(0);
   const [accessTier, setAccessTier] = useState<AccessTier>('free');
   const [accessSince, setAccessSince] = useState<string | null>(null);
@@ -742,7 +742,7 @@ function EspaceContent() {
     if (!userMessage || isLoading) return;
 
     if (freeQuestionsUsed >= FREE_QUESTION_LIMIT && !isPremium) {
-      toast.error("Limite de 10 questions gratuites atteinte", {
+      toast.error("Limite de 5 questions gratuites atteinte", {
         description: "Passe à Hormones Sereine pour le chat illimité + l'ebook (9,99 € une fois).",
       });
       return;
@@ -911,7 +911,7 @@ function EspaceContent() {
     }
   };
 
-  // Note : 10 questions gratuites + forum.
+  // Note : 5 questions gratuites + forum.
   // L'ebook à 9,99 € donne l'accès illimité.
   // Le coaching est l'accompagnement complet.
 
@@ -994,7 +994,7 @@ function EspaceContent() {
           <div className="max-w-4xl">
             <h1 className="text-4xl font-semibold tracking-tight mb-3">Bienvenue dans l&apos;Espace Membres</h1>
             <p className="text-xl text-[#5A6B62] mb-4">
-              10 questions gratuites + forum. L&apos;ebook Hormones Sereine (9,99 €) donne le chat illimité + le PDF (cycle, SOPK, thyroïde, ménopause…). Le coaching est l&apos;accompagnement complet.
+              5 questions gratuites + forum. L&apos;ebook Hormones Sereine (9,99 €) donne le chat illimité + le PDF (cycle, SOPK, thyroïde, ménopause…). Le coaching est l&apos;accompagnement complet.
             </p>
 
             {/* Lien vers le bilan public (email collection) + perso */}
@@ -1169,7 +1169,7 @@ function EspaceContent() {
               <div className="card rounded-3xl p-7 cursor-pointer" onClick={() => setActiveTab('chat')}>
                 <MessageCircle className="h-7 w-7 text-[var(--sage-600)] mb-4" />
                 <div className="font-semibold text-xl">Parler avec les agents IA</div>
-                <p className="mt-2 text-[#5A6B62]">9 expertes spécialisées dont une dédiée à la charge mentale et aux émotions. Gratuit (10 questions).</p>
+                <p className="mt-2 text-[#5A6B62]">9 expertes spécialisées dont une dédiée à la charge mentale et aux émotions. Gratuit (5 questions).</p>
               </div>
 
               <div className="card rounded-3xl p-7 cursor-pointer" onClick={() => setActiveTab('forum')}>
@@ -1554,7 +1554,7 @@ function EspaceContent() {
 
               {freeQuestionsUsed >= FREE_QUESTION_LIMIT && !isPremium ? (
                 <div className="border-t p-6 bg-white text-center space-y-4">
-                  <p className="font-medium">Tu as utilisé tes 10 questions gratuites.</p>
+                  <p className="font-medium">Tu as utilisé tes 5 questions gratuites.</p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center items-stretch sm:items-center">
                     <a 
                       href={BEACONS_EBOOK_LINK} 
@@ -2064,7 +2064,7 @@ function EspaceContent() {
                   </>
                 ) : (
                   <>
-                    <li>• 10 questions au chat IA</li>
+                    <li>• 5 questions au chat IA</li>
                     <li>• Forum (lecture + publication une fois connectée)</li>
                     <li>• Bilan & tip du jour</li>
                   </>

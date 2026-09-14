@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 // === LIENS BEACONS (ventes) ===
 // Structure simple :
-// - Gratuit : 10 questions + forum
+// - Gratuit : 5 questions + forum
 // - Ebook 9,99 € « Hormones Sereine » : accès illimité chat + forum (cycle, SOPK, endométriose, thyroïde, pré-ménopause, ménopause)
 // - Coaching 167 € : accompagnement personnalisé 4 semaines
 const BEACONS_EBOOK_LINK = "https://shop.beacons.ai/yas_digital/44ca0203-408c-489d-b6d3-0a5c0af4fee2";
@@ -272,7 +272,7 @@ export default function NaturaBioByYasLanding() {
           Tu reçois des conseils concrets : huiles essentielles, plantes, respiration, MTC et remèdes ancestraux.
         </p>
         <p className="mx-auto max-w-xl text-sm sm:text-base text-[#5A6B62] mb-8 leading-relaxed">
-          <span className="block sm:inline"><strong className="text-[#2A3A32]">Gratuit :</strong> 10 questions et forum.</span>
+          <span className="block sm:inline"><strong className="text-[#2A3A32]">Gratuit :</strong> 5 questions et forum.</span>
           {" "}
           <span className="block sm:inline mt-1 sm:mt-0"><strong className="text-[#2A3A32]">Illimité :</strong> Hormones Sereine à 9,99&nbsp;€.</span>
           {" "}
@@ -305,7 +305,7 @@ export default function NaturaBioByYasLanding() {
           <div className="flex items-start gap-2"><span className="text-xl">✨</span> <div><strong className="text-[#2A3A32]">9 expertes IA</strong><br />spécialités distinctes</div></div>
           <div className="flex items-start gap-2"><span className="text-xl">📖</span> <div><strong className="text-[#2A3A32]">Hormones Sereine 9,99 €</strong><br />PDF + chat illimité</div></div>
           <div className="flex items-start gap-2"><span className="text-xl">🕊️</span> <div><strong className="text-[#2A3A32]">Respect de la foi</strong><br />&amp; approches douces</div></div>
-          <div className="flex items-start gap-2"><span className="text-xl">💬</span> <div><strong className="text-[#2A3A32]">10 questions offertes</strong><br />pour tester sans risque</div></div>
+          <div className="flex items-start gap-2"><span className="text-xl">💬</span> <div><strong className="text-[#2A3A32]">5 questions offertes</strong><br />pour tester sans risque</div></div>
         </div>
       </div>
 
@@ -517,7 +517,7 @@ export default function NaturaBioByYasLanding() {
 
           <div className="mt-8 rounded-2xl border border-[#D9D4EC] bg-white/70 px-5 py-5 sm:px-8 sm:py-6 text-center">
             <p className="text-sm sm:text-[15px] text-[#4A455F] leading-relaxed max-w-2xl mx-auto">
-              L’agent IA t’écoute déjà avec justesse (dans la limite des 10 questions gratuites).
+              L’agent IA t’écoute déjà avec justesse (dans la limite des 5 questions gratuites).
               {' '}<strong className="font-semibold">Si tu sens que « comprendre » ne suffit plus — que tu veux être tenue, guidée et relue chaque semaine —</strong>{' '}
               le coaching 4 semaines est l’endroit où la charge s’allège vraiment, pas seulement le temps d’une réponse.
             </p>
@@ -559,7 +559,7 @@ export default function NaturaBioByYasLanding() {
               <div className="text-lg sm:text-xl font-semibold mb-2">Tester le chat IA</div>
               <div className="text-3xl font-semibold tabular-nums mb-4">0 €</div>
               <ul className="space-y-2.5 text-sm text-[#5A6B62] mb-6 flex-1">
-                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> 10 questions au chat (9 expertes)</li>
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> 5 questions au chat (9 expertes)</li>
                 <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Forum communauté</li>
                 <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Bilan initial + tip du jour</li>
               </ul>
@@ -778,7 +778,7 @@ export default function NaturaBioByYasLanding() {
           </a>
           {', '}
           <a href="/espace" className="text-[var(--sage-600)] font-medium underline underline-offset-2">
-            10 questions gratuites
+            5 questions gratuites
           </a>
           {' '}ou{' '}
           <a href="/bilan" className="text-[var(--sage-600)] font-medium underline underline-offset-2">
