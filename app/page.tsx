@@ -167,22 +167,31 @@ const pillars = [
   },
 ];
 
-/** Preuve sociale honnête (pas de faux avis) — à remplacer par de vrais témoignages dès que tu en as. */
+/** Preuve sociale honnête (pas de faux avis) — cartes cliquables vers l’action. */
 const socialProofCards = [
   {
     emoji: '💬',
     title: 'Des réponses concrètes',
     text: 'Elles viennent pour des pistes actionnables : sommeil, stress, cycle, charge mentale — pas pour du blabla vague.',
+    href: '/espace?tab=chat',
+    cta: 'Tester le chat gratuit →',
+    external: false,
   },
   {
     emoji: '📖',
     title: 'Un guide à garder',
     text: 'Hormones Sereine à 9,99 € : chat illimité + PDF, pour avancer à son rythme après les 5 questions gratuites.',
+    href: BEACONS_EBOOK_LINK,
+    cta: 'Voir Hormones Sereine →',
+    external: true,
   },
   {
     emoji: '🤝',
     title: 'Un suivi humain si besoin',
     text: 'Appel découverte gratuit, puis coaching 4 semaines avec Yas pour celles qui veulent être vraiment accompagnées.',
+    href: BEACONS_DISCOVERY_CALL_LINK,
+    cta: 'Réserver un appel gratuit →',
+    external: true,
   },
 ];
 
@@ -641,11 +650,21 @@ export default function NaturaBioByYasLanding() {
 
         <div className="grid md:grid-cols-3 gap-6">
           {socialProofCards.map((card, i) => (
-            <div key={i} className="card rounded-3xl p-7 sm:p-8 bg-white text-left">
+            <a
+              key={i}
+              href={card.href}
+              {...(card.external
+                ? { target: '_blank', rel: 'noopener noreferrer' }
+                : {})}
+              className="card rounded-3xl p-7 sm:p-8 bg-white text-left flex flex-col hover:border-[var(--sage-600)] border border-transparent transition group"
+            >
               <div className="text-3xl mb-3">{card.emoji}</div>
               <div className="font-semibold text-lg text-[#2A3A32] mb-2">{card.title}</div>
-              <p className="text-[15px] text-[#5A6B62] leading-relaxed">{card.text}</p>
-            </div>
+              <p className="text-[15px] text-[#5A6B62] leading-relaxed flex-1">{card.text}</p>
+              <div className="mt-4 text-sm font-semibold text-[var(--sage-600)] group-hover:underline">
+                {card.cta}
+              </div>
+            </a>
           ))}
         </div>
 
