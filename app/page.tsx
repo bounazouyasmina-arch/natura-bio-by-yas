@@ -642,9 +642,8 @@ export default function NaturaBioByYasLanding() {
         <div className="text-center mb-10">
           <div className="flex justify-center mb-3"><Heart className="text-[#C5A46E]" /></div>
           <h3 className="text-3xl font-semibold tracking-tight">Ce qu&apos;elles viennent chercher</h3>
-          <p className="text-sm text-[#5A6B62] mt-2 max-w-lg mx-auto leading-relaxed">
-            Pas de faux avis ici. Voici ce qui fait venir les femmes sur natura&apos;bio — les témoignages clients
-            arriveront au fil des accompagnements.
+          <p className="text-sm text-[#5A6B62] mt-2 max-w-md mx-auto leading-relaxed">
+            Des réponses concrètes, un guide clair, et un accompagnement humain quand tu en as besoin.
           </p>
         </div>
 
@@ -666,30 +665,6 @@ export default function NaturaBioByYasLanding() {
               </div>
             </a>
           ))}
-        </div>
-
-        <div className="mt-10 text-center rounded-3xl border border-[#E8D9B8] bg-[#FBF7F0] px-5 py-6 sm:px-8">
-          <p className="text-sm sm:text-[15px] text-[#4A455F] leading-relaxed max-w-xl mx-auto">
-            Tu as déjà testé le chat ou le coaching ?{' '}
-            <strong className="font-semibold">Ton retour peut aider d&apos;autres femmes.</strong>
-          </p>
-          <div className="mt-4 flex flex-col sm:flex-row gap-3 justify-center items-center">
-            <a
-              href="mailto:contact@naturabioyas.fr?subject=Mon%20t%C3%A9moignage%20natura%27bio"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#8A6E3A] hover:underline"
-            >
-              Envoyer mon témoignage à Yas <ArrowRight className="h-4 w-4" />
-            </a>
-            <span className="hidden sm:inline text-[#D9D4EC]">·</span>
-            <a
-              href={BEACONS_DISCOVERY_CALL_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#6C6B9A] hover:underline"
-            >
-              Appel découverte gratuit <ArrowRight className="h-4 w-4" />
-            </a>
-          </div>
         </div>
       </section>
 
