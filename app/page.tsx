@@ -167,21 +167,22 @@ const pillars = [
   },
 ];
 
-const testimonials = [
+/** Preuve sociale honnête (pas de faux avis) — à remplacer par de vrais témoignages dès que tu en as. */
+const socialProofCards = [
   {
-    name: "Amina K.",
-    role: "Coach & maman de 3 enfants",
-    quote: "L'ebook Hormones Sereine m'a aidée à comprendre mon cycle sans me sentir « trop jeune » ou « trop vieille » pour le sujet. Les réponses de l'IA sur les huiles et le nerf vague ont changé mon sommeil en 10 jours.",
+    emoji: '💬',
+    title: 'Des réponses concrètes',
+    text: 'Elles viennent pour des pistes actionnables : sommeil, stress, cycle, charge mentale — pas pour du blabla vague.',
   },
   {
-    name: "Fatima B.",
-    role: "Enseignante, 52 ans",
-    quote: "Le coaching 4 semaines a été transformateur. J'ai enfin un protocole qui respecte ma foi et ma physiologie. Les échanges sur WhatsApp... enfin je me sens accompagnée.",
+    emoji: '📖',
+    title: 'Un guide à garder',
+    text: 'Hormones Sereine à 9,99 € : chat illimité + PDF, pour avancer à son rythme après les 5 questions gratuites.',
   },
   {
-    name: "Leila S.",
-    role: "Infirmière",
-    quote: "J'adore le forum. On pose des questions sans jugement et l'IA ou d'autres femmes répondent avec des pistes concrètes en aromathérapie et MTC. Très puissant.",
+    emoji: '🤝',
+    title: 'Un suivi humain si besoin',
+    text: 'Appel découverte gratuit, puis coaching 4 semaines avec Yas pour celles qui veulent être vraiment accompagnées.',
   },
 ];
 
@@ -627,27 +628,49 @@ export default function NaturaBioByYasLanding() {
         </div>
       </section>
 
-      {/* TÉMOIGNAGES */}
+      {/* PREUVE SOCIALE HONNÊTE (en attendant de vrais témoignages) */}
       <section className="mx-auto max-w-5xl px-6 py-20">
         <div className="text-center mb-10">
-          <div className="flex justify-center mb-3"><Star className="text-[#C5A46E]" /></div>
-          <h3 className="text-3xl font-semibold tracking-tight">Ce qu&apos;elles recherchent chez nous</h3>
-          <p className="text-sm text-[#5A6B62] mt-2">Retours typiques de lectrices et clientes (exemples illustratifs)</p>
+          <div className="flex justify-center mb-3"><Heart className="text-[#C5A46E]" /></div>
+          <h3 className="text-3xl font-semibold tracking-tight">Ce qu&apos;elles viennent chercher</h3>
+          <p className="text-sm text-[#5A6B62] mt-2 max-w-lg mx-auto leading-relaxed">
+            Pas de faux avis ici. Voici ce qui fait venir les femmes sur natura&apos;bio — les témoignages clients
+            arriveront au fil des accompagnements.
+          </p>
         </div>
-        
+
         <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((t, i) => (
-            <div key={i} className="card rounded-3xl p-8 bg-white">
-              <div className="flex gap-1 mb-4 text-[#C5A46E]">
-                {[...Array(5)].map((_, idx) => <Star key={idx} className="h-4 w-4 fill-current" />)}
-              </div>
-              <p className="italic text-[15px] leading-relaxed mb-6">“{t.quote}”</p>
-              <div>
-                <div className="font-medium">{t.name}</div>
-                <div className="text-sm text-[#5A6B62]">{t.role}</div>
-              </div>
+          {socialProofCards.map((card, i) => (
+            <div key={i} className="card rounded-3xl p-7 sm:p-8 bg-white text-left">
+              <div className="text-3xl mb-3">{card.emoji}</div>
+              <div className="font-semibold text-lg text-[#2A3A32] mb-2">{card.title}</div>
+              <p className="text-[15px] text-[#5A6B62] leading-relaxed">{card.text}</p>
             </div>
           ))}
+        </div>
+
+        <div className="mt-10 text-center rounded-3xl border border-[#E8D9B8] bg-[#FBF7F0] px-5 py-6 sm:px-8">
+          <p className="text-sm sm:text-[15px] text-[#4A455F] leading-relaxed max-w-xl mx-auto">
+            Tu as déjà testé le chat ou le coaching ?{' '}
+            <strong className="font-semibold">Ton retour peut aider d&apos;autres femmes.</strong>
+          </p>
+          <div className="mt-4 flex flex-col sm:flex-row gap-3 justify-center items-center">
+            <a
+              href="mailto:contact@naturabioyas.fr?subject=Mon%20t%C3%A9moignage%20natura%27bio"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#8A6E3A] hover:underline"
+            >
+              Envoyer mon témoignage à Yas <ArrowRight className="h-4 w-4" />
+            </a>
+            <span className="hidden sm:inline text-[#D9D4EC]">·</span>
+            <a
+              href={BEACONS_DISCOVERY_CALL_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#6C6B9A] hover:underline"
+            >
+              Appel découverte gratuit <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
         </div>
       </section>
 
