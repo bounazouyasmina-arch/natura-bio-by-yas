@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Leaf, Heart, Wind, Apple, BookOpen, Flame, Brain, 
-  Users, ArrowRight, Check, Star, Shield 
+  Users, ArrowRight, Check, Shield 
 } from 'lucide-react';
 // === LIENS BEACONS (ventes) ===
 // Structure simple :
