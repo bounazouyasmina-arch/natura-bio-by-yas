@@ -12,7 +12,7 @@ export default function Confidentialite() {
     <LegalPageShell title="Politique de confidentialité (RGPD)">
       <p>
         Responsable du traitement : <strong className="text-[#2A3A32]">Yasmine Bounazou</strong> —
-        contact :{' '}
+        35 rue Léonard de Vinci, 25200 Bethoncourt — contact :{' '}
         <a href="mailto:contact@naturabioyas.fr" className="underline text-[var(--sage-600)]">
           contact@naturabioyas.fr
         </a>

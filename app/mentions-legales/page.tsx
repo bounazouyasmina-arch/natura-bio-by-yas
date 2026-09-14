@@ -15,6 +15,10 @@ export default function MentionsLegales() {
         <em>natura&apos;bio by yas</em>
       </p>
       <p>
+        <strong className="text-[#2A3A32]">Adresse :</strong> 35 rue Léonard de Vinci, 25200
+        Bethoncourt, France
+      </p>
+      <p>
         <strong className="text-[#2A3A32]">Site :</strong>{' '}
         <a href="https://naturabioyas.fr" className="underline text-[var(--sage-600)]">
           https://naturabioyas.fr
@@ -28,10 +32,6 @@ export default function MentionsLegales() {
       </p>
       <p>
         <strong className="text-[#2A3A32]">Hébergement :</strong> Vercel Inc. — vercel.com
-      </p>
-      <p className="text-xs text-[#8A9A92]">
-        Adresse postale de l&apos;éditrice : à compléter si requise pour ta situation (auto-entreprise /
-        association). Tu peux me demander de l&apos;ajouter ici.
       </p>
       <p>
         Ce site propose des <strong className="text-[#2A3A32]">ressources éducatives</strong> sur la
