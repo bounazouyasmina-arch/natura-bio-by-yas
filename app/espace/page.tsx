@@ -743,7 +743,8 @@ function EspaceContent() {
 
     if (freeQuestionsUsed >= FREE_QUESTION_LIMIT && !isPremium) {
       toast.error("Limite de 5 questions gratuites atteinte", {
-        description: "Passe à Hormones Sereine pour le chat illimité + l'ebook (9,99 € une fois).",
+        description:
+          "Hormones Sereine (9,99 €) : chat illimité + PDF. Ou réserve un appel découverte gratuit.",
       });
       return;
     }
@@ -1462,6 +1463,27 @@ function EspaceContent() {
               </div>
             </div>
 
+            {!isPremium &&
+              freeQuestionsUsed >= 3 &&
+              freeQuestionsUsed < FREE_QUESTION_LIMIT && (
+                <div className="mb-4 rounded-2xl border border-[#E8D9B8] bg-[#FBF7F0] px-4 py-3 text-sm text-[#5A6B62] leading-relaxed">
+                  <strong className="text-[#2A3A32]">
+                    Il te reste {FREE_QUESTION_LIMIT - freeQuestionsUsed} question
+                    {FREE_QUESTION_LIMIT - freeQuestionsUsed > 1 ? 's' : ''} gratuite
+                    {FREE_QUESTION_LIMIT - freeQuestionsUsed > 1 ? 's' : ''}.
+                  </strong>{' '}
+                  Ensuite, Hormones Sereine à 9,99&nbsp;€ débloque le chat illimité + le PDF.{' '}
+                  <a
+                    href={BEACONS_EBOOK_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-[var(--sage-600)] underline underline-offset-2"
+                  >
+                    Voir l&apos;offre →
+                  </a>
+                </div>
+              )}
+
             {/* Sélecteur d'agents - couleurs précises + visuels parlants */}
             <div className="flex flex-wrap gap-2 mb-6">
               {agents.map(agent => {
@@ -1553,28 +1575,48 @@ function EspaceContent() {
               </div>
 
               {freeQuestionsUsed >= FREE_QUESTION_LIMIT && !isPremium ? (
-                <div className="border-t p-6 bg-white text-center space-y-4">
-                  <p className="font-medium">Tu as utilisé tes 5 questions gratuites.</p>
+                <div className="border-t p-5 sm:p-6 bg-white text-left sm:text-center space-y-4">
+                  <div>
+                    <p className="font-semibold text-[#2A3A32] text-base sm:text-lg">
+                      Tes 5 questions gratuites sont utilisées — merci d&apos;avoir testé.
+                    </p>
+                    <p className="text-sm text-[#5A6B62] mt-2 leading-relaxed max-w-md mx-auto">
+                      Pour continuer à poser autant de questions que tu veux, et recevoir le guide PDF :
+                    </p>
+                  </div>
+                  <ul className="text-sm text-[#5A6B62] space-y-1.5 max-w-sm mx-auto text-left">
+                    <li className="flex gap-2"><span className="text-[var(--sage-600)]">✓</span> Chat IA illimité (9 expertes)</li>
+                    <li className="flex gap-2"><span className="text-[var(--sage-600)]">✓</span> Ebook Hormones Sereine (PDF)</li>
+                    <li className="flex gap-2"><span className="text-[var(--sage-600)]">✓</span> Forum + accès immédiat après paiement</li>
+                  </ul>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center items-stretch sm:items-center">
                     <a 
                       href={BEACONS_EBOOK_LINK} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="btn-primary inline-block px-6 py-3 rounded-2xl font-semibold text-sm"
+                      className="btn-primary inline-block px-6 py-3.5 rounded-2xl font-semibold text-sm text-center"
                     >
-                      Illimité — Hormones Sereine 9,99 €
+                      Débloquer l&apos;illimité — 9,99 €
+                    </a>
+                    <a
+                      href={BEACONS_DISCOVERY_CALL_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block px-6 py-3 rounded-2xl font-semibold text-sm border border-[#D9D4EC] text-[#6C6B9A] text-center"
+                    >
+                      Appel découverte gratuit
                     </a>
                     <a
                       href={BEACONS_COACHING_LINK}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block px-6 py-3 rounded-2xl font-semibold text-sm border-2 border-[#C5A46E] text-[#8A6E3A] bg-[#FBF7F0]"
+                      className="inline-block px-6 py-3 rounded-2xl font-semibold text-sm border-2 border-[#C5A46E] text-[#8A6E3A] bg-[#FBF7F0] text-center"
                     >
-                      Coaching 4 semaines — 167 €
+                      Coaching 167 €
                     </a>
                   </div>
                   <p className="text-xs text-[#5A6B62]">
-                    Ebook + chat illimité, ou accompagnement humain avec Yas (protocole + suivi).
+                    Paiement sécurisé sur Beacons · tu reçois ton lien d&apos;accès par email.
                   </p>
                 </div>
               ) : (

@@ -575,11 +575,14 @@ export default function NaturaBioByYasLanding() {
               <div className="text-[11px] sm:text-xs font-semibold tracking-[1.5px] sm:tracking-[2px] text-[var(--sage-600)] mb-2">2 · ILLIMITÉ</div>
               <div className="text-lg sm:text-xl font-semibold mb-2">Hormones Sereine</div>
               <div className="text-3xl font-semibold tabular-nums mb-1">9,99 €</div>
-              <div className="text-xs text-[#5A6B62] mb-4">paiement unique · accès immédiat</div>
+              <div className="text-xs text-[#5A6B62] mb-3">paiement unique · accès immédiat</div>
+              <p className="text-xs text-[#5A6B62] mb-4 leading-relaxed">
+                Pour toi si tu veux <strong className="text-[#2A3A32]">continuer le chat sans limite</strong> et un guide clair sur ton équilibre hormonal — quel que soit ton âge.
+              </p>
               <ul className="space-y-2.5 text-sm text-[#5A6B62] mb-6 flex-1">
-                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> PDF Hormones Sereine (tous âges)</li>
-                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Chat IA illimité + forum</li>
-                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Cycle, SOPK, endométriose, thyroïde…</li>
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Chat IA illimité (fini les 5 questions)</li>
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> PDF Hormones Sereine à garder</li>
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Cycle, SOPK, thyroïde, pré-ménopause…</li>
               </ul>
               <a 
                 href={BEACONS_EBOOK_LINK} 
@@ -587,7 +590,7 @@ export default function NaturaBioByYasLanding() {
                 rel="noopener noreferrer"
                 className="btn-primary w-full rounded-2xl py-3 px-3 font-semibold flex items-center justify-center gap-2 text-sm leading-snug text-center"
               >
-                Acheter l&apos;ebook <ArrowRight className="h-4 w-4 shrink-0" />
+                Débloquer l&apos;illimité — 9,99 € <ArrowRight className="h-4 w-4 shrink-0" />
               </a>
               <p className="text-center text-[11px] mt-2 text-[#5A6B62]">Paiement sécurisé sur Beacons</p>
             </div>
@@ -653,27 +656,31 @@ export default function NaturaBioByYasLanding() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
           <div className="uppercase tracking-[2px] sm:tracking-[3px] text-[11px] sm:text-xs font-medium text-[var(--sage-600)] mb-2">OFFRES</div>
           <h2 className="text-[1.65rem] sm:text-4xl font-semibold tracking-tight mb-3 leading-tight">Choisis ce qui te correspond</h2>
-          <div className="text-[#5A6B62] mb-8 sm:mb-10 max-w-md mx-auto space-y-2 text-[15px] sm:text-base leading-relaxed">
+          <div className="text-[#5A6B62] mb-8 sm:mb-10 max-w-lg mx-auto space-y-2 text-[15px] sm:text-base leading-relaxed">
             <p>
               L&apos;ebook <strong className="font-medium text-[#2A3A32]">Hormones Sereine</strong>
-              {" "}débloque l&apos;accès illimité tout de suite.
+              {" "}à 9,99&nbsp;€ : tu continues le chat <strong className="font-medium text-[#2A3A32]">sans limite</strong>
+              {" "}+ tu reçois le guide PDF.
             </p>
             <p>
-              Pour toutes les étapes de la vie hormonale. Le coaching est pour un suivi humain.
+              Le coaching 167&nbsp;€, c&apos;est pour un suivi humain avec Yas.
             </p>
           </div>
         </div>
 
         <div className="mx-auto max-w-5xl px-4 sm:px-6 grid md:grid-cols-2 gap-5 sm:gap-6">
-          <div className="card rounded-3xl p-5 sm:p-9 bg-white text-left">
+          <div className="card rounded-3xl p-5 sm:p-9 bg-white text-left border-2 border-[var(--sage-600)]/30">
             <div className="uppercase tracking-[1.2px] sm:tracking-[2px] text-[10px] sm:text-xs text-[var(--sage-600)] mb-2 leading-snug">
-              Avancer seule, à ton rythme
+              Le plus simple pour continuer
             </div>
             <div className="text-xl sm:text-3xl font-semibold leading-snug">Hormones Sereine</div>
             <p className="text-sm text-[#5A6B62] mt-1.5 leading-relaxed">
-              Ebook PDF + chat IA illimité + forum
-              <span className="block sm:inline sm:before:content-['·_']">de 20 à 60 ans+</span>
+              PDF + chat IA illimité + forum · <strong className="font-medium text-[#2A3A32]">9,99 € une fois</strong>
             </p>
+            <div className="mt-3 rounded-2xl bg-[#F4F7F5] border border-[#E6EDE9] px-3.5 py-3 text-sm text-[#5A6B62] leading-relaxed">
+              <strong className="text-[#2A3A32]">Pour qui ?</strong> Si tu as aimé le chat gratuit, que tu veux poser
+              autant de questions que tu veux, et comprendre ton cycle / ton énergie / tes hormones — de 20 à 60&nbsp;ans+.
+            </div>
             <div className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
               <span className="text-4xl sm:text-5xl font-semibold tabular-nums tracking-tight">9,99 €</span>
               <span className="text-sm sm:text-base font-normal text-[#5A6B62]">une fois</span>
@@ -683,11 +690,11 @@ export default function NaturaBioByYasLanding() {
 
             <ul className="space-y-2.5 sm:space-y-3 mb-7 sm:mb-8 text-sm sm:text-[15px] leading-snug">
               {[
-                "Ebook PDF « Hormones Sereine » à télécharger",
-                "Cycle, règles douloureuses, SOPK, endométriose",
-                "Thyroïde, pré-ménopause et ménopause",
-                "Chat IA illimité + forum + bilan & suivi",
-                "Accès immédiat après achat Beacons",
+                "Chat IA illimité — plus de plafond à 5 questions",
+                "Ebook PDF « Hormones Sereine » à télécharger et garder",
+                "Cycle, SOPK, endométriose, thyroïde, pré-ménopause, ménopause",
+                "Forum communauté + bilan & tip du jour",
+                "Accès immédiat après paiement Beacons",
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2.5 sm:gap-3">
                   <Check className="mt-0.5 text-[var(--sage-600)] h-4 w-4 shrink-0" />
@@ -702,8 +709,8 @@ export default function NaturaBioByYasLanding() {
               rel="noopener noreferrer"
               className="btn-primary w-full rounded-2xl font-semibold text-sm sm:text-base text-center px-4 py-3.5 sm:py-4 leading-snug flex flex-col sm:block items-center justify-center gap-0.5"
             >
-              <span>Je prends Hormones Sereine</span>
-              <span className="font-semibold">à 9,99 €</span>
+              <span>Je débloque l&apos;illimité</span>
+              <span className="font-semibold">Hormones Sereine · 9,99 €</span>
             </a>
             <p className="text-center text-[11px] sm:text-xs mt-3 text-[#5A6B62] leading-relaxed px-1">
               Paiement sur Beacons · Lien d&apos;accès par email
