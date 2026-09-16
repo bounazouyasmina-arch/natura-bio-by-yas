@@ -29,7 +29,7 @@ export default function CGV() {
       </p>
 
       <h2 className="text-lg font-semibold text-[#2A3A32] pt-2">
-        Coaching 4 semaines — 167 €
+        Coaching 4 semaines — 149 €
       </h2>
       <p>
         Prestation d&apos;accompagnement personnalisé (visioconférence / suivi, protocole, échanges).

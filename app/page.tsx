@@ -9,7 +9,7 @@ import {
 // Structure simple :
 // - Gratuit : 5 questions + forum
 // - Ebook 9,99 € « Hormones Sereine » : accès illimité chat + forum (cycle, SOPK, endométriose, thyroïde, pré-ménopause, ménopause)
-// - Coaching 167 € : accompagnement personnalisé 4 semaines
+// - Coaching 149 € : accompagnement personnalisé 4 semaines
 const BEACONS_EBOOK_LINK = "https://shop.beacons.ai/yas_digital/44ca0203-408c-489d-b6d3-0a5c0af4fee2";
 const BEACONS_COACHING_LINK = "https://shop.beacons.ai/yas_digital/d3e9837a-e734-4b80-8243-479d6c1f0213";
 // Appel découverte gratuit (promotion réseaux → même lien partout)
@@ -290,7 +290,7 @@ export default function NaturaBioByYasLanding() {
           {" "}
           <span className="block sm:inline mt-1 sm:mt-0"><strong className="text-[#2A3A32]">Illimité :</strong> Hormones Sereine à 9,99&nbsp;€.</span>
           {" "}
-          <span className="block sm:inline mt-1 sm:mt-0"><strong className="text-[#2A3A32]">Sur-mesure :</strong> coaching à 167&nbsp;€.</span>
+          <span className="block sm:inline mt-1 sm:mt-0"><strong className="text-[#2A3A32]">Sur-mesure :</strong> coaching à 149&nbsp;€.</span>
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
@@ -496,7 +496,7 @@ export default function NaturaBioByYasLanding() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 font-semibold border-2 border-[#C5A46E] text-[#8A6E3A] bg-white hover:bg-[#FBF6EC] transition-colors"
                 >
-                  Coaching 4 semaines — 167 € <ArrowRight className="h-4 w-4" />
+                  Coaching 4 semaines — 149 € <ArrowRight className="h-4 w-4" />
                 </a>
               </div>
             </div>
@@ -555,7 +555,7 @@ export default function NaturaBioByYasLanding() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#8A6E3A] hover:underline"
               >
-                Coaching 4 semaines — 167 € <ArrowRight className="h-4 w-4" />
+                Coaching 4 semaines — 149 € <ArrowRight className="h-4 w-4" />
               </a>
             </div>
           </div>
@@ -616,7 +616,7 @@ export default function NaturaBioByYasLanding() {
             <div className="card rounded-3xl p-5 sm:p-7 border-2 border-[#C5A46E] flex flex-col">
               <div className="text-[11px] sm:text-xs font-semibold tracking-[1.5px] sm:tracking-[2px] text-[#C5A46E] mb-2">3 · ACCOMPAGNEMENT</div>
               <div className="text-lg sm:text-xl font-semibold mb-2">Coaching 4 semaines</div>
-              <div className="text-3xl font-semibold tabular-nums mb-1">167 €</div>
+              <div className="text-3xl font-semibold tabular-nums mb-1">149 €</div>
               <div className="text-xs text-[#5A6B62] mb-4">suivi humain personnalisé</div>
               <ul className="space-y-2.5 text-sm text-[#5A6B62] mb-6 flex-1">
                 <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Tout l&apos;illimité inclus</li>
@@ -688,7 +688,7 @@ export default function NaturaBioByYasLanding() {
               {" "}+ tu reçois le guide PDF.
             </p>
             <p>
-              Le coaching 167&nbsp;€, c&apos;est pour un suivi humain avec Yas.
+              Le coaching 149&nbsp;€, c&apos;est pour un suivi humain avec Yas.
             </p>
           </div>
         </div>
@@ -753,7 +753,7 @@ export default function NaturaBioByYasLanding() {
             <div className="text-xl sm:text-3xl font-semibold leading-snug">Coaching 4 semaines</div>
             <p className="text-sm text-[#5A6B62] mt-1.5 leading-relaxed">Protocole sur-mesure + suivi avec Yas</p>
             <div className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <span className="text-4xl sm:text-5xl font-semibold tabular-nums tracking-tight">167 €</span>
+              <span className="text-4xl sm:text-5xl font-semibold tabular-nums tracking-tight">149 €</span>
               <span className="text-sm sm:text-base font-normal text-[#5A6B62]">une fois</span>
             </div>
 
@@ -782,7 +782,7 @@ export default function NaturaBioByYasLanding() {
               className="w-full rounded-2xl font-semibold text-sm sm:text-base bg-[#C5A46E] hover:bg-[#B38C55] text-white transition text-center px-4 py-3.5 sm:py-4 leading-snug flex flex-col sm:block items-center justify-center gap-0.5"
             >
               <span>Je réserve le coaching</span>
-              <span className="font-semibold">à 167 €</span>
+              <span className="font-semibold">à 149 €</span>
             </a>
             <a
               href={BEACONS_DISCOVERY_CALL_LINK}

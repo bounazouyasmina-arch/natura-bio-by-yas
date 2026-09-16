@@ -5,7 +5,7 @@ Site + application web pour la santé et le bien-être au naturel (aromathérapi
 **Modèle** :
 - Ebook d’entrée « Hormones Sereine » → 9,99 € (cycle, SOPK, endométriose, thyroïde, pré-ménopause, ménopause)
 - Accès immédiat à l’app (Chat IA multi-agents + Forum)
-- Upsell Coaching 4 semaines personnalisé (WhatsApp remplacé par chat privé dans l’app) → 167 €
+- Upsell Coaching 4 semaines personnalisé (WhatsApp remplacé par chat privé dans l’app) → 149 €
 
 ## Stack
 - Next.js 16 + TypeScript + Tailwind

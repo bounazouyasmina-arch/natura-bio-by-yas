@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "natura'bio by yas | Santé au naturel · Chat IA & coaching",
   description:
-    "Chat IA gratuit (5 questions) avec 9 expertes en santé naturelle. Ebook Hormones Sereine 9,99 € (cycle, SOPK, endométriose, thyroïde, pré-ménopause, ménopause) + chat illimité. Coaching 4 semaines 167 €.",
+    "Chat IA gratuit (5 questions) avec 9 expertes en santé naturelle. Ebook Hormones Sereine 9,99 € (cycle, SOPK, endométriose, thyroïde, pré-ménopause, ménopause) + chat illimité. Coaching 4 semaines 149 €.",
   icons: {
     icon: "/favicon.ico",
   },

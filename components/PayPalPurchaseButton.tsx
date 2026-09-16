@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 interface PayPalPurchaseButtonProps {
-  amount: string;           // "9.99" or "167.00"
+  amount: string;           // "9.99" or "149.00"
   productName: string;      // "Ebook Hormones Sereine" or "Coaching 4 semaines"
   successUnlocked: "ebook" | "coaching";
   className?: string;

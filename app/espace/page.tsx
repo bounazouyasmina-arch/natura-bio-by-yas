@@ -1413,7 +1413,7 @@ function EspaceContent() {
                 </div>
                 <div className="uppercase tracking-[1.2px] sm:tracking-[2px] text-[10px] sm:text-xs text-[#C5A46E] mb-1 pr-16 sm:pr-0">Accompagnement</div>
                 <div className="font-semibold text-lg sm:text-xl mb-1 leading-snug">Coaching 4 semaines</div>
-                <div className="text-3xl font-semibold tabular-nums mb-3">167 €</div>
+                <div className="text-3xl font-semibold tabular-nums mb-3">149 €</div>
                 <p className="text-[#5A6B62] mb-4 text-sm leading-relaxed">
                   Protocole + visio + suivi 4 semaines + WhatsApp + chat privé avec moi.
                 </p>
@@ -1559,7 +1559,7 @@ function EspaceContent() {
                               rel="noopener noreferrer"
                               className="font-semibold text-[#8A6E3A] hover:underline"
                             >
-                              Coaching 4 semaines — 167 € →
+                              Coaching 4 semaines — 149 € →
                             </a>
                           </div>
                         </div>
@@ -1612,7 +1612,7 @@ function EspaceContent() {
                       rel="noopener noreferrer"
                       className="inline-block px-6 py-3 rounded-2xl font-semibold text-sm border-2 border-[#C5A46E] text-[#8A6E3A] bg-[#FBF7F0] text-center"
                     >
-                      Coaching 167 €
+                      Coaching 149 €
                     </a>
                   </div>
                   <p className="text-xs text-[#5A6B62]">
@@ -1868,7 +1868,7 @@ function EspaceContent() {
                     rel="noopener noreferrer"
                     className="px-5 py-3 rounded-2xl text-sm font-semibold text-center bg-[#C5A46E] hover:bg-[#B38C55] text-white transition"
                   >
-                    Coaching 167 €
+                    Coaching 149 €
                   </a>
                 </div>
               </div>
@@ -2154,8 +2154,8 @@ function EspaceContent() {
                     className="block text-sm text-[#8A6E3A] font-medium hover:underline"
                   >
                     {isPremium
-                      ? 'Passer au coaching 4 semaines (167 €) →'
-                      : 'Accompagnement humain 4 semaines — 167 € →'}
+                      ? 'Passer au coaching 4 semaines (149 €) →'
+                      : 'Accompagnement humain 4 semaines — 149 € →'}
                   </a>
                 </div>
               )}
