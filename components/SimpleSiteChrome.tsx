@@ -59,7 +59,7 @@ export function SimpleSiteFooter() {
   );
 }
 
-export function ArticleCtaBand() {
+export function ArticleCtaBand({ chatAgent = 'emotion' }: { chatAgent?: string }) {
   return (
     <div className="mt-8 rounded-3xl border border-[#E6EDE9] bg-white p-5 sm:p-6 space-y-4">
       <p className="text-sm sm:text-base text-[#2A3A32] font-semibold leading-snug">
@@ -67,7 +67,7 @@ export function ArticleCtaBand() {
       </p>
       <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
         <Link
-          href="/espace?tab=chat&agent=emotion"
+          href={`/espace?tab=chat&agent=${chatAgent}`}
           className="btn-primary px-5 py-3 rounded-2xl text-sm font-semibold text-center"
         >
           Poser ma question au chat (5 gratuites)
@@ -92,6 +92,41 @@ export function ArticleCtaBand() {
     </div>
   );
 }
+
+/** Recommandation douce pack doTERRA liée à un thème d’article */
+export function DoteraPackCard({
+  title,
+  description,
+  href,
+}: {
+  title: string;
+  description: string;
+  href: string;
+}) {
+  return (
+    <div className="mt-6 rounded-2xl border border-[#E8D9B8] bg-[#FBF7F0] px-4 py-4 sm:px-5 sm:py-5">
+      <p className="text-[10px] sm:text-xs font-semibold tracking-[1.5px] text-[#8A6E3A] uppercase mb-1">
+        Pour aller plus loin · doTERRA
+      </p>
+      <p className="font-semibold text-[#2A3A32] text-sm sm:text-base">{title}</p>
+      <p className="text-sm text-[#5A6B62] leading-relaxed mt-1">{description}</p>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex mt-3 text-sm font-semibold text-[#8A6E3A] hover:underline"
+      >
+        Voir le pack →
+      </a>
+      <p className="text-[11px] text-[#8A9A92] mt-2 leading-relaxed">
+        Suggestion bien-être — ne remplace pas un avis médical. Utilise toujours les huiles selon les
+        précautions d&apos;usage.
+      </p>
+    </div>
+  );
+}
+
+export const DOTERA_PACK_SOMMEIL = 'https://doterra.me/ZSFO1F';
 
 export function LegalPageShell({
   title,

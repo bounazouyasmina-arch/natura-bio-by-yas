@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   ArticleCtaBand,
+  DoteraPackCard,
+  DOTERA_PACK_SOMMEIL,
   SimpleSiteFooter,
   SimpleSiteNav,
 } from '@/components/SimpleSiteChrome';
@@ -145,6 +147,11 @@ export default function BlogPage() {
               → Demander un protocole sommeil
             </Link>
           </div>
+          <DoteraPackCard
+            title="Pack sommeil doTERRA"
+            description="Pour accompagner ton rituel du soir : des huiles adaptées à la détente et à l’endormissement, en complément des gestes ci-dessus."
+            href={DOTERA_PACK_SOMMEIL}
+          />
         </article>
 
         <article id="aromatherapie-sommeil" className="card rounded-3xl p-6 sm:p-8 mb-8 scroll-mt-24 bg-white">
@@ -162,6 +169,11 @@ export default function BlogPage() {
           >
             → Demander un mélange à l&apos;agent Aromathérapie
           </Link>
+          <DoteraPackCard
+            title="Pack sommeil doTERRA"
+            description="Si tu veux aller plus loin avec des huiles de qualité pour le soir : voici le pack sommeil que je recommande."
+            href={DOTERA_PACK_SOMMEIL}
+          />
         </article>
 
         <article id="charge-mentale" className="card rounded-3xl p-6 sm:p-8 mb-8 scroll-mt-24 bg-white">
