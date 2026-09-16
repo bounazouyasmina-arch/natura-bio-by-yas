@@ -98,10 +98,13 @@ export function DoteraPackCard({
   title,
   description,
   href,
+  details,
 }: {
   title: string;
   description: string;
   href: string;
+  /** Explications du pack (points clés) */
+  details?: string[];
 }) {
   return (
     <div className="mt-6 rounded-2xl border border-[#E8D9B8] bg-[#FBF7F0] px-4 py-4 sm:px-5 sm:py-5">
@@ -110,18 +113,21 @@ export function DoteraPackCard({
       </p>
       <p className="font-semibold text-[#2A3A32] text-sm sm:text-base">{title}</p>
       <p className="text-sm text-[#5A6B62] leading-relaxed mt-1">{description}</p>
+      {details && details.length > 0 && (
+        <ul className="mt-3 space-y-1.5 text-sm text-[#5A6B62] list-disc pl-5 leading-relaxed">
+          {details.map((line, i) => (
+            <li key={i}>{line}</li>
+          ))}
+        </ul>
+      )}
       <a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex mt-3 text-sm font-semibold text-[#8A6E3A] hover:underline"
       >
-        Voir le pack →
+        Voir le pack sommeil →
       </a>
-      <p className="text-[11px] text-[#8A9A92] mt-2 leading-relaxed">
-        Suggestion bien-être — ne remplace pas un avis médical. Utilise toujours les huiles selon les
-        précautions d&apos;usage.
-      </p>
     </div>
   );
 }

@@ -139,18 +139,16 @@ export default function BlogPage() {
             <li>Respiration 4-7-8 (quelques cycles)</li>
             <li>Écrans et repas lourds en moins en fin de soirée</li>
           </ul>
-          <div className="mt-5">
-            <Link
-              href="/espace?tab=chat&agent=respiration"
-              className="text-sm font-semibold text-[#4A9B8C] hover:underline"
-            >
-              → Demander un protocole sommeil
-            </Link>
-          </div>
           <DoteraPackCard
             title="Pack sommeil doTERRA"
-            description="Pour accompagner ton rituel du soir : des huiles adaptées à la détente et à l’endormissement, en complément des gestes ci-dessus."
+            description="Pour accompagner ton rituel du soir avec des huiles adaptées à la détente et à l’endormissement."
             href={DOTERA_PACK_SOMMEIL}
+            details={[
+              // Remplacé dès que Yas envoie le texte officiel du pack
+              'Huiles pour favoriser la détente avant la nuit',
+              'Idéal en diffusion ou en rituel du soir',
+              'Complément naturel aux gestes sommeil (respiration, rythme, écrans)',
+            ]}
           />
         </article>
 
@@ -163,17 +161,13 @@ export default function BlogPage() {
             Roll-on dilué (huile végétale + lavande), diffusion le soir, et respiration lente en même
             temps. Privilégie les notes apaisantes plutôt que toniques la nuit.
           </p>
-          <Link
-            href="/espace?tab=chat&agent=aromatherapie"
-            className="text-sm font-semibold text-[#4A9B8C] hover:underline"
-          >
-            → Demander un mélange à l&apos;agent Aromathérapie
-          </Link>
-          <DoteraPackCard
-            title="Pack sommeil doTERRA"
-            description="Si tu veux aller plus loin avec des huiles de qualité pour le soir : voici le pack sommeil que je recommande."
-            href={DOTERA_PACK_SOMMEIL}
-          />
+          <p className="text-sm text-[#5A6B62]">
+            Le pack sommeil doTERRA est présenté dans l&apos;article{' '}
+            <a href="#sommeil-hormones" className="font-semibold text-[#4A9B8C] hover:underline">
+              Mieux dormir naturellement
+            </a>
+            .
+          </p>
         </article>
 
         <article id="charge-mentale" className="card rounded-3xl p-6 sm:p-8 mb-8 scroll-mt-24 bg-white">
