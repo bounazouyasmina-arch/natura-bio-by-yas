@@ -141,13 +141,13 @@ export default function BlogPage() {
           </ul>
           <DoteraPackCard
             title="Pack sommeil doTERRA"
-            description="Pour accompagner ton rituel du soir avec des huiles adaptées à la détente et à l’endormissement."
+            description="Rituel simple pour accompagner l’endormissement :"
             href={DOTERA_PACK_SOMMEIL}
             details={[
-              // Remplacé dès que Yas envoie le texte officiel du pack
-              'Huiles pour favoriser la détente avant la nuit',
-              'Idéal en diffusion ou en rituel du soir',
-              'Complément naturel aux gestes sommeil (respiration, rythme, écrans)',
+              '30 min avant le coucher : 3–4 gouttes d’huile Serenity dans le diffuseur.',
+              'Au moment de te mettre au lit : stick sous les pieds, poignets et nuque.',
+              'Si tu veux encore plus d’effet : une petite inhalation de l’huile dans les mains juste avant d’éteindre.',
+              'Astuce : n’en mets pas trop partout (peau + draps + diffuseur fort). L’odeur est déjà assez présente — commence léger, surtout la première nuit.',
             ]}
           />
         </article>
