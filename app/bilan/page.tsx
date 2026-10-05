@@ -36,13 +36,18 @@ export default function BilanPage() {
     if (savedResults) {
       const parsed = JSON.parse(savedResults);
       // Rebuild if old format (missing concerns detail)
-      if (!parsed.personalized?.concerns?.length && parsed.mainConcerns) {
+      if (
+        parsed.mainConcerns &&
+        (!parsed.personalized?.concerns?.length ||
+          !parsed.personalized?.fourWeekPlan?.length)
+      ) {
         parsed.personalized = buildBilanReport({
           ageRange: parsed.ageRange || '',
           duration: parsed.duration || '',
           goals: parsed.goals || '',
           mainConcerns: parsed.mainConcerns || [],
         });
+        localStorage.setItem('natura_last_bilan_results', JSON.stringify(parsed));
       }
       setResults(parsed);
       setEmail(parsed.email || '');
@@ -455,7 +460,7 @@ export default function BilanPage() {
                 Ton bilan détaillé est prêt
               </h2>
               <p className="text-[#5A6B62] mt-2 text-sm">
-                Lis-le jusqu&apos;au bout — le plan sur 1 semaine est en bas.
+                Le tableau des 4 semaines est en bas : il résume la suite, sans remonter au début.
               </p>
             </div>
 
@@ -600,28 +605,81 @@ export default function BilanPage() {
                 ))}
               </section>
 
-              {/* Priorités */}
+              {/* Plan 4 semaines */}
               <section>
-                <div className="text-xs uppercase tracking-widest text-[var(--mint)] mb-3">
-                  Comment prioriser (pour ne pas te disperser)
+                <div className="text-xs uppercase tracking-widest text-[var(--mint)] mb-2">
+                  Ton plan sur 4 semaines
                 </div>
-                <ul className="space-y-3 text-sm leading-relaxed">
-                  {p.priorityPlan.map((item, i) => (
-                    <li
-                      key={i}
-                      className="pl-4 border-l-2 border-[var(--mint)]"
+                <p className="text-sm text-[#5A6B62] leading-relaxed mb-4">
+                  Chaque ligne reprend les gestes utiles. Tu peux t&apos;en servir
+                  pour la suite sans relire tout le bilan.
+                </p>
+                <div className="hidden sm:block overflow-x-auto rounded-2xl border border-[#E6EDE9]">
+                  <table className="w-full border-collapse text-left text-sm">
+                    <thead>
+                      <tr className="bg-[#F4F7F5] text-xs uppercase tracking-wide text-[#5B7B6E]">
+                        <th className="px-3 py-3 font-semibold whitespace-nowrap">Semaine</th>
+                        <th className="px-3 py-3 font-semibold">Intention</th>
+                        <th className="px-3 py-3 font-semibold">À faire</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(p.fourWeekPlan || []).map((row) => (
+                        <tr key={row.week} className="border-t border-[#E6EDE9] align-top">
+                          <th className="px-3 py-3 font-semibold text-[#2A3A32] whitespace-nowrap">
+                            {row.week}
+                          </th>
+                          <td className="px-3 py-3 text-[#2A3A32] leading-relaxed">
+                            {row.intention}
+                          </td>
+                          <td className="px-3 py-3">
+                            <ul className="space-y-1.5 leading-relaxed">
+                              {row.actions.map((action, actionIndex) => (
+                                <li key={actionIndex} className="flex gap-2">
+                                  <span className="text-[var(--mint)] shrink-0">•</span>
+                                  <span>{action}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="sm:hidden space-y-3">
+                  {(p.fourWeekPlan || []).map((row) => (
+                    <article
+                      key={row.week}
+                      className="rounded-2xl border border-[#E6EDE9] overflow-hidden"
                     >
-                      {item}
-                    </li>
+                      <div className="bg-[#F4F7F5] px-4 py-2 text-xs uppercase tracking-wide text-[#5B7B6E] font-semibold">
+                        {row.week}
+                      </div>
+                      <div className="px-4 py-3 space-y-2 text-sm">
+                        <p className="font-medium text-[#2A3A32]">{row.intention}</p>
+                        <ul className="space-y-1.5 leading-relaxed">
+                          {row.actions.map((action, actionIndex) => (
+                            <li key={actionIndex} className="flex gap-2">
+                              <span className="text-[var(--mint)] shrink-0">•</span>
+                              <span>{action}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </article>
                   ))}
-                </ul>
+                </div>
               </section>
 
               {/* Plan 7 jours */}
               <section className="bg-[#F4F7F5] rounded-2xl p-5 sm:p-6">
-                <div className="text-xs uppercase tracking-widest text-[var(--mint)] mb-4">
-                  Ton plan sur 1 semaine (7 jours)
+                <div className="text-xs uppercase tracking-widest text-[var(--mint)] mb-1">
+                  Détail des 7 premiers jours
                 </div>
+                <p className="text-sm text-[#5A6B62] mb-4">
+                  Zoom sur la semaine 1. La suite est dans le tableau au-dessus.
+                </p>
                 <div className="space-y-5">
                   {(p.weekPlan || (p as { fourteenDayPlan?: typeof p.weekPlan }).fourteenDayPlan || []).map((block, i) => (
                     <div key={i}>

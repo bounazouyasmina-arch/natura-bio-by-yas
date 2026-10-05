@@ -87,8 +87,30 @@ export async function POST(request: NextRequest) {
           .join('')
       : '';
 
-    const priorityHtml = Array.isArray(p.priorityPlan)
-      ? `<ul>${p.priorityPlan.map((x: string) => `<li style="margin-bottom:6px;">${escapeHtml(x)}</li>`).join('')}</ul>`
+    const fourWeekHtml = Array.isArray(p.fourWeekPlan)
+      ? `<table style="width:100%;border-collapse:collapse;font-size:14px;margin-top:8px;">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:8px;border-bottom:1px solid #E6EDE9;color:#5B7B6E;">Semaine</th>
+              <th style="text-align:left;padding:8px;border-bottom:1px solid #E6EDE9;color:#5B7B6E;">Intention</th>
+              <th style="text-align:left;padding:8px;border-bottom:1px solid #E6EDE9;color:#5B7B6E;">À faire</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${p.fourWeekPlan
+              .map(
+                (row: { week: string; intention: string; actions: string[] }) => `
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #E6EDE9;vertical-align:top;white-space:nowrap;"><strong>${escapeHtml(row.week || '')}</strong></td>
+                <td style="padding:8px;border-bottom:1px solid #E6EDE9;vertical-align:top;">${escapeHtml(row.intention || '')}</td>
+                <td style="padding:8px;border-bottom:1px solid #E6EDE9;vertical-align:top;">
+                  <ul style="margin:0;padding-left:18px;">${(row.actions || []).map((a: string) => `<li style="margin-bottom:4px;">${escapeHtml(a)}</li>`).join('')}</ul>
+                </td>
+              </tr>`
+              )
+              .join('')}
+          </tbody>
+        </table>`
       : '';
 
     const html = `
@@ -110,10 +132,11 @@ export async function POST(request: NextRequest) {
         <h2 style="font-size:16px;color:#5B7B6E;margin-top:28px;">Analyse détaillée par axe</h2>
         ${concernsHtml}
 
-        <h2 style="font-size:16px;color:#5B7B6E;">Plan de priorité</h2>
-        ${priorityHtml}
+        <h2 style="font-size:16px;color:#5B7B6E;">Plan sur 4 semaines</h2>
+        <p style="font-size:14px;color:#5A6B62;">Ce tableau résume la suite. Tu n’as pas à remonter tout le bilan.</p>
+        ${fourWeekHtml}
 
-        <h2 style="font-size:16px;color:#5B7B6E;">Plan sur 1 semaine (7 jours)</h2>
+        <h2 style="font-size:16px;color:#5B7B6E;">Détail des 7 premiers jours</h2>
         ${planHtml}
 
         <p style="margin-top:24px;"><strong>${escapeHtml(p.closingMessage || p.message || '')}</strong></p>

@@ -18,6 +18,12 @@ export type ConcernReport = {
   sevenDayTest: string;
 };
 
+export type FourWeekStep = {
+  week: string;
+  intention: string;
+  actions: string[];
+};
+
 export type BilanReport = {
   headline: string;
   synthesis: string;
@@ -26,6 +32,8 @@ export type BilanReport = {
   goalSection: string | null;
   concerns: ConcernReport[];
   priorityPlan: string[];
+  /** Résumé autonome des 4 semaines : les gestes sont recopiés ici, pas « voir plus haut ». */
+  fourWeekPlan: FourWeekStep[];
   weekPlan: { day: string; focus: string; actions: string[] }[];
   closingMessage: string;
   disclaimer: string;
@@ -521,7 +529,7 @@ function buildWeekPlan(
       day: 'Jours 3–5',
       focus: 'Ancrer le protocole n°1',
       actions: [
-        'Applique le protocole quotidien du 1er axe (ci-dessus) sans ajouter d’autre nouveauté.',
+        `Applique seulement le protocole de « ${primary} », sans autre nouveauté.`,
         '1 marche 10–15 min/jour + 1 pause respiration 3 min.',
         ageRange === '45-54' || ageRange === '55+'
           ? 'Privilégie mobilité douce et récupération plutôt que l’intensité.'
@@ -542,6 +550,99 @@ function buildWeekPlan(
             'Compare tes notes /10 à celles du jour 1.',
             'Écris les 2–3 habitudes que tu gardes la semaine prochaine.',
           ],
+    },
+  ];
+}
+
+function pick(items: string[] | undefined, index: number, fallback: string): string {
+  const value = items?.[index]?.trim();
+  return value || fallback;
+}
+
+function avoidLine(items: string[] | undefined, fallback: string): string {
+  const value = items?.[0]?.trim();
+  return value ? `À éviter : ${value}` : fallback;
+}
+
+function buildFourWeekPlan(
+  reports: ConcernReport[],
+  duration: string,
+): FourWeekStep[] {
+  const primary = reports[0];
+  const secondary = reports[1];
+  const third = reports[2];
+  const long = duration === '> 18 mois' || duration === '6-18 mois';
+  const titleA = primary?.title || 'ton axe principal';
+  const titleB = secondary?.title;
+  const ritualA = pick(primary?.dailyProtocol, 0, 'le rituel choisi en semaine 1');
+  const ritualB = pick(secondary?.dailyProtocol, 0, 'le geste du 2e axe');
+
+  return [
+    {
+      week: 'Semaine 1',
+      intention: `Ancrer « ${titleA} » seulement`,
+      actions: [
+        pick(primary?.dailyProtocol, 0, 'Un rituel du matin, le même chaque jour.'),
+        pick(primary?.dailyProtocol, 1, 'Une pause réelle dans la journée.'),
+        pick(primary?.lifestyle, 0, 'Un geste de mode de vie, répété.'),
+        `Chaque soir : note « ${titleA} » /10. N’ajoute rien d’autre.`,
+      ],
+    },
+    {
+      week: 'Semaine 2',
+      intention: titleB
+        ? `Garder la semaine 1, puis ouvrir « ${titleB} »`
+        : `Répéter « ${titleA} » sans rien ajouter`,
+      actions: titleB
+        ? [
+            `Tu continues : ${ritualA}`,
+            ritualB,
+            pick(secondary?.foodAndPlants, 0, 'Un seul soutien alimentation ou plante.'),
+            'Ouvre ce 2e axe seulement si la semaine 1 a tenu environ 4 jours sur 7.',
+          ]
+        : [
+            `Même protocole : ${ritualA}`,
+            pick(primary?.foodAndPlants, 0, 'Ajoute un seul soutien alimentation ou plante.'),
+            avoidLine(primary?.avoid, 'Retire un agresseur déjà repéré.'),
+            'Le travail de cette semaine, c’est la régularité, pas la nouveauté.',
+          ],
+    },
+    {
+      week: 'Semaine 3',
+      intention: third
+        ? `Alléger « ${third.title} » sans lâcher les deux premiers`
+        : titleB
+          ? `Approfondir « ${titleB} » et stabiliser`
+          : `Stabiliser « ${titleA} »`,
+      actions: third
+        ? [
+            `Toujours en place : ${ritualA}`,
+            `Et : ${ritualB}`,
+            pick(third.dailyProtocol, 0, 'Un seul geste sur le 3e axe.'),
+            long
+              ? 'Terrain installé : tiens le cadre, ne juge pas encore le résultat.'
+              : 'Compare tes notes /10 à celles de la semaine 1.',
+          ]
+        : [
+            `Rituel qui reste : ${ritualA}`,
+            titleB
+              ? pick(secondary?.lifestyle, 0, `Un geste de vie pour « ${titleB} ».`)
+              : pick(primary?.dailyProtocol, 2, 'Le geste suivant du protocole, s’il n’est pas encore tenu.'),
+            avoidLine((titleB ? secondary : primary)?.avoid, 'Garde un « à éviter » clair.'),
+            'Note ce qui a bougé, et ce que tu peux lâcher.',
+          ],
+    },
+    {
+      week: 'Semaine 4',
+      intention: 'Relire le chemin et choisir la suite',
+      actions: [
+        'Relis tes notes /10 : énergie, sommeil, stress, ou le symptôme n°1.',
+        `Garde 2 ou 3 habitudes, pas toute la liste. Exemple : ${ritualA}`,
+        titleB
+          ? `Décide si « ${titleB} » reste dans ta routine, ou s’il attend encore.`
+          : 'Écris les 2 ou 3 gestes que tu continues le mois suivant.',
+        'La suite est dans ce tableau : tu n’as pas à remonter tout le bilan pour la résumer.',
+      ],
     },
   ];
 }
@@ -601,12 +702,13 @@ export function buildBilanReport(input: BilanInput): BilanReport {
   ].join(' ');
 
   const priorityPlan = buildPriorityPlan(concerns, input.duration);
+  const fourWeekPlan = buildFourWeekPlan(concernReports, input.duration);
   const weekPlan = buildWeekPlan(concerns, input.ageRange);
 
   const closingMessage =
     concerns.length > 2
-      ? 'Tu n’as pas à tout réparer d’un coup. 1 axe bien tenu cette semaine vaut mieux que 6 ébauches. Reviens dans 7 jours avec tes notes /10 : tu verras ce qui a vraiment bougé.'
-      : 'Sois constante 7 jours, mesure simplement, et ajuste. Le naturel fonctionne quand on lui laisse le temps d’ancrer un nouveau rythme.';
+      ? 'Tu n’as pas à tout réparer d’un coup. Le tableau des 4 semaines résume la suite : un seul axe d’abord, puis on élargit. Tes notes /10 suffisent pour voir ce qui bouge.'
+      : 'Sois constante, mesure simplement, et suis le tableau des 4 semaines. Le naturel fonctionne quand on lui laisse le temps d’ancrer un nouveau rythme.';
 
   const disclaimer =
     'Ce bilan est informatif et éducatif (hygiène de vie, pistes naturelles). Il ne remplace pas un diagnostic ni un suivi médical. En cas de doute, grossesse, pathologie, traitement en cours ou symptôme inquiétant, consulte un professionnel de santé.';
@@ -621,6 +723,7 @@ export function buildBilanReport(input: BilanInput): BilanReport {
     goalSection: goal,
     concerns: concernReports,
     priorityPlan,
+    fourWeekPlan,
     weekPlan,
     closingMessage,
     disclaimer,
