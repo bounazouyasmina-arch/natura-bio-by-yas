@@ -5,6 +5,7 @@ import {
   Leaf, Heart, Wind, Apple, BookOpen, Flame, Brain, 
   Users, ArrowRight, Check, Shield 
 } from 'lucide-react';
+import { BONUS_GUIDES } from '@/lib/bonus-guides';
 // === LIENS BEACONS (ventes) ===
 // Structure simple :
 // - Gratuit : 5 questions + forum
@@ -184,7 +185,7 @@ const socialProofCards = [
   {
     emoji: '📖',
     title: 'Un guide à garder',
-    text: 'Hormones Sereine à 9,99 € : chat illimité + PDF, pour avancer à son rythme après les 5 questions gratuites.',
+    text: 'Hormones Sereine à 9,99 € : chat illimité, le PDF, et 2 guides offerts (anxiété, aliments).',
     href: BEACONS_EBOOK_LINK,
     cta: 'Voir Hormones Sereine →',
     external: true,
@@ -288,7 +289,7 @@ export default function NaturaBioByYasLanding() {
         <p className="mx-auto max-w-xl text-sm sm:text-base text-[#5A6B62] mb-8 leading-relaxed">
           <span className="block sm:inline"><strong className="text-[#2A3A32]">Gratuit :</strong> 5 questions et forum.</span>
           {" "}
-          <span className="block sm:inline mt-1 sm:mt-0"><strong className="text-[#2A3A32]">Illimité :</strong> Hormones Sereine à 9,99&nbsp;€.</span>
+          <span className="block sm:inline mt-1 sm:mt-0"><strong className="text-[#2A3A32]">Illimité :</strong> Hormones Sereine à 9,99&nbsp;€ + 2 guides offerts.</span>
           {" "}
           <span className="block sm:inline mt-1 sm:mt-0"><strong className="text-[#2A3A32]">Sur-mesure :</strong> coaching à 149&nbsp;€.</span>
         </p>
@@ -317,7 +318,7 @@ export default function NaturaBioByYasLanding() {
       <div className="border-y border-[#E6EDE9] bg-white py-6">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-[#5A6B62]">
           <div className="flex items-start gap-2"><span className="text-xl">✨</span> <div><strong className="text-[#2A3A32]">9 expertes IA</strong><br />spécialités distinctes</div></div>
-          <div className="flex items-start gap-2"><span className="text-xl">📖</span> <div><strong className="text-[#2A3A32]">Hormones Sereine 9,99 €</strong><br />PDF + chat illimité</div></div>
+          <div className="flex items-start gap-2"><span className="text-xl">📖</span> <div><strong className="text-[#2A3A32]">Hormones Sereine 9,99 €</strong><br />PDF + 2 guides + chat illimité</div></div>
           <div className="flex items-start gap-2"><span className="text-xl">🕊️</span> <div><strong className="text-[#2A3A32]">Respect de la foi</strong><br />&amp; approches douces</div></div>
           <div className="flex items-start gap-2"><span className="text-xl">💬</span> <div><strong className="text-[#2A3A32]">5 questions offertes</strong><br />pour tester sans risque</div></div>
         </div>
@@ -600,6 +601,12 @@ export default function NaturaBioByYasLanding() {
               <ul className="space-y-2.5 text-sm text-[#5A6B62] mb-6 flex-1">
                 <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Chat IA illimité (fini les 5 questions)</li>
                 <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> PDF Hormones Sereine à garder</li>
+                {BONUS_GUIDES.map((guide) => (
+                  <li key={guide.href} className="flex gap-2">
+                    <span className="shrink-0" aria-hidden>{guide.emoji}</span>
+                    <span>{guide.offerLine}</span>
+                  </li>
+                ))}
                 <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Cycle, SOPK, thyroïde, pré-ménopause…</li>
               </ul>
               <a 
@@ -619,7 +626,7 @@ export default function NaturaBioByYasLanding() {
               <div className="text-3xl font-semibold tabular-nums mb-1">149 €</div>
               <div className="text-xs text-[#5A6B62] mb-4">suivi humain personnalisé</div>
               <ul className="space-y-2.5 text-sm text-[#5A6B62] mb-6 flex-1">
-                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Tout l&apos;illimité inclus</li>
+                <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Tout l&apos;illimité inclus, guides offerts compris</li>
                 <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> Visio + protocole écrit</li>
                 <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 text-[var(--sage-600)] shrink-0" /> WhatsApp + suivi 4 semaines</li>
               </ul>
@@ -685,7 +692,7 @@ export default function NaturaBioByYasLanding() {
             <p>
               L&apos;ebook <strong className="font-medium text-[#2A3A32]">Hormones Sereine</strong>
               {" "}à 9,99&nbsp;€ : tu continues le chat <strong className="font-medium text-[#2A3A32]">sans limite</strong>
-              {" "}+ tu reçois le guide PDF.
+              {" "}+ le PDF, et 2 guides offerts.
             </p>
             <p>
               Le coaching 149&nbsp;€, c&apos;est pour un suivi humain avec Yas.
@@ -700,7 +707,7 @@ export default function NaturaBioByYasLanding() {
             </div>
             <div className="text-xl sm:text-3xl font-semibold leading-snug">Hormones Sereine</div>
             <p className="text-sm text-[#5A6B62] mt-1.5 leading-relaxed">
-              PDF + chat IA illimité + forum · <strong className="font-medium text-[#2A3A32]">9,99 € une fois</strong>
+              PDF + 2 guides offerts + chat IA illimité + forum · <strong className="font-medium text-[#2A3A32]">9,99 € une fois</strong>
             </p>
             <div className="mt-3 rounded-2xl bg-[#F4F7F5] border border-[#E6EDE9] px-3.5 py-3 text-sm text-[#5A6B62] leading-relaxed">
               <strong className="text-[#2A3A32]">Pour qui ?</strong> Si tu as aimé le chat gratuit, que tu veux poser
@@ -715,15 +722,20 @@ export default function NaturaBioByYasLanding() {
 
             <ul className="space-y-2.5 sm:space-y-3 mb-7 sm:mb-8 text-sm sm:text-[15px] leading-snug">
               {[
-                "Chat IA illimité — plus de plafond à 5 questions",
-                "Ebook PDF « Hormones Sereine » à télécharger et garder",
-                "Cycle, SOPK, endométriose, thyroïde, pré-ménopause, ménopause",
-                "Forum communauté + bilan & tip du jour",
-                "Accès immédiat après paiement Beacons",
-              ].map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 sm:gap-3">
-                  <Check className="mt-0.5 text-[var(--sage-600)] h-4 w-4 shrink-0" />
-                  <span>{item}</span>
+                { text: "Chat IA illimité — plus de plafond à 5 questions", gift: false },
+                { text: "Ebook PDF « Hormones Sereine » à télécharger et garder", gift: false },
+                ...BONUS_GUIDES.map((guide) => ({ text: guide.offerLine, gift: true })),
+                { text: "Cycle, SOPK, endométriose, thyroïde, pré-ménopause, ménopause", gift: false },
+                { text: "Forum communauté + bilan & tip du jour", gift: false },
+                { text: "Accès immédiat après paiement Beacons", gift: false },
+              ].map((item) => (
+                <li key={item.text} className="flex items-start gap-2.5 sm:gap-3">
+                  {item.gift ? (
+                    <span className="mt-0.5 shrink-0" aria-hidden>🎁</span>
+                  ) : (
+                    <Check className="mt-0.5 text-[var(--sage-600)] h-4 w-4 shrink-0" />
+                  )}
+                  <span>{item.text}</span>
                 </li>
               ))}
             </ul>
@@ -761,7 +773,7 @@ export default function NaturaBioByYasLanding() {
 
             <ul className="space-y-2.5 sm:space-y-3 mb-7 sm:mb-8 text-sm sm:text-[15px] leading-snug">
               {[
-                "Tout l'illimité Hormones Sereine + chat inclus",
+                "Tout l'illimité Hormones Sereine, guides offerts + chat inclus",
                 "Appel / visio découverte 45 min",
                 "Protocole écrit personnalisé",
                 "Groupe WhatsApp + chat privé 4 semaines",
@@ -836,7 +848,7 @@ export default function NaturaBioByYasLanding() {
         <div className="mx-auto max-w-xl text-center px-4 sm:px-6">
           <h3 className="text-[1.65rem] sm:text-4xl font-semibold tracking-tight mb-3 leading-tight">Prête à t&apos;écouter vraiment&nbsp;?</h3>
           <p className="text-[#C9D6D0] mb-8 text-[15px] sm:text-base leading-relaxed">
-            Commence gratuitement. Si les réponses te parlent, l&apos;ebook Hormones Sereine (9,99&nbsp;€) débloque l&apos;illimité — pour tous les âges.
+            Commence gratuitement. Si les réponses te parlent, l&apos;ebook Hormones Sereine (9,99&nbsp;€) débloque l&apos;illimité et 2 guides offerts — pour tous les âges.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="/espace?tab=chat&agent=globale" className="bg-white text-[#2C3F36] font-semibold rounded-full px-6 sm:px-8 py-3.5 text-sm sm:text-lg leading-snug">

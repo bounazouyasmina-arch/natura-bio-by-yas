@@ -69,7 +69,7 @@ function MerciContent() {
           <p className="text-[#5A6B62]">
             {isCoaching
               ? 'Ton accompagnement coaching est activé. Bienvenue dans l\'espace premium.'
-              : 'Ton ebook Hormones Sereine et ton accès illimité au chat IA sont activés.'}
+              : 'Ton ebook Hormones Sereine, tes 2 guides offerts et ton accès illimité au chat IA sont activés.'}
           </p>
         </div>
 
@@ -96,6 +96,24 @@ function MerciContent() {
                 <div className="text-sm text-[#5A6B62]">Cycle, SOPK, thyroïde, ménopause… — téléchargeable dans ton espace</div>
               </div>
             </div>
+          )}
+          {(isEbook || isCoaching) && (
+            <>
+              <div className="flex items-start gap-3 p-4 rounded-2xl bg-[#F4F7F5]">
+                <span className="text-xl leading-none" aria-hidden>🎁</span>
+                <div>
+                  <div className="font-medium">Guide Anxiété &amp; stress</div>
+                  <div className="text-sm text-[#5A6B62]">Offert — à lire dans ton espace membres</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 rounded-2xl bg-[#F4F7F5]">
+                <span className="text-xl leading-none" aria-hidden>🎁</span>
+                <div>
+                  <div className="font-medium">Guide Aliments et leurs symptômes</div>
+                  <div className="text-sm text-[#5A6B62]">Offert — à lire dans ton espace membres</div>
+                </div>
+              </div>
+            </>
           )}
           {isCoaching && (
             <div className="flex items-start gap-3 p-4 rounded-2xl bg-[#F4F7F5] border border-[#C5A46E]/30">

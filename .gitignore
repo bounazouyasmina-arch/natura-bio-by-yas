@@ -48,5 +48,7 @@ ebooks/*.PDF
 # PDF produit livré via /api/download/ebook (accès contrôlé)
 !ebooks/hormones-sereine.pdf
 !ebooks/menopause-au-naturel.pdf
+!ebooks/aliments-symptomes.pdf
+!ebooks/anxiete-stress.pdf
 
 .vercel

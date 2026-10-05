@@ -23,7 +23,8 @@ export default function CGV() {
       </h2>
       <p>
         Produit numérique (équilibre hormonal : cycle, SOPK, endométriose, thyroïde, pré-ménopause,
-        ménopause) avec accès illimité au chat IA et au forum selon les conditions du site. Livraison
+        ménopause) avec accès illimité au chat IA, au forum, et deux guides offerts (anxiété et
+        stress, aliments et symptômes), selon les conditions du site. Livraison
         / accès après paiement (lien ou code). Conformément au droit européen, pas de droit de
         rétractation pour un contenu numérique fourni immédiatement après accord.
       </p>

@@ -9,6 +9,7 @@ import {
 import { toast } from 'sonner';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import AuthPanel from '@/components/AuthPanel';
+import { BONUS_GUIDES } from '@/lib/bonus-guides';
 import {
   type AccessTier,
   getAccessLabel,
@@ -986,7 +987,7 @@ function EspaceContent() {
           <div className="mb-6 rounded-2xl bg-[#5B7B6E] text-white p-4 text-center text-sm font-medium">
             {isCoaching
               ? 'Bienvenue ! Ton coaching est actif — ouvre l’onglet Coaching pour ton parcours 4 semaines, WhatsApp et notes de protocole.'
-              : 'Bienvenue ! Ton accès illimité est actif — chat IA, forum et ebook Hormones Sereine te sont ouverts.'}
+              : 'Bienvenue ! Ton accès illimité est actif — chat IA, forum, ebook Hormones Sereine et tes 2 guides offerts.'}
           </div>
         )}
 
@@ -995,7 +996,7 @@ function EspaceContent() {
           <div className="max-w-4xl">
             <h1 className="text-4xl font-semibold tracking-tight mb-3">Bienvenue dans l&apos;Espace Membres</h1>
             <p className="text-xl text-[#5A6B62] mb-4">
-              5 questions gratuites + forum. L&apos;ebook Hormones Sereine (9,99 €) donne le chat illimité + le PDF (cycle, SOPK, thyroïde, ménopause…). Le coaching est l&apos;accompagnement complet.
+              5 questions gratuites + forum. L&apos;ebook Hormones Sereine (9,99 €) donne le chat illimité, le PDF et 2 guides offerts. Le coaching est l&apos;accompagnement complet.
             </p>
 
             {/* Lien vers le bilan public (email collection) + perso */}
@@ -1216,6 +1217,19 @@ function EspaceContent() {
                 </a>
               )}
 
+              {hasEbook && BONUS_GUIDES.map((guide) => (
+                <a
+                  key={guide.href}
+                  href={guide.href}
+                  className="card rounded-3xl p-7 flex flex-col hover:border-[#5B7B6E] border-2 border-[#5B7B6E]/30"
+                >
+                  <div className="mb-4 text-3xl" aria-hidden>{guide.emoji}</div>
+                  <div className="font-semibold text-xl">Guide {guide.title}</div>
+                  <p className="mt-2 text-[#5A6B62] text-sm">{guide.teaser}</p>
+                  <div className="mt-auto pt-3 text-xs text-[#C5A46E]">Ouvrir le guide offert →</div>
+                </a>
+              ))}
+
               {isCoaching && (
                 <div
                   className="card rounded-3xl p-7 flex flex-col cursor-pointer hover:border-[#C5A46E] border-2 border-[#C5A46E]/40"
@@ -1378,7 +1392,7 @@ function EspaceContent() {
             <div className="mb-4 px-0.5">
               <h2 className="text-xl sm:text-2xl font-semibold tracking-tight mb-2 leading-snug">Passe à l&apos;illimité ou au coaching</h2>
               <p className="text-[#5A6B62] mb-6 text-sm sm:text-base leading-relaxed">
-                Hormones Sereine te donne l&apos;illimité + le PDF pour toutes les étapes hormonales.
+                Hormones Sereine te donne l&apos;illimité, le PDF et 2 guides offerts.
                 Le coaching est l&apos;accompagnement complet.
               </p>
             </div>
@@ -1397,7 +1411,7 @@ function EspaceContent() {
                   <span className="text-sm font-normal text-[#5A6B62]">une fois</span>
                 </div>
                 <p className="text-[#5A6B62] mb-4 text-sm leading-relaxed">
-                  PDF + chat IA illimité + forum. Cycle, SOPK, endométriose, thyroïde, pré-ménopause et ménopause — pour toutes les femmes.
+                  PDF + 🎁 2 guides offerts + chat IA illimité + forum. Cycle, SOPK, thyroïde, ménopause — pour toutes les femmes.
                 </p>
                 <div className="mt-auto text-[var(--sage-600)] font-semibold text-sm sm:text-base">Accéder à l&apos;illimité →</div>
               </a>
@@ -1581,12 +1595,18 @@ function EspaceContent() {
                       Tes 5 questions gratuites sont utilisées — merci d&apos;avoir testé.
                     </p>
                     <p className="text-sm text-[#5A6B62] mt-2 leading-relaxed max-w-md mx-auto">
-                      Pour continuer à poser autant de questions que tu veux, et recevoir le guide PDF :
+                      Pour continuer à poser autant de questions que tu veux, et recevoir le PDF plus 2 guides offerts :
                     </p>
                   </div>
                   <ul className="text-sm text-[#5A6B62] space-y-1.5 max-w-sm mx-auto text-left">
                     <li className="flex gap-2"><span className="text-[var(--sage-600)]">✓</span> Chat IA illimité (9 expertes)</li>
                     <li className="flex gap-2"><span className="text-[var(--sage-600)]">✓</span> Ebook Hormones Sereine (PDF)</li>
+                    {BONUS_GUIDES.map((guide) => (
+                      <li key={guide.href} className="flex gap-2">
+                        <span aria-hidden>{guide.emoji}</span>
+                        <span>{guide.offerLine}</span>
+                      </li>
+                    ))}
                     <li className="flex gap-2"><span className="text-[var(--sage-600)]">✓</span> Forum + accès immédiat après paiement</li>
                   </ul>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center items-stretch sm:items-center">
@@ -2094,14 +2114,14 @@ function EspaceContent() {
               <ul className="space-y-2 text-sm text-[#5A6B62]">
                 {isCoaching ? (
                   <>
-                    <li>• Chat IA illimité + ebook Hormones Sereine</li>
+                    <li>• Chat IA illimité + ebook Hormones Sereine + 2 guides offerts</li>
                     <li>• Suivi coaching 4 semaines avec Yas</li>
                     <li>• Forum (publication) si tu es connectée</li>
                   </>
                 ) : isPremium ? (
                   <>
                     <li>• Chat IA illimité (9 expertes)</li>
-                    <li>• Ebook Hormones Sereine à télécharger</li>
+                    <li>• Ebook Hormones Sereine + 2 guides offerts</li>
                     <li>• Forum (publication) si tu es connectée</li>
                   </>
                 ) : (
@@ -2228,6 +2248,15 @@ function EspaceContent() {
                   <BookOpen className="h-4 w-4" /> Télécharger Hormones Sereine (PDF)
                 </a>
               )}
+              {hasEbook && BONUS_GUIDES.map((guide) => (
+                <a
+                  key={guide.href}
+                  href={guide.href}
+                  className="flex items-center gap-2 text-[var(--sage-600)] font-medium hover:underline"
+                >
+                  <span aria-hidden>{guide.emoji}</span> Lire le guide {guide.title}
+                </a>
+              ))}
               {!isPremium && (
                 <a
                   href={BEACONS_EBOOK_LINK}
